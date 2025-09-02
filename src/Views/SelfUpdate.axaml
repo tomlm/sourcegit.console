@@ -5,6 +5,7 @@
                     xmlns:m="using:SourceGit.Models"
                     xmlns:vm="using:SourceGit.ViewModels"
                     xmlns:v="using:SourceGit.Views"
+                    xmlns:console="https://github.com/jinek/consolonia"
                     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
                     x:Class="SourceGit.Views.SelfUpdate"
                     x:DataType="vm:SelfUpdate"
@@ -21,11 +22,18 @@
               BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"
               PointerPressed="BeginMoveWindow"/>
 
-      <Path Width="14" Height="14"
-            Margin="10,0,0,0"
-            HorizontalAlignment="Left"
-            Data="{StaticResource Icons.SoftwareUpdate}"
-            IsVisible="{OnPlatform True, macOS=False}"/>
+      <console:OnPlatform>
+                <console:OnPlatform.Default>
+                  <Path Width="14" Height="14"
+                        Margin="{console:OnPlatform Default='10,0,0,0', Console='1,0,0,0'}"
+                        HorizontalAlignment="Left"
+                        Data="{StaticResource Icons.SoftwareUpdate}"
+                        IsVisible="{OnPlatform True, macOS=False}"/>
+                </console:OnPlatform.Default>
+                <console:OnPlatform.Console>
+                  <TextBlock Text="{StaticResource TextIcons.SoftwareUpdate}"/>
+      </console:OnPlatform.Console>
+      </console:OnPlatform>
 
       <TextBlock Classes="bold"
                  Text="{DynamicResource Text.SelfUpdate.Title}"
@@ -42,17 +50,24 @@
       <ContentControl Content="{Binding Data}">
         <ContentControl.DataTemplates>
           <DataTemplate DataType="m:Version">
-            <StackPanel Orientation="Vertical" Margin="16,8">
-              <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,8">
-                <Path Width="14" Height="14" Data="{StaticResource Icons.Info}" Fill="Green"/>
-                <TextBlock Margin="8,0,0,0" FontWeight="Bold" FontSize="14" Text="{DynamicResource Text.SelfUpdate.Available}"/>
-                <Border Margin="4,0,0,0" Height="20" CornerRadius="10" Background="{DynamicResource Brush.Accent}" Effect="drop-shadow(0 0 6 #40000000)">
-                  <TextBlock Classes="primary" Margin="8,0" Text="{Binding TagName}" FontSize="12" Foreground="White"/>
+            <StackPanel Orientation="Vertical" Margin="{console:OnPlatform Default='16,8', Console='1,1'}">
+              <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="{console:OnPlatform Default='0,8', Console='0,1'}">
+                <console:OnPlatform>
+                                    <console:OnPlatform.Default>
+                                      <Path Width="14" Height="14" Data="{StaticResource Icons.Info}" Fill="Green"/>
+                                    </console:OnPlatform.Default>
+                                    <console:OnPlatform.Console>
+                                      <TextBlock Text="{StaticResource TextIcons.Info}"/>
+                </console:OnPlatform.Console>
+                </console:OnPlatform>
+                <TextBlock Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}" FontWeight="Bold" FontSize="14" Text="{DynamicResource Text.SelfUpdate.Available}"/>
+                <Border Margin="{console:OnPlatform Default='4,0,0,0', Console='1,0,0,0'}" Height="20" CornerRadius="{console:OnPlatform Default='10', Console='0'}" Background="{DynamicResource Brush.Accent}" Effect="drop-shadow(0 0 6 #40000000)">
+                  <TextBlock Classes="primary" Margin="{console:OnPlatform Default='8,0', Console='1,0'}" Text="{Binding TagName}" FontSize="12" Foreground="White"/>
                 </Border>
               </StackPanel>
 
               <Border Width="500" MaxHeight="400"
-                      Margin="0,8"
+                      Margin="{console:OnPlatform Default='0,8', Console='0,1'}"
                       Background="{DynamicResource Brush.Contents}"
                       BorderThickness="1"
                       BorderBrush="{DynamicResource Brush.Border2}">
@@ -61,25 +76,39 @@
 
               <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <Button Classes="flat primary"
-                        Height="30"
+                        Height="{console:OnPlatform Default='30', Console='3'}"
                         Click="GotoDownload"
                         HorizontalContentAlignment="Center"
                         VerticalContentAlignment="Center">
                   <StackPanel Orientation="Horizontal">
-                    <Path Width="12" Height="12" Data="{StaticResource Icons.Pull}" Fill="White"/>
-                    <TextBlock Text="{DynamicResource Text.SelfUpdate.GotoDownload}" Margin="8,0,0,0"/>
+                    <console:OnPlatform>
+                                            <console:OnPlatform.Default>
+                                              <Path Width="12" Height="12" Data="{StaticResource Icons.Pull}" Fill="White"/>
+                                            </console:OnPlatform.Default>
+                                            <console:OnPlatform.Console>
+                                              <TextBlock Text="{StaticResource TextIcons.Pull}"/>
+                    </console:OnPlatform.Console>
+                    </console:OnPlatform>
+                    <TextBlock Text="{DynamicResource Text.SelfUpdate.GotoDownload}" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}"/>
                   </StackPanel>
                 </Button>
 
                 <Button Classes="flat"
-                        Height="30"
-                        Margin="8,0,0,0"
+                        Height="{console:OnPlatform Default='30', Console='3'}"
+                        Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}"
                         Click="IgnoreThisVersion"
                         HorizontalContentAlignment="Center"
                         VerticalContentAlignment="Center">
                   <StackPanel Orientation="Horizontal">
-                    <Path Width="12" Height="12" Data="{StaticResource Icons.File.Ignore}"/>
-                    <TextBlock Text="{DynamicResource Text.SelfUpdate.IgnoreThisVersion}" Margin="8,0,0,0"/>
+                    <console:OnPlatform>
+                                            <console:OnPlatform.Default>
+                                              <Path Width="12" Height="12" Data="{StaticResource Icons.File.Ignore}"/>
+                                            </console:OnPlatform.Default>
+                                            <console:OnPlatform.Console>
+                                              <TextBlock Text="{StaticResource TextIcons.Ignore}"/>
+                    </console:OnPlatform.Console>
+                    </console:OnPlatform>
+                    <TextBlock Text="{DynamicResource Text.SelfUpdate.IgnoreThisVersion}" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}"/>
                   </StackPanel>
                 </Button>
               </StackPanel>
@@ -87,15 +116,22 @@
           </DataTemplate>
 
           <DataTemplate DataType="m:AlreadyUpToDate">
-            <StackPanel Orientation="Vertical" Margin="16,8">
-              <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,8">
-                <Path Width="14" Height="14" Data="{StaticResource Icons.Info}" Fill="Green"/>
-                <TextBlock Margin="8,0,0,0" Text="{DynamicResource Text.SelfUpdate.UpToDate}"/>
+            <StackPanel Orientation="Vertical" Margin="{console:OnPlatform Default='16,8', Console='1,1'}">
+              <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="{console:OnPlatform Default='0,8', Console='0,1'}">
+                <console:OnPlatform>
+                                    <console:OnPlatform.Default>
+                                      <Path Width="14" Height="14" Data="{StaticResource Icons.Info}" Fill="Green"/>
+                                    </console:OnPlatform.Default>
+                                    <console:OnPlatform.Console>
+                                      <TextBlock Text="{StaticResource TextIcons.Info}"/>
+                </console:OnPlatform.Console>
+                </console:OnPlatform>
+                <TextBlock Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}" Text="{DynamicResource Text.SelfUpdate.UpToDate}"/>
               </StackPanel>
 
               <Button Classes="flat primary"
-                      Height="30"
-                      Margin="4,0"
+                      Height="{console:OnPlatform Default='30', Console='3'}"
+                      Margin="{console:OnPlatform Default='4,0', Console='1,0'}"
                       Click="CloseWindow"
                       Content="{DynamicResource Text.Close}"
                       HorizontalAlignment="Center"
@@ -105,17 +141,24 @@
           </DataTemplate>
 
           <DataTemplate DataType="m:SelfUpdateFailed">
-            <StackPanel Orientation="Vertical" Margin="16,8">
+            <StackPanel Orientation="Vertical" Margin="{console:OnPlatform Default='16,8', Console='1,1'}">
               <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Path Width="14" Height="14" Data="{StaticResource Icons.Error}" Fill="Red"/>
-                <TextBlock Margin="8,0,0,0" FontWeight="Bold" FontSize="14" Text="{DynamicResource Text.SelfUpdate.Error}"/>
+                <console:OnPlatform>
+                                    <console:OnPlatform.Default>
+                                      <Path Width="14" Height="14" Data="{StaticResource Icons.Error}" Fill="Red"/>
+                                    </console:OnPlatform.Default>
+                                    <console:OnPlatform.Console>
+                                      <TextBlock Text="{StaticResource TextIcons.Error}"/>
+                </console:OnPlatform.Console>
+                </console:OnPlatform>
+                <TextBlock Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}" FontWeight="Bold" FontSize="14" Text="{DynamicResource Text.SelfUpdate.Error}"/>
               </StackPanel>
 
-              <TextBlock Text="{Binding Reason}" MaxWidth="500" TextWrapping="Wrap" Margin="0,8"/>
+              <TextBlock Text="{Binding Reason}" MaxWidth="500" TextWrapping="Wrap" Margin="{console:OnPlatform Default='0,8', Console='0,1'}"/>
 
               <Button Classes="flat primary"
-                      Height="30"
-                      Margin="4,0"
+                      Height="{console:OnPlatform Default='30', Console='3'}"
+                      Margin="{console:OnPlatform Default='4,0', Console='1,0'}"
                       Click="CloseWindow"
                       Content="{DynamicResource Text.Close}"
                       HorizontalAlignment="Center"
@@ -128,3 +171,5 @@
     </Grid>
   </Grid>
 </v:ChromelessWindow>
+
+

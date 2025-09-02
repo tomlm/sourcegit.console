@@ -5,49 +5,67 @@
              xmlns:m="using:SourceGit.Models"
              xmlns:vm="using:SourceGit.ViewModels"
              xmlns:v="using:SourceGit.Views"
+             xmlns:console="https://github.com/jinek/consolonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.AddToIgnore"
              x:DataType="vm:AddToIgnore">
-  <StackPanel Orientation="Vertical" Margin="8,0">
+  <StackPanel Orientation="Vertical" Margin="{console:OnPlatform Default='8,0', Console='1,0'}">
     <TextBlock FontSize="18"
                Classes="bold"
                Text="{DynamicResource Text.AddToIgnore}"/>
-    <Grid Margin="0,16,0,0" RowDefinitions="32,32" ColumnDefinitions="120,*">
+    <Grid Margin="{console:OnPlatform Default='0,16,0,0', Console='0,1,0,0'}"
+          RowDefinitions="{console:OnPlatform Default='32,32', Console='3,3'}"
+          ColumnDefinitions="{console:OnPlatform Default='120,*', Console='12,*'}">
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
-                 Margin="0,0,8,0"
+                 Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"
                  Text="{DynamicResource Text.AddToIgnore.Pattern}"/>
       <TextBox Grid.Row="0" Grid.Column="1"
-               Height="28"
-               CornerRadius="3"
+               Height="{console:OnPlatform Default='28', Console='2'}"
+               CornerRadius="{console:OnPlatform Default='3', Console='0'}"
                Text="{Binding Pattern, Mode=TwoWay}"
                v:AutoFocusBehaviour.IsEnabled="True">
         <TextBox.InnerLeftContent>
-          <Path Width="12" Height="12" Margin="6,0,2,0" Data="{StaticResource Icons.Pattern}" Fill="{DynamicResource Brush.FG2}"/>
+          <console:OnPlatform>
+            <console:OnPlatform.Default>
+              <Path Width="12" Height="12" Margin="{console:OnPlatform Default='6,0,2,0', Console='1,0,1,0'}" Data="{StaticResource Icons.Pattern}" Fill="{DynamicResource Brush.FG2}"/>
+            </console:OnPlatform.Default>
+            <console:OnPlatform.Console>
+              <TextBlock Text="{StaticResource TextIcons.Pattern}"/>
+            </console:OnPlatform.Console>
+          </console:OnPlatform>
         </TextBox.InnerLeftContent>
       </TextBox>
 
       <TextBlock Grid.Row="1" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
-                 Margin="0,0,8,0"
+                 Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"
                  Text="{DynamicResource Text.AddToIgnore.Storage}"/>
       <ComboBox Grid.Row="1" Grid.Column="1"
-                Height="28" Padding="4,0"
+                Height="{console:OnPlatform Default='28', Console='2'}"
+                Padding="{console:OnPlatform Default='4,0', Console='1,0'}"
                 VerticalAlignment="Center" HorizontalAlignment="Stretch"
                 ItemsSource="{Binding Source={x:Static m:GitIgnoreFile.Supported}}"
                 SelectedItem="{Binding StorageFile, Mode=TwoWay}">
         <ComboBox.ItemTemplate>
           <DataTemplate DataType="m:GitIgnoreFile">
-            <Grid ColumnDefinitions="20,*,Auto">
-              <Path Grid.Column="0"
-                    Width="12" Height="12"
-                    Data="{StaticResource Icons.File}"
-                    Fill="{DynamicResource Brush.FG2}"/>
+            <Grid ColumnDefinitions="{console:OnPlatform Default='20,*,Auto', Console='2,*,Auto'}">
+              <console:OnPlatform>
+                <console:OnPlatform.Default>
+                  <Path Grid.Column="0"
+                        Width="12" Height="12"
+                        Data="{StaticResource Icons.File}"
+                        Fill="{DynamicResource Brush.FG2}"/>
+                </console:OnPlatform.Default>
+                <console:OnPlatform.Console>
+                  <TextBlock Grid.Column="0" Text="{StaticResource TextIcons.File}"/>
+                </console:OnPlatform.Console>
+              </console:OnPlatform>
 
               <TextBlock Grid.Column="1" Text="{Binding File, Mode=OneWay}" VerticalAlignment="Center"/>
 
-              <Border Grid.Column="2" Height="16" Background="{Binding Brush}" CornerRadius="8" VerticalAlignment="Center">
-                <TextBlock Classes="primary" Text="{Binding Desc}" Margin="8,0" FontSize="10" Foreground="White"/>
+              <Border Grid.Column="2" Height="16" Background="{Binding Brush}" CornerRadius="{console:OnPlatform Default='8', Console='0'}" VerticalAlignment="Center">
+                <TextBlock Classes="primary" Text="{Binding Desc}" Margin="{console:OnPlatform Default='8,0', Console='1,0'}" FontSize="10" Foreground="White"/>
               </Border>
             </Grid>
           </DataTemplate>

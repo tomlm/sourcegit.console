@@ -4,23 +4,33 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:SourceGit.ViewModels"
              xmlns:c="using:SourceGit.Converters"
+             xmlns:console="https://github.com/jinek/consolonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.Revert"
              x:DataType="vm:Revert">
-  <StackPanel Orientation="Vertical" Margin="8,0">
+  <StackPanel Orientation="Vertical" Margin="{console:OnPlatform Default='8,0', Console='1,0'}">
     <TextBlock FontSize="18"
                Classes="bold"
                Text="{DynamicResource Text.Revert}"/>
-    <Grid Margin="0,16,0,0" RowDefinitions="32,32" ColumnDefinitions="130,*">
+    <Grid Margin="{console:OnPlatform Default='0,16,0,0', Console='0,1,0,0'}"
+          RowDefinitions="{console:OnPlatform Default='32,32', Console='3,3'}"
+          ColumnDefinitions="{console:OnPlatform Default='130,*', Console='13,*'}">
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
-                 Margin="0,0,8,0"
+                 Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"
                  Text="{DynamicResource Text.Revert.Commit}"/>
 
       <Grid Grid.Row="0" Grid.Column="1" ColumnDefinitions="Auto,Auto,*">
-        <Path Grid.Column="0" Width="14" Height="14" Data="{StaticResource Icons.Commit}"/>
-        <TextBlock Grid.Column="1" Classes="primary" VerticalAlignment="Center" Text="{Binding Target.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0"/>
-        <TextBlock Grid.Column="2" VerticalAlignment="Center" Text="{Binding Target.Subject}" Margin="4,0,0,0" TextTrimming="CharacterEllipsis"/>
+        <console:OnPlatform>
+                    <console:OnPlatform.Default>
+                      <Path Grid.Column="0" Width="14" Height="14" Data="{StaticResource Icons.Commit}"/>
+                    </console:OnPlatform.Default>
+                    <console:OnPlatform.Console>
+                      <TextBlock Grid.Column="0" Text="{StaticResource TextIcons.Branch}"/>
+        </console:OnPlatform.Console>
+        </console:OnPlatform>
+        <TextBlock Grid.Column="1" Classes="primary" VerticalAlignment="Center" Text="{Binding Target.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}"/>
+        <TextBlock Grid.Column="2" VerticalAlignment="Center" Text="{Binding Target.Subject}" Margin="{console:OnPlatform Default='4,0,0,0', Console='1,0,0,0'}" TextTrimming="CharacterEllipsis"/>
       </Grid>
 
       <CheckBox Grid.Row="1" Grid.Column="1"
@@ -29,3 +39,5 @@
     </Grid>
   </StackPanel>
 </UserControl>
+
+

@@ -3,21 +3,31 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:console="https://github.com/jinek/consolonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.RemoveWorktree"
              x:DataType="vm:RemoveWorktree">
-  <StackPanel Orientation="Vertical" Margin="8,0,0,0">
+  <StackPanel Orientation="Vertical" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}">
     <TextBlock FontSize="18"
                Classes="bold"
                Text="{DynamicResource Text.RemoveWorktree}"/>
-    <Grid Margin="8,16,0,0" RowDefinitions="32,32" ColumnDefinitions="120,*">
+    <Grid Margin="{console:OnPlatform Default='8,16,0,0', Console='1,1,0,0'}"
+          RowDefinitions="{console:OnPlatform Default='32,32', Console='3,3'}"
+          ColumnDefinitions="{console:OnPlatform Default='120,*', Console='12,*'}">
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right"
-                 Margin="8,0"
+                 Margin="{console:OnPlatform Default='8,0', Console='1,0'}"
                  Text="{DynamicResource Text.RemoveWorktree.Target}"/>
       <Grid Grid.Row="0" Grid.Column="1" ColumnDefinitions="Auto,*">
-        <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.Worktree}"/>
-        <TextBlock Grid.Column="1" Classes="primary" Margin="8,0,0,0" TextTrimming="CharacterEllipsis">
+        <console:OnPlatform>
+                    <console:OnPlatform.Default>
+                      <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.Worktree}"/>
+                    </console:OnPlatform.Default>
+                    <console:OnPlatform.Console>
+                      <TextBlock Grid.Column="0" Text="{StaticResource TextIcons.Worktree}"/>
+        </console:OnPlatform.Console>
+        </console:OnPlatform>
+        <TextBlock Grid.Column="1" Classes="primary" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}" TextTrimming="CharacterEllipsis">
           <Run Text="{Binding Target.Name}"/>
           <Run Text="{Binding Target.RelativePath}" Foreground="{DynamicResource Brush.FG2}"/>
         </TextBlock>
@@ -29,3 +39,4 @@
     </Grid>
   </StackPanel>
 </UserControl>
+

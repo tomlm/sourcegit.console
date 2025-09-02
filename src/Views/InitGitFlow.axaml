@@ -4,33 +4,36 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:SourceGit.ViewModels"
              xmlns:v="using:SourceGit.Views"
+             xmlns:console="https://github.com/jinek/consolonia"
              mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="450"
              x:Class="SourceGit.Views.InitGitFlow"
              x:DataType="vm:InitGitFlow">
-  <StackPanel Orientation="Vertical" Margin="8,0">
+  <StackPanel Orientation="Vertical" Margin="{console:OnPlatform Default='8,0', Console='1,0'}">
     <TextBlock FontSize="18"
                Classes="bold"
                Text="{DynamicResource Text.GitFlow.Init}"/>
-    <Grid Margin="8,16,0,0" RowDefinitions="32,32,8,32,32,32,32" ColumnDefinitions="Auto,*">
+    <Grid Margin="{console:OnPlatform Default='8,16,0,0', Console='1,1,0,0'}"
+          RowDefinitions="{console:OnPlatform Default='32,32,8,32,32,32,32', Console='3,3,1,3,3,3,3'}"
+          ColumnDefinitions="{console:OnPlatform Default='Auto,*', Console='Auto,*'}">
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
-                 Margin="0,0,8,0"
+                 Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"
                  Text="{DynamicResource Text.GitFlow.ProductionBranch}"/>
       <TextBox Grid.Row="0" Grid.Column="1"
-               Height="26"
+               Height="{console:OnPlatform Default='26', Console='3'}"
                VerticalAlignment="Center"
-               CornerRadius="2"
+               CornerRadius="{console:OnPlatform Default='2', Console='0'}"
                Text="{Binding Master, Mode=TwoWay}"
                v:AutoFocusBehaviour.IsEnabled="True"/>
 
       <TextBlock Grid.Row="1" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
-                 Margin="0,0,8,0"
+                 Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"
                  Text="{DynamicResource Text.GitFlow.DevelopBranch}"/>
       <TextBox Grid.Row="1" Grid.Column="1"
-               Height="26"
+               Height="{console:OnPlatform Default='26', Console='3'}"
                VerticalAlignment="Center"
-               CornerRadius="2"
+               CornerRadius="{console:OnPlatform Default='2', Console='0'}"
                Text="{Binding Develop, Mode=TwoWay}"/>
 
       <Rectangle Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
@@ -40,42 +43,42 @@
 
       <TextBlock Grid.Row="3" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
-                 Margin="0,0,8,0"
+                 Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"
                  Text="{DynamicResource Text.GitFlow.FeaturePrefix}"/>
       <TextBox Grid.Row="3" Grid.Column="1"
-               Height="26"
+               Height="{console:OnPlatform Default='26', Console='3'}"
                VerticalAlignment="Center"
-               CornerRadius="2"
+               CornerRadius="{console:OnPlatform Default='2', Console='0'}"
                Text="{Binding FeaturePrefix, Mode=TwoWay}"/>
 
       <TextBlock Grid.Row="4" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
-                 Margin="0,0,8,0"
+                 Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"
                  Text="{DynamicResource Text.GitFlow.ReleasePrefix}"/>
       <TextBox Grid.Row="4" Grid.Column="1"
-               Height="26"
+               Height="{console:OnPlatform Default='26', Console='3'}"
                VerticalAlignment="Center"
-               CornerRadius="2"
+               CornerRadius="{console:OnPlatform Default='2', Console='0'}"
                Text="{Binding ReleasePrefix, Mode=TwoWay}"/>
 
       <TextBlock Grid.Row="5" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
-                 Margin="0,0,8,0"
+                 Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"
                  Text="{DynamicResource Text.GitFlow.HotfixPrefix}"/>
       <TextBox Grid.Row="5" Grid.Column="1"
-               Height="26"
+               Height="{console:OnPlatform Default='26', Console='3'}"
                VerticalAlignment="Center"
-               CornerRadius="2"
+               CornerRadius="{console:OnPlatform Default='2', Console='0'}"
                Text="{Binding HotfixPrefix, Mode=TwoWay}"/>
 
       <TextBlock Grid.Row="6" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
-                 Margin="0,0,8,0"
+                 Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"
                  Text="{DynamicResource Text.GitFlow.TagPrefix}"/>
       <TextBox Grid.Row="6" Grid.Column="1"
-               Height="26"
+               Height="{console:OnPlatform Default='26', Console='3'}"
                VerticalAlignment="Center"
-               CornerRadius="2"
+               CornerRadius="{console:OnPlatform Default='2', Console='0'}"
                Watermark="{DynamicResource Text.Optional}"
                Text="{Binding TagPrefix, Mode=TwoWay}"/>
     </Grid>

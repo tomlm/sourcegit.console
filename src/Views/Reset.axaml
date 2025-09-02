@@ -5,50 +5,67 @@
              xmlns:m="using:SourceGit.Models"
              xmlns:vm="using:SourceGit.ViewModels"
              xmlns:c="using:SourceGit.Converters"
+             xmlns:console="https://github.com/jinek/consolonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.Reset"
              x:DataType="vm:Reset">
-  <StackPanel Orientation="Vertical" Margin="8,0">
+  <StackPanel Orientation="Vertical" Margin="{console:OnPlatform Default='8,0', Console='1,0'}">
     <TextBlock FontSize="18"
                Classes="bold"
                Text="{DynamicResource Text.Reset}"/>
-    <Grid Margin="0,16,0,0" RowDefinitions="32,32,32" ColumnDefinitions="120,*">
+    <Grid Margin="{console:OnPlatform Default='0,16,0,0', Console='0,1,0,0'}"
+          RowDefinitions="{console:OnPlatform Default='32,32,32', Console='3,3,3'}"
+          ColumnDefinitions="{console:OnPlatform Default='120,*', Console='12,*'}">
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
-                 Margin="0,0,8,0"
+                 Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"
                  Text="{DynamicResource Text.Reset.Target}"/>
-      <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Height="20" VerticalAlignment="Center">
-        <Path Margin="0,0,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Branch}"/>
+      <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Height="{console:OnPlatform Default='20', Console='2'}" VerticalAlignment="Center">
+        <console:OnPlatform>
+                    <console:OnPlatform.Default>
+                      <Path Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Branch}"/>
+                    </console:OnPlatform.Default>
+                    <console:OnPlatform.Console>
+                      <TextBlock Text="{StaticResource TextIcons.Branch}"/>
+        </console:OnPlatform.Console>
+        </console:OnPlatform>
         <TextBlock Text="{Binding Current.Name}"/>
       </StackPanel>
 
       <TextBlock Grid.Row="1" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
-                 Margin="0,0,8,0"
+                 Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"
                  Text="{DynamicResource Text.Reset.MoveTo}"/>
-      <Grid Grid.Row="1" Grid.Column="1" ColumnDefinitions="Auto,Auto,*" Height="20" VerticalAlignment="Center">
-        <Path Grid.Column="0" Margin="0,0,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Commit}"/>
+      <Grid Grid.Row="1" Grid.Column="1" ColumnDefinitions="{console:OnPlatform Default='Auto,Auto,*', Console='Auto,Auto,*'}" Height="{console:OnPlatform Default='20', Console='2'}" VerticalAlignment="Center">
+        <console:OnPlatform>
+                    <console:OnPlatform.Default>
+                      <Path Grid.Column="0" Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Commit}"/>
+                    </console:OnPlatform.Default>
+                    <console:OnPlatform.Console>
+                      <TextBlock Text="{StaticResource TextIcons.Commit}"/>
+        </console:OnPlatform.Console>
+        </console:OnPlatform>
         <TextBlock Grid.Column="1" Classes="primary" Text="{Binding To.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange"/>
-        <TextBlock Grid.Column="2" Text="{Binding To.Subject}" Margin="8,0,0,0" TextTrimming="CharacterEllipsis"/>
+        <TextBlock Grid.Column="2" Text="{Binding To.Subject}" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}" TextTrimming="CharacterEllipsis"/>
       </Grid>
 
       <TextBlock Grid.Row="2" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
-                 Margin="0,0,8,0"
+                 Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"
                  Text="{DynamicResource Text.Reset.Mode}"/>
       <ComboBox Grid.Row="2" Grid.Column="1"
                 x:Name="ResetMode"
-                Height="28" Padding="8,0"
+                Height="{console:OnPlatform Default='28', Console='2'}" Padding="{console:OnPlatform Default='8,0', Console='1,0'}"
                 VerticalAlignment="Center" HorizontalAlignment="Stretch"
                 ItemsSource="{Binding Source={x:Static m:ResetMode.Supported}}"
                 SelectedItem="{Binding SelectedMode, Mode=TwoWay}"
                 KeyDown="OnResetModeKeyDown">
         <ComboBox.ItemTemplate>
           <DataTemplate DataType="m:ResetMode">
-            <Grid ColumnDefinitions="16,60,*,Auto">
+            <Grid ColumnDefinitions="{console:OnPlatform Default='16,60,*,Auto', Console='1,6,*,Auto'}">
               <Ellipse Grid.Column="0" Width="12" Height="12" Fill="{Binding Color}"/>
-              <TextBlock Grid.Column="1" Text="{Binding Name}" Margin="2,0,0,0"/>
-              <TextBlock Grid.Column="2" Text="{Binding Desc}" Margin="2,0,16,0" FontSize="11" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right"/>
+              <TextBlock Grid.Column="1" Text="{Binding Name}" Margin="{console:OnPlatform Default='2,0,0,0', Console='1,0,0,0'}"/>
+              <TextBlock Grid.Column="2" Text="{Binding Desc}" Margin="{console:OnPlatform Default='2,0,16,0', Console='1,0,1,0'}" FontSize="11" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right"/>
               <TextBlock Grid.Column="3" Text="{Binding Key}" FontSize="11" FontWeight="Bold" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right"/>
             </Grid>
           </DataTemplate>
@@ -56,10 +73,10 @@
 
         <ComboBox.SelectionBoxItemTemplate>
           <DataTemplate DataType="m:ResetMode">
-            <Grid ColumnDefinitions="16,60,*">
+            <Grid ColumnDefinitions="{console:OnPlatform Default='16,60,*', Console='1,6,*'}">
               <Ellipse Grid.Column="0" Width="12" Height="12" Fill="{Binding Color}"/>
-              <TextBlock Grid.Column="1" Text="{Binding Name}" Margin="2,0,0,0"/>
-              <TextBlock Grid.Column="2" Text="{Binding Desc}" Margin="2,0,16,0" FontSize="11" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right"/>
+              <TextBlock Grid.Column="1" Text="{Binding Name}" Margin="{console:OnPlatform Default='2,0,0,0', Console='1,0,0,0'}"/>
+              <TextBlock Grid.Column="2" Text="{Binding Desc}" Margin="{console:OnPlatform Default='2,0,16,0', Console='1,0,1,0'}" FontSize="11" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right"/>
             </Grid>
           </DataTemplate>
         </ComboBox.SelectionBoxItemTemplate>
@@ -67,3 +84,5 @@
     </Grid>
   </StackPanel>
 </UserControl>
+
+

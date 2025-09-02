@@ -3,57 +3,67 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:console="https://github.com/jinek/consolonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.AddWorktree"
              x:DataType="vm:AddWorktree">
-  <StackPanel Orientation="Vertical" Margin="8,0">
+  <StackPanel Orientation="Vertical" Margin="{console:OnPlatform Default='8,0', Console='1,0'}">
     <TextBlock FontSize="18"
                Classes="bold"
                Text="{DynamicResource Text.AddWorktree}"/>
-    <Grid Margin="0,16,0,0" RowDefinitions="32,32,32,Auto,32" ColumnDefinitions="150,*">
+    <Grid Margin="{console:OnPlatform Default='0,16,0,0', Console='0,1,0,0'}"
+          RowDefinitions="{console:OnPlatform Default='32,32,32,Auto,32', Console='3,3,3,Auto,3'}"
+          ColumnDefinitions="{console:OnPlatform Default='150,*', Console='15,*'}">
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
-                 Margin="0,0,8,0"
+                 Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"
                  Text="{DynamicResource Text.AddWorktree.Location}"/>
       <TextBox Grid.Row="0" Grid.Column="1"
                x:Name="TxtLocation"
-               Height="28"
-               CornerRadius="3"
+               Height="{console:OnPlatform Default='28', Console='2'}"
+               CornerRadius="{console:OnPlatform Default='3', Console='0'}"
                Text="{Binding Path, Mode=TwoWay}"
                Watermark="{DynamicResource Text.AddWorktree.Location.Placeholder}">
         <TextBox.InnerRightContent>
-          <Button Classes="icon_button" Width="28" Height="28" Margin="4,0,0,0" Click="SelectLocation">
-            <Path Data="{StaticResource Icons.Folder.Open}" Fill="{DynamicResource Brush.FG1}"/>
+          <Button Classes="icon_button" Width="{console:OnPlatform Default='28', Console='2'}" Height="{console:OnPlatform Default='28', Console='2'}" Margin="{console:OnPlatform Default='4,0,0,0', Console='1,0,0,0'}" Click="SelectLocation">
+            <console:OnPlatform>
+              <console:OnPlatform.Default>
+                <Path Data="{StaticResource Icons.Folder.Open}" Fill="{DynamicResource Brush.FG1}"/>
+              </console:OnPlatform.Default>
+              <console:OnPlatform.Console>
+                <TextBlock Text="{StaticResource Icon_FolderOpen}"/>
+              </console:OnPlatform.Console>
+            </console:OnPlatform>
           </Button>
         </TextBox.InnerRightContent>
       </TextBox>
 
       <TextBlock Grid.Row="1" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
-                 Margin="0,0,8,0"
+                 Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"
                  Text="{DynamicResource Text.AddWorktree.WhatToCheckout}"/>
-      <StackPanel Grid.Row="1" Grid.Column="1" Height="32" Orientation="Horizontal">
+      <StackPanel Grid.Row="1" Grid.Column="1" Height="{console:OnPlatform Default='32', Console='3'}" Orientation="Horizontal">
         <RadioButton Content="{DynamicResource Text.AddWorktree.WhatToCheckout.CreateNew}"
                      GroupName="WhatToCheckout"
                      IsChecked="{Binding CreateNewBranch, Mode=TwoWay}"/>
         <RadioButton Content="{DynamicResource Text.AddWorktree.WhatToCheckout.Existing}"
                      GroupName="WhatToCheckout"
-                     Margin="8,0,0,0"/>
+                     Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}"/>
       </StackPanel>
 
       <TextBlock Grid.Row="2" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
-                 Margin="0,0,8,0"
+                 Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"
                  Text="{DynamicResource Text.AddWorktree.Name}"/>
       <TextBox Grid.Row="2" Grid.Column="1"
-               Height="28"
-               CornerRadius="3"
+               Height="{console:OnPlatform Default='28', Console='2'}"
+               CornerRadius="{console:OnPlatform Default='3', Console='0'}"
                Text="{Binding SelectedBranch, Mode=TwoWay}"
                Watermark="{DynamicResource Text.AddWorktree.Name.Placeholder}"
                IsEnabled="{Binding CreateNewBranch, Mode=OneWay}"
                IsVisible="{Binding CreateNewBranch, Mode=OneWay}"/>
       <ComboBox Grid.Row="2" Grid.Column="1"
-                Height="28" Padding="8,0"
+                Height="{console:OnPlatform Default='28', Console='2'}" Padding="{console:OnPlatform Default='8,0', Console='1,0'}"
                 VerticalAlignment="Center" HorizontalAlignment="Stretch"
                 ItemsSource="{Binding LocalBranches}"
                 SelectedItem="{Binding SelectedBranch, Mode=TwoWay}"
@@ -61,8 +71,15 @@
                 IsVisible="{Binding !CreateNewBranch, Mode=OneWay}">
         <ComboBox.ItemTemplate>
           <DataTemplate>
-            <StackPanel Orientation="Horizontal" Height="20" VerticalAlignment="Center">
-              <Path Margin="0,0,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Branch}"/>
+            <StackPanel Orientation="Horizontal" Height="{console:OnPlatform Default='20', Console='2'}" VerticalAlignment="Center">
+              <console:OnPlatform>
+                <console:OnPlatform.Default>
+                  <Path Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}" Width="{console:OnPlatform Default='14', Console='1'}" Height="{console:OnPlatform Default='14', Console='1'}" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Branch}"/>
+                </console:OnPlatform.Default>
+                <console:OnPlatform.Console>
+                  <TextBlock Text="{StaticResource TextIcons.Branch}"/>
+                </console:OnPlatform.Console>
+              </console:OnPlatform>
               <TextBlock Text="{Binding}"/>
             </StackPanel>
           </DataTemplate>
@@ -70,14 +87,14 @@
       </ComboBox>
 
       <Border Grid.Row="3" Grid.Column="0"
-              Height="32"
+              Height="{console:OnPlatform Default='32', Console='3'}"
               IsVisible="{Binding SetTrackingBranch, Mode=OneWay}">
         <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center"
-                   Margin="0,0,8,0"
+                   Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"
                    Text="{DynamicResource Text.AddWorktree.Tracking}"/>
       </Border>
       <ComboBox Grid.Row="3" Grid.Column="1"
-                Height="28" Padding="8,0"
+                Height="{console:OnPlatform Default='28', Console='2'}" Padding="{console:OnPlatform Default='8,0', Console='1,0'}"
                 VerticalAlignment="Center" HorizontalAlignment="Stretch"
                 ItemsSource="{Binding RemoteBranches}"
                 IsTextSearchEnabled="True"
@@ -85,8 +102,15 @@
                 IsVisible="{Binding SetTrackingBranch, Mode=OneWay}">
         <ComboBox.ItemTemplate>
           <DataTemplate>
-            <StackPanel Orientation="Horizontal" Height="20" VerticalAlignment="Center">
-              <Path Margin="0,0,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Branch}"/>
+            <StackPanel Orientation="Horizontal" Height="{console:OnPlatform Default='20', Console='2'}" VerticalAlignment="Center">
+              <console:OnPlatform>
+                <console:OnPlatform.Default>
+                  <Path Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}" Width="{console:OnPlatform Default='14', Console='1'}" Height="{console:OnPlatform Default='14', Console='1'}" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Branch}"/>
+                </console:OnPlatform.Default>
+                <console:OnPlatform.Console>
+                  <TextBlock Text="{StaticResource TextIcons.Branch}"/>
+                </console:OnPlatform.Console>
+              </console:OnPlatform>
               <TextBlock Text="{Binding}"/>
             </StackPanel>
           </DataTemplate>

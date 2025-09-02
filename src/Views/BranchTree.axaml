@@ -1,4 +1,4 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
+<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -6,6 +6,7 @@
              xmlns:c="using:SourceGit.Converters"
              xmlns:v="using:SourceGit.Views"
              xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:console="https://github.com/jinek/consolonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.BranchTree"
              x:Name="ThisControl">
@@ -24,7 +25,7 @@
 
     <ListBox.Styles>
       <Style Selector="ListBoxItem" x:DataType="vm:BranchTreeNode">
-        <Setter Property="CornerRadius" Value="{Binding CornerRadius}"/>
+        <Setter Property="CornerRadius" Value="{console:OnPlatform Default={Binding CornerRadius}, Console='0'}"/>
       </Style>
 
       <Style Selector="ListBoxItem:pointerover v|FilterModeSwitchButton">
@@ -42,25 +43,32 @@
             <DataTemplate DataType="m:Branch">
               <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Horizontal">
-                  <Path Width="12" Height="12" Data="{StaticResource Icons.Branch}"/>
-                  <TextBlock FontWeight="Bold" VerticalAlignment="Center" Margin="8,0,0,0" Text="{Binding FriendlyName}"/>
-                  <Border Background="Green" Margin="4,0,0,0" CornerRadius="4" VerticalAlignment="Center" IsVisible="{Binding !IsLocal}">
-                    <TextBlock Text="{DynamicResource Text.BranchTree.Remote}" FontSize="12" Classes="primary" Margin="4,1" Foreground="White" VerticalAlignment="Center"/>
+                  <console:OnPlatform>
+                    <console:OnPlatform.Default>
+                      <Path Width="12" Height="12" Data="{StaticResource Icons.Branch}"/>
+                    </console:OnPlatform.Default>
+                    <console:OnPlatform.Console>
+                      <TextBlock Text="{StaticResource TextIcons.Branch}"/>
+                    </console:OnPlatform.Console>
+                  </console:OnPlatform>
+                  <TextBlock FontWeight="Bold" VerticalAlignment="Center" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}" Text="{Binding FriendlyName}"/>
+                  <Border Background="Green" Margin="{console:OnPlatform Default='4,0,0,0', Console='1,0,0,0'}" CornerRadius="{console:OnPlatform Default='4', Console='0'}" VerticalAlignment="Center" IsVisible="{Binding !IsLocal}">
+                    <TextBlock Text="{DynamicResource Text.BranchTree.Remote}" FontSize="12" Classes="primary" Margin="{console:OnPlatform Default='4,1', Console='1,1'}" Foreground="White" VerticalAlignment="Center"/>
                   </Border>
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal"
-                            Margin="0,8,0,0"
+                            Margin="{console:OnPlatform Default='0,8,0,0', Console='0,1,0,0'}"
                             IsVisible="{Binding Upstream, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
                   <TextBlock Classes="info_label"
                              HorizontalAlignment="Left" VerticalAlignment="Center"
                              Text="{DynamicResource Text.BranchTree.Tracking}"/>
 
-                  <TextBlock Margin="6,0,0,0"
+                  <TextBlock Margin="{console:OnPlatform Default='6,0,0,0', Console='1,0,0,0'}"
                              Text="{Binding Upstream, Mode=OneWay, Converter={x:Static c:StringConverters.ToFriendlyUpstream}}"/>
 
-                  <Border Background="OrangeRed" Margin="4,0,0,0" CornerRadius="4" VerticalAlignment="Center" IsVisible="{Binding IsUpstreamGone}">
-                    <TextBlock Text="{DynamicResource Text.BranchTree.InvalidUpstream}" FontSize="12" Classes="primary" Margin="4,1" Foreground="White" VerticalAlignment="Center"/>
+                  <Border Background="OrangeRed" Margin="{console:OnPlatform Default='4,0,0,0', Console='1,0,0,0'}" CornerRadius="{console:OnPlatform Default='4', Console='0'}" VerticalAlignment="Center" IsVisible="{Binding IsUpstreamGone}">
+                    <TextBlock Text="{DynamicResource Text.BranchTree.InvalidUpstream}" FontSize="12" Classes="primary" Margin="{console:OnPlatform Default='4,1', Console='1,1'}" Foreground="White" VerticalAlignment="Center"/>
                   </Border>
                 </StackPanel>
               </StackPanel>
@@ -69,24 +77,31 @@
             <DataTemplate DataType="m:Remote">
               <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Horizontal">
-                  <Path Width="12" Height="12" Data="{StaticResource Icons.Remote}"/>
-                  <TextBlock FontWeight="Bold" VerticalAlignment="Center" Text="{Binding Name}" Margin="8,0,0,0"/>
+                  <console:OnPlatform>
+                    <console:OnPlatform.Default>
+                      <Path Width="12" Height="12" Data="{StaticResource Icons.Remote}"/>
+                    </console:OnPlatform.Default>
+                    <console:OnPlatform.Console>
+                      <TextBlock Text="{StaticResource TextIcons.Remote}"/>
+                    </console:OnPlatform.Console>
+                  </console:OnPlatform>
+                  <TextBlock FontWeight="Bold" VerticalAlignment="Center" Text="{Binding Name}" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}"/>
                 </StackPanel>
 
-                <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                <StackPanel Orientation="Horizontal" Margin="{console:OnPlatform Default='0,8,0,0', Console='0,1,0,0'}">
                   <TextBlock Classes="info_label"
                              HorizontalAlignment="Left" VerticalAlignment="Center"
                              Text="{DynamicResource Text.BranchTree.URL}"/>
 
-                  <TextBlock Margin="6,0,0,0" Foreground="{DynamicResource Brush.Link}" Text="{Binding URL, Mode=OneWay}"/>
+                  <TextBlock Margin="{console:OnPlatform Default='6,0,0,0', Console='1,0,0,0'}" Foreground="{DynamicResource Brush.Link}" Text="{Binding URL, Mode=OneWay}"/>
                 </StackPanel>
               </StackPanel>
             </DataTemplate>
           </Border.DataTemplates>
-          
+
           <Grid Height="24"
                 Margin="{Binding Depth, Converter={x:Static c:IntConverters.ToTreeMargin}}"
-                ColumnDefinitions="16,*">
+                ColumnDefinitions="{console:OnPlatform Default='16,*', Console='1,*'}">
 
             <!-- Tree Expander -->
             <v:BranchTreeNodeToggleButton Grid.Column="0"
@@ -99,7 +114,7 @@
             <!-- Content Area (allows double-clicking) -->
             <Grid Grid.Column="1"
                   Background="Transparent"
-                  ColumnDefinitions="18,*,Auto,Auto"
+                  ColumnDefinitions="{console:OnPlatform Default='18,*,Auto,Auto', Console='1,*,Auto,Auto'}"
                   DoubleTapped="OnDoubleTappedBranchNode">
 
               <!-- Icon -->
@@ -117,10 +132,17 @@
               <!-- Upstream invalid tip -->
               <Border Grid.Column="2"
                       Width="12" Height="12"
-                      Margin="8,0"
+                      Margin="{console:OnPlatform Default='8,0', Console='1,0'}"
                       Background="Transparent"
                       IsVisible="{Binding ShowUpstreamGoneTip}">
-                <Path Data="{StaticResource Icons.Error}" Fill="DarkOrange"/>
+                <console:OnPlatform>
+                  <console:OnPlatform.Default>
+                    <Path Data="{StaticResource Icons.Error}" Fill="DarkOrange"/>
+                  </console:OnPlatform.Default>
+                  <console:OnPlatform.Console>
+                    <TextBlock>⚠</TextBlock>
+                  </console:OnPlatform.Console>
+                </console:OnPlatform>
               </Border>
 
               <!-- Tracking status -->
@@ -133,7 +155,7 @@
 
               <!-- Filter Mode Switcher -->
               <v:FilterModeSwitchButton Grid.Column="3"
-                                        Margin="0,0,12,0"
+                                        Margin="{console:OnPlatform Default='0,0,12,0', Console='0,0,1,0'}"
                                         Mode="{Binding FilterMode}"/>
             </Grid>
           </Grid>

@@ -6,96 +6,125 @@
              xmlns:vm="using:SourceGit.ViewModels"
              xmlns:v="using:SourceGit.Views"
              xmlns:c="using:SourceGit.Converters"
+             xmlns:console="https://github.com/jinek/consolonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.RevisionCompare"
              x:DataType="vm:RevisionCompare">
   <UserControl.DataTemplates>
     <DataTemplate DataType="m:Null">
-      <Border HorizontalAlignment="Center" VerticalAlignment="Center" Background="{DynamicResource Brush.Accent}" CornerRadius="4">
-        <TextBlock Text="{DynamicResource Text.Worktree}" Classes="primary" Margin="4,2" Foreground="#FFDDDDDD"/>
+      <Border HorizontalAlignment="Center" VerticalAlignment="Center" Background="{DynamicResource Brush.Accent}" CornerRadius="{console:OnPlatform Default='4', Console='0'}">
+        <TextBlock Text="{DynamicResource Text.Worktree}" Classes="primary" Margin="{console:OnPlatform Default='4,2', Console='1,1'}" Foreground="#FFDDDDDD"/>
       </Border>
     </DataTemplate>
 
     <DataTemplate DataType="m:Commit">
-      <Grid RowDefinitions="Auto,*">
-        <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto,Auto">
+      <Grid RowDefinitions="{console:OnPlatform Default='Auto,*', Console='Auto,*'}">
+        <Grid Grid.Row="0" ColumnDefinitions="{console:OnPlatform Default='Auto,*,Auto,Auto,Auto', Console='Auto,*,Auto,Auto,Auto'}">
           <v:Avatar Width="16" Height="16" VerticalAlignment="Center" IsHitTestVisible="False" User="{Binding Author}"/>
-          <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
-          <Border Grid.Column="2" Background="{DynamicResource Brush.Accent}" CornerRadius="4" IsVisible="{Binding IsCurrentHead}">
-            <TextBlock Text="HEAD" Classes="primary" Margin="4,0" Foreground="#FFDDDDDD"/>
+          <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Author.Name}" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}"/>
+          <Border Grid.Column="2" Background="{DynamicResource Brush.Accent}" CornerRadius="{console:OnPlatform Default='4', Console='0'}" IsVisible="{Binding IsCurrentHead}">
+            <TextBlock Text="HEAD" Classes="primary" Margin="{console:OnPlatform Default='4,0', Console='1,0'}" Foreground="#FFDDDDDD"/>
           </Border>
-          <TextBlock Grid.Column="3" Classes="primary" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0" TextDecorations="Underline" Cursor="Hand" PointerPressed="OnPressedSHA" />
-          <TextBlock Grid.Column="4" Classes="primary" Text="{Binding CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+          <TextBlock Grid.Column="3" Classes="primary" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}" TextDecorations="Underline" Cursor="Hand" PointerPressed="OnPressedSHA" />
+          <TextBlock Grid.Column="4" Classes="primary" Text="{Binding CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}"/>
         </Grid>
 
-        <TextBlock Grid.Row="1" Classes="primary" Text="{Binding Subject}" Margin="0,6,0,0"/>
+        <TextBlock Grid.Row="1" Classes="primary" Text="{Binding Subject}" Margin="{console:OnPlatform Default='0,6,0,0', Console='0,1,0,0'}"/>
       </Grid>
     </DataTemplate>
   </UserControl.DataTemplates>
 
-  <Grid RowDefinitions="Auto,*" Margin="4">
+  <Grid RowDefinitions="{console:OnPlatform Default='Auto,*', Console='Auto,*'}" Margin="{console:OnPlatform Default='4', Console='1'}">
     <!-- Compare Revision Info -->
-    <Grid Grid.Row="0" Margin="0,0,0,6" ColumnDefinitions="*,32,*,Auto">
+    <Grid Grid.Row="0" Margin="{console:OnPlatform Default='0,0,0,6', Console='0,0,0,1'}" ColumnDefinitions="{console:OnPlatform Default='*,32,*,Auto', Console='*,3,*,Auto'}">
       <!-- Base Revision -->
-      <Border Grid.Column="0" BorderBrush="{DynamicResource Brush.Diff.DeletedHighlight}" BorderThickness="1" Background="{DynamicResource Brush.Contents}" CornerRadius="4" Padding="4">
+      <Border Grid.Column="0" BorderBrush="{DynamicResource Brush.Diff.DeletedHighlight}" BorderThickness="1" Background="{DynamicResource Brush.Contents}" CornerRadius="{console:OnPlatform Default='4', Console='0'}" Padding="{console:OnPlatform Default='4', Console='1'}">
         <ContentControl Content="{Binding StartPoint}"/>
       </Border>
 
       <!-- Swap Buttons -->
       <Button Grid.Column="1" Classes="icon_button" Command="{Binding Swap}" HorizontalAlignment="Center" ToolTip.Tip="{DynamicResource Text.Diff.SwapCommits}">
-        <Path Width="16" Height="16" Data="{DynamicResource Icons.Compare}"/>
+        <console:OnPlatform>
+                    <console:OnPlatform.Default>
+                      <Path Width="16" Height="16" Data="{DynamicResource Icons.Compare}"/>
+                    </console:OnPlatform.Default>
+                    <console:OnPlatform.Console>
+                      <TextBlock Text="{StaticResource TextIcons.Compare}"/>
+        </console:OnPlatform.Console>
+        </console:OnPlatform>
       </Button>
 
       <!-- Right Revision -->
-      <Border Grid.Column="2" BorderBrush="{DynamicResource Brush.Diff.AddedHighlight}" BorderThickness="1" Background="{DynamicResource Brush.Contents}" CornerRadius="4" Padding="4">
+      <Border Grid.Column="2" BorderBrush="{DynamicResource Brush.Diff.AddedHighlight}" BorderThickness="1" Background="{DynamicResource Brush.Contents}" CornerRadius="{console:OnPlatform Default='4', Console='0'}" Padding="{console:OnPlatform Default='4', Console='1'}">
         <ContentControl Content="{Binding EndPoint}"/>
       </Border>
 
       <!-- Save As Patch Button -->
-      <Button Grid.Column="3" Classes="icon_button" Width="32" Click="OnSaveAsPatch" IsVisible="{Binding CanSaveAsPatch}" ToolTip.Tip="{DynamicResource Text.Diff.SaveAsPatch}">
-        <Path Width="16" Height="16" Data="{DynamicResource Icons.Diff}"/>
+      <Button Grid.Column="3" Classes="icon_button" Width="{console:OnPlatform Default='32', Console='3'}" Click="OnSaveAsPatch" IsVisible="{Binding CanSaveAsPatch}" ToolTip.Tip="{DynamicResource Text.Diff.SaveAsPatch}">
+        <console:OnPlatform>
+                    <console:OnPlatform.Default>
+                      <Path Width="16" Height="16" Data="{DynamicResource Icons.Diff}"/>
+                    </console:OnPlatform.Default>
+                    <console:OnPlatform.Console>
+                      <TextBlock Text="{StaticResource TextIcons.Diff}"/>
+        </console:OnPlatform.Console>
+        </console:OnPlatform>
       </Button>
     </Grid>
 
     <!-- Changes View -->
     <Grid Grid.Row="1">
       <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="256" MinWidth="200" MaxWidth="480"/>
-        <ColumnDefinition Width="4"/>
+        <ColumnDefinition Width="{console:OnPlatform Default='256', Console='25'}" MinWidth="{console:OnPlatform Default='200', Console='20'}" MaxWidth="{console:OnPlatform Default='480', Console='48'}"/>
+        <ColumnDefinition Width="{console:OnPlatform Default='4', Console='1'}"/>
         <ColumnDefinition Width="*"/>
       </Grid.ColumnDefinitions>
 
-      <Grid Grid.Column="0" RowDefinitions="26,*">
+      <Grid Grid.Column="0" RowDefinitions="{console:OnPlatform Default='26,*', Console='2,*'}">
         <!-- Search & Display Mode -->
-        <Grid Grid.Row="0" ColumnDefinitions="*,18">
+        <Grid Grid.Row="0" ColumnDefinitions="{console:OnPlatform Default='*,18', Console='*,1'}">
           <TextBox Grid.Column="0"
-                   Height="26"
+                   Height="{console:OnPlatform Default='26', Console='2'}"
                    BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}"
                    Background="Transparent"
-                   CornerRadius="4"
+                   CornerRadius="{console:OnPlatform Default='4', Console='0'}"
                    Watermark="{DynamicResource Text.CommitDetail.Changes.Search}"
                    Text="{Binding SearchFilter, Mode=TwoWay}">
             <TextBox.InnerLeftContent>
-              <Path Width="14" Height="14" Margin="4,0,0,0" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Search}"/>
+              <console:OnPlatform>
+                                <console:OnPlatform.Default>
+                                  <Path Width="14" Height="14" Margin="{console:OnPlatform Default='4,0,0,0', Console='1,0,0,0'}" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Search}"/>
+                                </console:OnPlatform.Default>
+                                <console:OnPlatform.Console>
+                                  <TextBlock Text="{StaticResource TextIcons.Search}"/>
+              </console:OnPlatform.Console>
+              </console:OnPlatform>
             </TextBox.InnerLeftContent>
 
             <TextBox.InnerRightContent>
               <Button Classes="icon_button"
                       IsVisible="{Binding SearchFilter, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
                       Command="{Binding ClearSearchFilter}">
-                <Path Width="14" Height="14" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Clear}"/>
+                <console:OnPlatform>
+                                    <console:OnPlatform.Default>
+                                      <Path Width="14" Height="14" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Clear}"/>
+                                    </console:OnPlatform.Default>
+                                    <console:OnPlatform.Console>
+                                      <TextBlock Text="{StaticResource TextIcons.Clear}"/>
+                </console:OnPlatform.Console>
+                </console:OnPlatform>
               </Button>
             </TextBox.InnerRightContent>
           </TextBox>
 
           <v:ChangeViewModeSwitcher Grid.Column="1"
-                                    Width="14" Height="14"
+                                    Width="{console:OnPlatform Default='14', Console='1'}" Height="{console:OnPlatform Default='14', Console='1'}"
                                     HorizontalAlignment="Right"
                                     ViewMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=CommitChangeViewMode, Mode=TwoWay}"/>
         </Grid>
 
         <!-- Changes -->
-        <Border Grid.Row="1" Margin="0,4,0,0" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}">
+        <Border Grid.Row="1" Margin="{console:OnPlatform Default='0,4,0,0', Console='0,1,0,0'}" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}">
           <v:ChangeCollectionView ViewMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=CommitChangeViewMode}"
                                   EnableCompactFolders="{Binding Source={x:Static vm:Preferences.Instance}, Path=EnableCompactFoldersInChangesTree}"
                                   Changes="{Binding VisibleChanges}"
@@ -106,7 +135,7 @@
 
         <!-- Loading Status Icon -->
         <v:LoadingIcon Grid.Row="1"
-                       Width="48" Height="48"
+                       Width="{console:OnPlatform Default='48', Console='4'}" Height="{console:OnPlatform Default='48', Console='4'}"
                        HorizontalAlignment="Center" VerticalAlignment="Center"
                        IsVisible="{Binding IsLoading}"/>
       </Grid>
@@ -119,8 +148,15 @@
       <Grid Grid.Column="2">
         <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
           <StackPanel Orientation="Vertical" VerticalAlignment="Center">
-            <Path Width="64" Height="64" Data="{StaticResource Icons.Diff}" Fill="{DynamicResource Brush.FG2}"/>
-            <TextBlock Margin="0,16,0,0"
+            <console:OnPlatform>
+                            <console:OnPlatform.Default>
+                              <Path Width="64" Height="64" Data="{StaticResource Icons.Diff}" Fill="{DynamicResource Brush.FG2}"/>
+                            </console:OnPlatform.Default>
+                            <console:OnPlatform.Console>
+                              <TextBlock Text="{StaticResource TextIcons.Diff}"/>
+            </console:OnPlatform.Console>
+            </console:OnPlatform>
+            <TextBlock Margin="{console:OnPlatform Default='0,16,0,0', Console='0,1,0,0'}"
                        Text="{DynamicResource Text.Diff.Welcome}"
                        FontSize="18" FontWeight="Bold"
                        Foreground="{DynamicResource Brush.FG2}"
@@ -139,3 +175,5 @@
     </Grid>
   </Grid>
 </UserControl>
+
+

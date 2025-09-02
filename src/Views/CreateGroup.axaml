@@ -4,15 +4,16 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:SourceGit.ViewModels"
              xmlns:v="using:SourceGit.Views"
+             xmlns:console="https://github.com/jinek/consolonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.CreateGroup"
              x:DataType="vm:CreateGroup">
-  <StackPanel Orientation="Vertical" Margin="8,0,0,0">
+  <StackPanel Orientation="Vertical" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}">
     <TextBlock Classes="bold" FontSize="18" Text="{DynamicResource Text.Welcome.AddRootFolder}"/>
 
-    <Grid Margin="8,16,0,0" Height="28" ColumnDefinitions="Auto,*">
-      <TextBlock Grid.Column="0" HorizontalAlignment="Right" Margin="8,0" Text="{DynamicResource Text.Name}"/>
-      <TextBox Grid.Column="1" CornerRadius="3" v:AutoFocusBehaviour.IsEnabled="True" Text="{Binding Name, Mode=TwoWay}"/>
+    <Grid Margin="{console:OnPlatform Default='8,16,0,0', Console='1,1,0,0'}" Height="28" ColumnDefinitions="Auto,*">
+      <TextBlock Grid.Column="0" HorizontalAlignment="Right" Margin="{console:OnPlatform Default='8,0', Console='1,0'}" Text="{DynamicResource Text.Name}"/>
+      <TextBox Grid.Column="1" CornerRadius="{console:OnPlatform Default='3', Console='0'}" v:AutoFocusBehaviour.IsEnabled="True" Text="{Binding Name, Mode=TwoWay}"/>
     </Grid>
   </StackPanel>
 </UserControl>

@@ -4,20 +4,24 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:m="using:SourceGit.Models"
              xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:console="https://github.com/jinek/consolonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.UpdateSubmodules"
              x:DataType="vm:UpdateSubmodules">
-  <StackPanel Orientation="Vertical" Margin="8,0">
+  <StackPanel Orientation="Vertical" Margin="{console:OnPlatform Default='8,0', Console='1,0'}">
     <TextBlock FontSize="18"
                Classes="bold"
                Text="{DynamicResource Text.UpdateSubmodules}"/>
-    <Grid Margin="0,16,0,0" RowDefinitions="32,Auto,Auto,32,32" ColumnDefinitions="120,*">
+    <Grid Margin="{console:OnPlatform Default='0,16,0,0', Console='0,1,0,0'}"
+          RowDefinitions="{console:OnPlatform Default='32,Auto,Auto,32,32', Console='3,Auto,Auto,3,3'}"
+          ColumnDefinitions="{console:OnPlatform Default='120,*', Console='12,*'}">
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
-                 Margin="0,0,8,0"
+                 Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"
                  Text="{DynamicResource Text.UpdateSubmodules.Target}"/>
       <ComboBox Grid.Row="0" Grid.Column="1"
-                Height="28" Padding="8,0"
+                Height="{console:OnPlatform Default='28', Console='2'}"
+                Padding="{console:OnPlatform Default='8,0', Console='1,0'}"
                 VerticalAlignment="Center" HorizontalAlignment="Stretch"
                 ItemsSource="{Binding Submodules}"
                 SelectedItem="{Binding SelectedSubmodule, Mode=TwoWay}">
@@ -30,8 +34,15 @@
 
         <ComboBox.ItemTemplate>
           <DataTemplate x:DataType="m:Submodule">
-            <StackPanel Orientation="Horizontal" Height="20" VerticalAlignment="Center">
-              <Path Margin="0,0,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Submodule}"/>
+            <StackPanel Orientation="Horizontal" Height="{console:OnPlatform Default='20', Console='2'}" VerticalAlignment="Center">
+              <console:OnPlatform>
+                <console:OnPlatform.Default>
+                  <Path Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Submodule}"/>
+                </console:OnPlatform.Default>
+                <console:OnPlatform.Console>
+                  <TextBlock Text="{StaticResource TextIcons.Submodule}"/>
+                </console:OnPlatform.Console>
+              </console:OnPlatform>
               <TextBlock Text="{Binding Path, Mode=OneWay}"/>
             </StackPanel>
           </DataTemplate>
@@ -39,13 +50,13 @@
       </ComboBox>
 
       <CheckBox Grid.Row="1" Grid.Column="1"
-                Height="32"
+                Height="{console:OnPlatform Default='32', Console='3'}"
                 Content="{DynamicResource Text.UpdateSubmodules.All}"
                 IsChecked="{Binding UpdateAll, Mode=TwoWay}"
                 IsVisible="{Binding !HasPreSelectedSubmodule, Mode=OneWay}"/>
 
       <CheckBox Grid.Row="2" Grid.Column="1"
-                Height="32"
+                Height="{console:OnPlatform Default='32', Console='3'}"
                 Content="{DynamicResource Text.UpdateSubmodules.Init}"
                 IsChecked="{Binding EnableInit, Mode=TwoWay}"
                 IsVisible="{Binding IsEnableInitVisible, Mode=OneWay}"
@@ -53,11 +64,13 @@
 
       <CheckBox Grid.Row="3" Grid.Column="1"
                 Content="{DynamicResource Text.UpdateSubmodules.Recursive}"
+                Height="{console:OnPlatform Default='32', Console='3'}"
                 IsChecked="{Binding EnableRecursive, Mode=TwoWay}"
                 ToolTip.Tip="--recursive"/>
 
       <CheckBox Grid.Row="4" Grid.Column="1"
                 Content="{DynamicResource Text.UpdateSubmodules.UpdateToRemoteTrackingBranch}"
+                Height="{console:OnPlatform Default='32', Console='3'}"
                 IsChecked="{Binding EnableRemote, Mode=TwoWay}"
                 ToolTip.Tip="--remote"/>
     </Grid>

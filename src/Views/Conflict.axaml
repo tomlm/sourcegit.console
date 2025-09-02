@@ -6,30 +6,45 @@
              xmlns:v="using:SourceGit.Views"
              xmlns:vm="using:SourceGit.ViewModels"
              xmlns:c="using:SourceGit.Converters"
+             xmlns:console="https://github.com/jinek/consolonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.Conflict"
              x:DataType="vm:Conflict">
   <Border Background="{DynamicResource Brush.Window}" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
     <Grid VerticalAlignment="Center">
       <StackPanel Orientation="Vertical" IsVisible="{Binding !IsResolved}">
-        <Path Width="64" Height="64" Data="{StaticResource Icons.Conflict}" Fill="{DynamicResource Brush.FG2}" HorizontalAlignment="Center"/>
-        <TextBlock Margin="0,16" FontSize="20" FontWeight="Bold" Text="{DynamicResource Text.WorkingCopy.Conflicts}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Center"/>
+        <console:OnPlatform>
+                    <console:OnPlatform.Default>
+                      <Path Width="64" Height="64" Data="{StaticResource Icons.Conflict}" Fill="{DynamicResource Brush.FG2}" HorizontalAlignment="Center"/>
+                    </console:OnPlatform.Default>
+                    <console:OnPlatform.Console>
+                      <TextBlock Text="⚠" HorizontalAlignment="Center"/>
+        </console:OnPlatform.Console>
+        </console:OnPlatform>
+        <TextBlock Margin="{console:OnPlatform Default='0,16', Console='0,1'}" FontSize="20" FontWeight="Bold" Text="{DynamicResource Text.WorkingCopy.Conflicts}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Center"/>
 
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,8">
-          <Border Height="16" VerticalAlignment="Center" Background="Red" CornerRadius="8">
-            <TextBlock Classes="primary" Text="{Binding Marker}" Foreground="White" FontWeight="Bold" Margin="8,0" FontSize="10"/>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="{console:OnPlatform Default='0,0,0,8', Console='0,0,0,1'}">
+          <Border Height="16" VerticalAlignment="Center" Background="Red" CornerRadius="{console:OnPlatform Default='8', Console='0'}">
+            <TextBlock Classes="primary" Text="{Binding Marker}" Foreground="White" FontWeight="Bold" Margin="{console:OnPlatform Default='8,0', Console='1,0'}" FontSize="10"/>
           </Border>
 
-          <TextBlock Margin="8,0,0,0" VerticalAlignment="Center" Text="{Binding Description}"/>
+          <TextBlock Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}" VerticalAlignment="Center" Text="{Binding Description}"/>
         </StackPanel>
 
-        <Border Margin="16,0" Padding="8" CornerRadius="4" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
+        <Border Margin="{console:OnPlatform Default='16,0', Console='1,0'}" Padding="{console:OnPlatform Default='8', Console='1'}" CornerRadius="{console:OnPlatform Default='4', Console='0'}" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
           <Border.DataTemplates>
             <DataTemplate DataType="vm:ConflictSourceBranch">
               <StackPanel Orientation="Horizontal">
-                <Path Width="12" Height="12" Data="{StaticResource Icons.Branch}"/>
-                <TextBlock Margin="4,0,0,0" Text="{Binding Name}"/>
-                <TextBlock Margin="4,0,0,0"
+                <console:OnPlatform>
+                                    <console:OnPlatform.Default>
+                                      <Path Width="12" Height="12" Data="{StaticResource Icons.Branch}"/>
+                                    </console:OnPlatform.Default>
+                                    <console:OnPlatform.Console>
+                                      <TextBlock Text="{StaticResource TextIcons.Branch}"/>
+                </console:OnPlatform.Console>
+                </console:OnPlatform>
+                <TextBlock Margin="{console:OnPlatform Default='4,0,0,0', Console='1,0,0,0'}" Text="{Binding Name}"/>
+                <TextBlock Margin="{console:OnPlatform Default='4,0,0,0', Console='1,0,0,0'}"
                            Text="{Binding Head, Converter={x:Static c:StringConverters.ToShortSHA}}"
                            Foreground="DarkOrange"
                            TextDecorations="Underline"
@@ -40,13 +55,12 @@
                   <TextBlock.DataTemplates>
                     <DataTemplate DataType="m:Commit">
                       <StackPanel MinWidth="400" Orientation="Vertical">
-                        <Grid ColumnDefinitions="Auto,*,Auto">
+                        <Grid ColumnDefinitions="{console:OnPlatform Default='Auto,*,Auto', Console='Auto,*,Auto'}">
                           <v:Avatar Grid.Column="0" Width="16" Height="16" VerticalAlignment="Center" IsHitTestVisible="False" User="{Binding Author}"/>
-                          <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
-                          <TextBlock Grid.Column="2" Classes="primary" Text="{Binding CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+                          <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Author.Name}" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}"/>
+                          <TextBlock Grid.Column="2" Classes="primary" Text="{Binding CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}"/>
                         </Grid>
-
-                        <TextBlock Classes="primary" Margin="0,8,0,0" Text="{Binding Subject}" TextWrapping="Wrap"/>
+                        <TextBlock Classes="primary" Margin="{console:OnPlatform Default='0,8,0,0', Console='0,1,0,0'}" Text="{Binding Subject}" TextWrapping="Wrap"/>
                       </StackPanel>
                     </DataTemplate>
                   </TextBlock.DataTemplates>
@@ -56,14 +70,21 @@
 
             <DataTemplate DataType="m:Commit">
               <StackPanel Orientation="Horizontal">
-                <Path Width="12" Height="12" Data="{StaticResource Icons.Commit}"/>
-                <v:CommitRefsPresenter Margin="8,0,0,0"
+                <console:OnPlatform>
+                                    <console:OnPlatform.Default>
+                                      <Path Width="12" Height="12" Data="{StaticResource Icons.Commit}"/>
+                                    </console:OnPlatform.Default>
+                                    <console:OnPlatform.Console>
+                                      <TextBlock Text="●"/>
+                </console:OnPlatform.Console>
+                </console:OnPlatform>
+                <v:CommitRefsPresenter Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}"
                                        Foreground="{DynamicResource Brush.FG1}"
                                        FontFamily="{DynamicResource Fonts.Primary}"
                                        FontSize="12"
                                        VerticalAlignment="Center"
                                        UseGraphColor="False"/>
-                <TextBlock Margin="4,0,0,0"
+                <TextBlock Margin="{console:OnPlatform Default='4,0,0,0', Console='1,0,0,0'}"
                            Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}"
                            Foreground="DarkOrange"
                            TextDecorations="Underline"
@@ -74,25 +95,31 @@
                   <TextBlock.DataTemplates>
                     <DataTemplate DataType="m:Commit">
                       <StackPanel MinWidth="400" Orientation="Vertical">
-                        <Grid ColumnDefinitions="Auto,*,Auto">
+                        <Grid ColumnDefinitions="{console:OnPlatform Default='Auto,*,Auto', Console='Auto,*,Auto'}">
                           <v:Avatar Grid.Column="0" Width="16" Height="16" VerticalAlignment="Center" IsHitTestVisible="False" User="{Binding Author}"/>
-                          <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
-                          <TextBlock Grid.Column="2" Classes="primary" Text="{Binding CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+                          <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Author.Name}" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}"/>
+                          <TextBlock Grid.Column="2" Classes="primary" Text="{Binding CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}"/>
                         </Grid>
-
-                        <TextBlock Classes="primary" Margin="0,8,0,0" Text="{Binding Subject}" TextWrapping="Wrap"/>
+                        <TextBlock Classes="primary" Margin="{console:OnPlatform Default='0,8,0,0', Console='0,1,0,0'}" Text="{Binding Subject}" TextWrapping="Wrap"/>
                       </StackPanel>
                     </DataTemplate>
                   </TextBlock.DataTemplates>
                 </TextBlock>
-                <TextBlock Margin="4,0,0,0" Text="{Binding Subject}"/>
+                <TextBlock Margin="{console:OnPlatform Default='4,0,0,0', Console='1,0,0,0'}" Text="{Binding Subject}"/>
               </StackPanel>
             </DataTemplate>
 
             <DataTemplate DataType="x:String">
               <StackPanel Orientation="Horizontal">
-                <Path Width="12" Height="12" Data="{StaticResource Icons.Changes}"/>
-                <TextBlock Margin="4,0,0,0" Text="{Binding}"/>
+                <console:OnPlatform>
+                                    <console:OnPlatform.Default>
+                                      <Path Width="12" Height="12" Data="{StaticResource Icons.Changes}"/>
+                                    </console:OnPlatform.Default>
+                                    <console:OnPlatform.Console>
+                                      <TextBlock Text="✚"/>
+                </console:OnPlatform.Console>
+                </console:OnPlatform>
+                <TextBlock Margin="{console:OnPlatform Default='4,0,0,0', Console='1,0,0,0'}" Text="{Binding}"/>
               </StackPanel>
             </DataTemplate>
           </Border.DataTemplates>
@@ -104,45 +131,75 @@
             </MultiBinding>
           </Border.IsVisible>
 
-          <Grid Margin="8,0,0,0" RowDefinitions="32,32" ColumnDefinitions="Auto,*">
+          <Grid Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}" RowDefinitions="{console:OnPlatform Default='32,32', Console='3,3'}" ColumnDefinitions="{console:OnPlatform Default='Auto,*', Console='Auto,*'}">
             <TextBlock Grid.Row="0" Grid.Column="0" Classes="info_label" Text="MINE"/>
-            <ContentControl Grid.Row="0" Grid.Column="1" Margin="16,0,0,0" Content="{Binding Mine}"/>
+            <ContentControl Grid.Row="0" Grid.Column="1" Margin="{console:OnPlatform Default='16,0,0,0', Console='1,0,0,0'}" Content="{Binding Mine}"/>
             <TextBlock Grid.Row="1" Grid.Column="0" Classes="info_label" Text="THEIRS"/>
-            <ContentControl Grid.Row="1" Grid.Column="1" Margin="16,0,0,0" Content="{Binding Theirs}"/>
+            <ContentControl Grid.Row="1" Grid.Column="1" Margin="{console:OnPlatform Default='16,0,0,0', Console='1,0,0,0'}" Content="{Binding Theirs}"/>
           </Grid>
         </Border>
 
-        <StackPanel Margin="0,8,0,0" Orientation="Horizontal" HorizontalAlignment="Center">
+        <StackPanel Margin="{console:OnPlatform Default='0,8,0,0', Console='0,1,0,0'}" Orientation="Horizontal" HorizontalAlignment="Center">
           <Button Classes="flat" Margin="0,0,0,0" Click="OnUseTheirs">
             <StackPanel Orientation="Horizontal">
-              <Path Width="12" Height="12" Data="{StaticResource Icons.Incoming}"/>
-              <TextBlock Margin="6,0,0,0" Text="{DynamicResource Text.WorkingCopy.Conflicts.UseTheirs}" VerticalAlignment="Center"/>
+              <console:OnPlatform>
+                                <console:OnPlatform.Default>
+                                  <Path Width="12" Height="12" Data="{StaticResource Icons.Incoming}"/>
+                                </console:OnPlatform.Default>
+                                <console:OnPlatform.Console>
+                                  <TextBlock Text="↓"/>
+              </console:OnPlatform.Console>
+              </console:OnPlatform>
+              <TextBlock Margin="{console:OnPlatform Default='6,0,0,0', Console='1,0,0,0'}" Text="{DynamicResource Text.WorkingCopy.Conflicts.UseTheirs}" VerticalAlignment="Center"/>
             </StackPanel>
           </Button>
-          <Button Classes="flat" Margin="8,0,0,0" Click="OnUseMine">
+          <Button Classes="flat" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}" Click="OnUseMine">
             <StackPanel Orientation="Horizontal">
-              <Path Width="12" Height="12" Data="{StaticResource Icons.Local}"/>
-              <TextBlock Margin="6,0,0,0" Text="{DynamicResource Text.WorkingCopy.Conflicts.UseMine}" VerticalAlignment="Center"/>
+              <console:OnPlatform>
+                                <console:OnPlatform.Default>
+                                  <Path Width="12" Height="12" Data="{StaticResource Icons.Local}"/>
+                                </console:OnPlatform.Default>
+                                <console:OnPlatform.Console>
+                                  <TextBlock Text="↑"/>
+              </console:OnPlatform.Console>
+              </console:OnPlatform>
+              <TextBlock Margin="{console:OnPlatform Default='6,0,0,0', Console='1,0,0,0'}" Text="{DynamicResource Text.WorkingCopy.Conflicts.UseMine}" VerticalAlignment="Center"/>
             </StackPanel>
           </Button>
           <Button Classes="flat"
-                  Margin="8,0,0,0"
+                  Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}"
                   Click="OnOpenExternalMergeTool"
                   IsVisible="{Binding CanUseExternalMergeTool}"
                   HotKey="{OnPlatform Ctrl+Shift+D, macOS=⌘+Shift+D}">
             <StackPanel Orientation="Horizontal">
-              <Path Width="12" Height="12" Data="{StaticResource Icons.OpenWith}"/>
-              <TextBlock Margin="6,0,0,0" Text="{DynamicResource Text.WorkingCopy.Conflicts.OpenExternalMergeTool}" VerticalAlignment="Center"/>
+              <console:OnPlatform>
+                                <console:OnPlatform.Default>
+                                  <Path Width="12" Height="12" Data="{StaticResource Icons.OpenWith}"/>
+                                </console:OnPlatform.Default>
+                                <console:OnPlatform.Console>
+                                  <TextBlock Text="⧉"/>
+              </console:OnPlatform.Console>
+              </console:OnPlatform>
+              <TextBlock Margin="{console:OnPlatform Default='6,0,0,0', Console='1,0,0,0'}" Text="{DynamicResource Text.WorkingCopy.Conflicts.OpenExternalMergeTool}" VerticalAlignment="Center"/>
             </StackPanel>
           </Button>
         </StackPanel>
       </StackPanel>
 
       <StackPanel Orientation="Vertical" IsVisible="{Binding IsResolved}">
-        <Path Width="64" Height="64" Data="{StaticResource Icons.Check}" Fill="Green"/>
-        <TextBlock Margin="0,16,0,8" FontSize="20" FontWeight="Bold" Text="{DynamicResource Text.WorkingCopy.Conflicts.Resolved}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Center"/>
+        <console:OnPlatform>
+                    <console:OnPlatform.Default>
+                      <Path Width="64" Height="64" Data="{StaticResource Icons.Check}" Fill="Green"/>
+                    </console:OnPlatform.Default>
+                    <console:OnPlatform.Console>
+                      <TextBlock Text="✔"/>
+        </console:OnPlatform.Console>
+        </console:OnPlatform>
+        <TextBlock Margin="{console:OnPlatform Default='0,16,0,8', Console='0,1,0,1'}" FontSize="20" FontWeight="Bold" Text="{DynamicResource Text.WorkingCopy.Conflicts.Resolved}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Center"/>
         <TextBlock Text="{DynamicResource Text.WorkingCopy.CanStageTip}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Center"/>
       </StackPanel>
     </Grid>
   </Border>
 </UserControl>
+
+

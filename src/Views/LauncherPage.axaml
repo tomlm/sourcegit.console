@@ -6,10 +6,11 @@
              xmlns:v="using:SourceGit.Views"
              xmlns:vm="using:SourceGit.ViewModels"
              xmlns:c="using:SourceGit.Converters"
+             xmlns:console="https://github.com/jinek/consolonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.LauncherPage"
              x:DataType="vm:LauncherPage">
-  <Grid RowDefinitions="36,*">
+  <Grid RowDefinitions="{console:OnPlatform Default='36,*', Console='4,*'}">
     <!-- ToolBar -->
     <Border Grid.Row="0" BorderBrush="{DynamicResource Brush.Border0}" BorderThickness="0,0,0,1" Background="{DynamicResource Brush.ToolBar}">
       <ContentControl Content="{Binding Data}">
@@ -56,9 +57,9 @@
       <Grid RowDefinitions="Auto,Auto,*" Width="512" HorizontalAlignment="Center">
         <!-- Popup -->
         <Border Grid.Row="0"
-                Margin="6,0"
+                Margin="{console:OnPlatform Default='6,0', Console='1,0'}"
                 Effect="drop-shadow(0 0 8 #8F000000)"
-                CornerRadius="0,0,8,8"
+                CornerRadius="{console:OnPlatform Default='0,0,8,8', Console='0'}"
                 ClipToBounds="True"
                 IsVisible="{Binding Popup, Converter={x:Static ObjectConverters.IsNotNull}}">
           <ContentControl Content="{Binding Popup}" Background="{DynamicResource Brush.Popup}">
@@ -66,31 +67,31 @@
               <DataTemplate DataType="vm:Popup">
                 <StackPanel Orientation="Vertical" Background="{DynamicResource Brush.Popup}">
                   <!-- Popup Widget -->
-                  <ContentPresenter Margin="8,16,8,8"
+                  <ContentPresenter Margin="{console:OnPlatform Default='8,16,8,8', Console='1,1,1,1'}"
                                     DataContextChanged="OnPopupDataContextChanged"
                                     IsHitTestVisible="{Binding InProgress, Converter={x:Static BoolConverters.Not}}"/>
 
                   <!-- Options -->
-                  <StackPanel Margin="8,4,8,8"
-                              Height="32"
+                  <StackPanel Margin="{console:OnPlatform Default='8,4,8,8', Console='1,1,1,1'}"
+                              Height="{console:OnPlatform Default='32', Console='3'}"
                               Orientation="Horizontal"
                               HorizontalAlignment="Right"
                               IsVisible="{Binding InProgress, Converter={x:Static BoolConverters.Not}}">
-                    <Button Width="0" Height="0"
+                    <Button Width="{console:OnPlatform Default='0', Console='0'}" Height="{console:OnPlatform Default='0', Console='0'}"
                             Click="OnPopupSureByHotKey"
                             HotKey="Enter"/>
                     <Button Classes="flat primary"
-                            Width="100" Height="28"
-                            Padding="0"
+                            Width="{console:OnPlatform Default='100', Console='10'}" Height="{console:OnPlatform Default='28', Console='2'}"
+                            Padding="{console:OnPlatform Default='0', Console='0'}"
                             HorizontalContentAlignment="Center"
                             VerticalContentAlignment="Center"
                             Content="{DynamicResource Text.Sure}"
                             Click="OnPopupSure"
                             ToolTip.Tip="Enter"/>
                     <Button Classes="flat"
-                            Width="100" Height="28"
-                            Margin="8,0,0,0"
-                            Padding="0"
+                            Width="{console:OnPlatform Default='100', Console='10'}" Height="{console:OnPlatform Default='28', Console='2'}"
+                            Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}"
+                            Padding="{console:OnPlatform Default='0', Console='0'}"
                             HorizontalContentAlignment="Center"
                             VerticalContentAlignment="Center"
                             Content="{DynamicResource Text.Cancel}"
@@ -99,7 +100,7 @@
                   </StackPanel>
 
                   <!-- Running -->
-                  <v:PopupRunningStatus Margin="12,8"
+                  <v:PopupRunningStatus Margin="{console:OnPlatform Default='12,8', Console='1,1'}"
                                         Description="{Binding ProgressDescription}"
                                         IsVisible="{Binding InProgress}"/>
                 </StackPanel>
@@ -111,16 +112,23 @@
         <!-- Notifications Clear Button -->
         <Button Grid.Row="1"
                 Classes="flat primary"
-                Margin="0,8,0,0"
-                Padding="16,0"
-                Height="24"
-                CornerRadius="12"
+                Margin="{console:OnPlatform Default='0,8,0,0', Console='0,1,0,0'}"
+                Padding="{console:OnPlatform Default='16,0', Console='1,0'}"
+                Height="{console:OnPlatform Default='24', Console='2'}"
+                CornerRadius="{console:OnPlatform Default='12', Console='0'}"
                 HorizontalAlignment="Center"
                 Command="{Binding ClearNotifications}"
                 IsVisible="{Binding Notifications.Count, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
           <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-            <Path Width="14" Height="14" Data="{StaticResource Icons.ClearNotifications}" Fill="White"/>
-            <TextBlock Margin="4,0,0,0" Text="{DynamicResource Text.Repository.Notifications.Clear}" Foreground="White"/>
+            <console:OnPlatform>
+                            <console:OnPlatform.Default>
+                              <Path Width="14" Height="14" Data="{StaticResource Icons.ClearNotifications}" Fill="White"/>
+                            </console:OnPlatform.Default>
+                            <console:OnPlatform.Console>
+                              <TextBlock Text="{StaticResource TextIcons.ClearNotifications}"/>
+            </console:OnPlatform.Console>
+            </console:OnPlatform>
+            <TextBlock Margin="{console:OnPlatform Default='4,0,0,0', Console='1,0,0,0'}" Text="{DynamicResource Text.Repository.Notifications.Clear}" Foreground="White"/>
           </StackPanel>
         </Button>
 
@@ -129,25 +137,53 @@
           <ItemsControl ItemsSource="{Binding Notifications}">
             <ItemsControl.ItemTemplate>
               <DataTemplate DataType="m:Notification">
-                <Border Margin="6" HorizontalAlignment="Stretch" VerticalAlignment="Top" Effect="drop-shadow(0 0 8 #8F000000)">
-                  <Border Padding="8" CornerRadius="6" Background="{DynamicResource Brush.Popup}">
-                    <Grid RowDefinitions="26,Auto">
-                      <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto" Margin="8,0">
-                        <Path Grid.Column="0" Width="14" Height="14" Data="{StaticResource Icons.Error}" Fill="Red" IsVisible="{Binding IsError}"/>
-                        <Path Grid.Column="0" Width="14" Height="14" Data="{StaticResource Icons.Info}" Fill="Green" IsVisible="{Binding !IsError}"/>
-                        <TextBlock Grid.Column="1" Margin="8,0,0,0" FontWeight="Bold" FontSize="14" Text="{DynamicResource Text.Launcher.Error}" IsVisible="{Binding IsError}"/>
-                        <TextBlock Grid.Column="1" Margin="8,0,0,0" FontWeight="Bold" FontSize="14" Text="{DynamicResource Text.Launcher.Info}" IsVisible="{Binding !IsError}"/>
-                        <Button Grid.Column="2" Classes="icon_button" Width="16" Height="16" Click="OnCopyNotification">
-                          <Path Width="12" Height="12" Data="{StaticResource Icons.Copy}"/>
+                <Border Margin="{console:OnPlatform Default='6', Console='1'}" HorizontalAlignment="Stretch" VerticalAlignment="Top" Effect="drop-shadow(0 0 8 #8F000000)">
+                  <Border Padding="{console:OnPlatform Default='8', Console='1'}" CornerRadius="{console:OnPlatform Default='6', Console='0'}" Background="{DynamicResource Brush.Popup}">
+                    <Grid RowDefinitions="{console:OnPlatform Default='26,Auto', Console='2,Auto'}">
+                      <Grid Grid.Row="0" ColumnDefinitions="{console:OnPlatform Default='Auto,*,Auto,Auto', Console='Auto,*,Auto,Auto'}" Margin="{console:OnPlatform Default='8,0', Console='1,0'}">
+                        <console:OnPlatform>
+                                                    <console:OnPlatform.Default>
+                                                      <Path Grid.Column="0" Width="14" Height="14" Data="{StaticResource Icons.Error}" Fill="Red" IsVisible="{Binding IsError}"/>
+                                                    </console:OnPlatform.Default>
+                                                    <console:OnPlatform.Console>
+                                                      <TextBlock IsVisible="{Binding IsError}" Text="{StaticResource TextIcons.Error}"/>
+                        </console:OnPlatform.Console>
+                        </console:OnPlatform>
+                        <console:OnPlatform>
+                                                    <console:OnPlatform.Default>
+                                                      <Path Grid.Column="0" Width="14" Height="14" Data="{StaticResource Icons.Info}" Fill="Green" IsVisible="{Binding !IsError}"/>
+                                                    </console:OnPlatform.Default>
+                                                    <console:OnPlatform.Console>
+                                                      <TextBlock IsVisible="{Binding !IsError}" Text="{StaticResource TextIcons.Info}"/>
+                        </console:OnPlatform.Console>
+                        </console:OnPlatform>
+                        <TextBlock Grid.Column="1" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}" FontWeight="Bold" FontSize="14" Text="{DynamicResource Text.Launcher.Error}" IsVisible="{Binding IsError}"/>
+                        <TextBlock Grid.Column="1" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}" FontWeight="Bold" FontSize="14" Text="{DynamicResource Text.Launcher.Info}" IsVisible="{Binding !IsError}"/>
+                        <Button Grid.Column="2" Classes="icon_button" Width="{console:OnPlatform Default='16', Console='1'}" Height="{console:OnPlatform Default='16', Console='1'}" Click="OnCopyNotification">
+                          <console:OnPlatform>
+                                                        <console:OnPlatform.Default>
+                                                          <Path Width="12" Height="12" Data="{StaticResource Icons.Copy}"/>
+                                                        </console:OnPlatform.Default>
+                                                        <console:OnPlatform.Console>
+                                                          <TextBlock Text="{StaticResource TextIcons.Copy}"/>
+                          </console:OnPlatform.Console>
+                          </console:OnPlatform>
                         </Button>
-                        <Button Grid.Column="3" Classes="icon_button" Width="16" Height="16" Margin="8,0,0,0" Click="OnDismissNotification">
-                          <Path Width="10" Height="10" Data="{StaticResource Icons.Close}"/>
+                        <Button Grid.Column="3" Classes="icon_button" Width="{console:OnPlatform Default='16', Console='1'}" Height="{console:OnPlatform Default='16', Console='1'}" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}" Click="OnDismissNotification">
+                          <console:OnPlatform>
+                                                        <console:OnPlatform.Default>
+                                                          <Path Width="10" Height="10" Data="{StaticResource Icons.Close}"/>
+                                                        </console:OnPlatform.Default>
+                                                        <console:OnPlatform.Console>
+                                                          <TextBlock Text="{StaticResource TextIcons.Close}"/>
+                          </console:OnPlatform.Console>
+                          </console:OnPlatform>
                         </Button>
                       </Grid>
 
                       <v:CommandLogContentPresenter Grid.Row="1"
-                                                    Margin="8"
-                                                    Padding="2"
+                                                    Margin="{console:OnPlatform Default='8', Console='1'}"
+                                                    Padding="{console:OnPlatform Default='2', Console='1'}"
                                                     MaxHeight="200"
                                                     PureText="{Binding Message}"/>
                     </Grid>
@@ -161,3 +197,5 @@
     </Grid>
   </Grid>
 </UserControl>
+
+

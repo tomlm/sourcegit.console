@@ -3,6 +3,7 @@
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:v="using:SourceGit.Views"
+                    xmlns:console="https://github.com/jinek/consolonia"
                     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
                     x:Class="SourceGit.Views.CommitMessageEditor"
                     x:Name="ThisControl"
@@ -19,12 +20,18 @@
               BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"
               PointerPressed="BeginMoveWindow"/>
 
-      <Path Width="14" Height="14"
-            Margin="10,0,0,0"
-            HorizontalAlignment="Left"
-            Data="{StaticResource Icons.Edit}"
-            IsVisible="{OnPlatform True, macOS=False}"/>
-
+      <console:OnPlatform>
+        <console:OnPlatform.Default>
+          <Path Width="14" Height="14"
+                Margin="{console:OnPlatform Default='10,0,0,0', Console='1,0,1,0'}"
+                HorizontalAlignment="Left"
+                Data="{StaticResource Icons.Edit}"
+                IsVisible="{OnPlatform True, macOS=False}"/>
+        </console:OnPlatform.Default>
+        <console:OnPlatform.Console>
+          <TextBlock Text="{StaticResource TextIcons.Edit}" HorizontalAlignment="Left" Margin="1,0,1,0"/>
+        </console:OnPlatform.Console>
+      </console:OnPlatform>
       <TextBlock Classes="bold"
                  Text="{DynamicResource Text.CodeEditor}"
                  HorizontalAlignment="Center" VerticalAlignment="Center"
@@ -35,11 +42,11 @@
                         IsVisible="{OnPlatform True, macOS=False}"/>
     </Grid>
 
-    <StackPanel Grid.Row="1" Orientation="Vertical" Margin="8">
-      <v:CommitMessageTextBox x:Name="Editor" Height="400"/>
+    <StackPanel Grid.Row="1" Orientation="Vertical" Margin="{console:OnPlatform Default='8', Console='1'}">
+      <v:CommitMessageTextBox x:Name="Editor" Height="{console:OnPlatform Default='400', Console='40'}"/>
       <Button Classes="flat primary"
-              Width="80"
-              Margin="0,8,0,4"
+              Width="{console:OnPlatform Default='80', Console='8'}"
+              Margin="{console:OnPlatform Default='0,8,0,4', Console='0,1,0,1'}"
               Content="{DynamicResource Text.Sure}"
               Click="SaveAndClose"
               HorizontalAlignment="Center"/>

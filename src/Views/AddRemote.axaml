@@ -4,53 +4,157 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:SourceGit.ViewModels"
              xmlns:v="using:SourceGit.Views"
+             xmlns:console="https://github.com/jinek/consolonia"
              mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="450"
              x:Class="SourceGit.Views.AddRemote"
              x:DataType="vm:AddRemote">
-  <StackPanel Orientation="Vertical" Margin="8,0">
+  <StackPanel Orientation="Vertical">
+    <StackPanel.Margin>
+      <console:OnPlatform>
+        <console:OnPlatform.Default>8,0</console:OnPlatform.Default>
+        <console:OnPlatform.Console>1,0</console:OnPlatform.Console>
+      </console:OnPlatform>
+    </StackPanel.Margin>
     <TextBlock FontSize="18"
                Classes="bold"
                Text="{DynamicResource Text.Remote.AddTitle}"/>
 
-    <Grid Margin="0,16,0,0" RowDefinitions="32,32,Auto" ColumnDefinitions="120,*">
+    <Grid>
+      <Grid.Margin>
+        <console:OnPlatform>
+          <console:OnPlatform.Default>0,16,0,0</console:OnPlatform.Default>
+          <console:OnPlatform.Console>0,1,0,0</console:OnPlatform.Console>
+        </console:OnPlatform>
+      </Grid.Margin>
+      <Grid.RowDefinitions>
+        <console:OnPlatform>
+          <console:OnPlatform.Default>32,32,Auto</console:OnPlatform.Default>
+          <console:OnPlatform.Console>3,3,Auto</console:OnPlatform.Console>
+        </console:OnPlatform>
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <console:OnPlatform>
+          <console:OnPlatform.Default>120,*</console:OnPlatform.Default>
+          <console:OnPlatform.Console>12,*</console:OnPlatform.Console>
+        </console:OnPlatform>
+      </Grid.ColumnDefinitions>
       <TextBlock Grid.Row="0" Grid.Column="0"
-                 HorizontalAlignment="Right" VerticalAlignment="Center"
-                 Margin="0,0,8,0"
-                 Text="{DynamicResource Text.Remote.Name}"/>
+                 HorizontalAlignment="Right" VerticalAlignment="Center">
+        <TextBlock.Margin>
+          <console:OnPlatform>
+            <console:OnPlatform.Default>0,0,8,0</console:OnPlatform.Default>
+            <console:OnPlatform.Console>0,0,1,0</console:OnPlatform.Console>
+          </console:OnPlatform>
+        </TextBlock.Margin>
+        <TextBlock.Text>
+          <DynamicResource ResourceKey="Text.Remote.Name"/>
+        </TextBlock.Text>
+      </TextBlock>
       <TextBox Grid.Row="0" Grid.Column="1"
-               Height="26"
                VerticalAlignment="Center"
-               CornerRadius="2"
                Watermark="{DynamicResource Text.Remote.Name.Placeholder}"
                Text="{Binding Name, Mode=TwoWay}"
-               v:AutoFocusBehaviour.IsEnabled="True"/>
+               v:AutoFocusBehaviour.IsEnabled="True">
+        <TextBox.Height>
+          <console:OnPlatform>
+            <console:OnPlatform.Default>26</console:OnPlatform.Default>
+            <console:OnPlatform.Console>2</console:OnPlatform.Console>
+          </console:OnPlatform>
+        </TextBox.Height>
+        <TextBox.CornerRadius>
+          <console:OnPlatform>
+            <console:OnPlatform.Default>2</console:OnPlatform.Default>
+            <console:OnPlatform.Console>0</console:OnPlatform.Console>
+          </console:OnPlatform>
+        </TextBox.CornerRadius>
+      </TextBox>
 
       <TextBlock Grid.Row="1" Grid.Column="0"
-                 HorizontalAlignment="Right" VerticalAlignment="Center"
-                 Margin="0,0,8,0"
-                 Text="{DynamicResource Text.Remote.URL}"/>
+                 HorizontalAlignment="Right" VerticalAlignment="Center">
+        <TextBlock.Margin>
+          <console:OnPlatform>
+            <console:OnPlatform.Default>0,0,8,0</console:OnPlatform.Default>
+            <console:OnPlatform.Console>0,0,1,0</console:OnPlatform.Console>
+          </console:OnPlatform>
+        </TextBlock.Margin>
+        <TextBlock.Text>
+          <DynamicResource ResourceKey="Text.Remote.URL"/>
+        </TextBlock.Text>
+      </TextBlock>
       <TextBox Grid.Row="1" Grid.Column="1"
-               Height="26"
                VerticalAlignment="Center"
-               CornerRadius="2"
                Watermark="{DynamicResource Text.Remote.URL.Placeholder}"
-               Text="{Binding Url, Mode=TwoWay}"/>
+               Text="{Binding Url, Mode=TwoWay}">
+        <TextBox.Height>
+          <console:OnPlatform>
+            <console:OnPlatform.Default>26</console:OnPlatform.Default>
+            <console:OnPlatform.Console>2</console:OnPlatform.Console>
+          </console:OnPlatform>
+        </TextBox.Height>
+        <TextBox.CornerRadius>
+          <console:OnPlatform>
+            <console:OnPlatform.Default>2</console:OnPlatform.Default>
+            <console:OnPlatform.Console>0</console:OnPlatform.Console>
+          </console:OnPlatform>
+        </TextBox.CornerRadius>
+      </TextBox>
 
       <TextBlock Grid.Row="2" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
-                 Margin="0,0,8,0"
                  Text="{DynamicResource Text.SSHKey}"
-                 IsVisible="{Binding UseSSH}"/>
-      <Border Grid.Row="2" Grid.Column="1" Height="32" IsVisible="{Binding UseSSH}">
+                 IsVisible="{Binding UseSSH}">
+        <TextBlock.Margin>
+          <console:OnPlatform>
+            <console:OnPlatform.Default>0,0,8,0</console:OnPlatform.Default>
+            <console:OnPlatform.Console>0,0,1,0</console:OnPlatform.Console>
+          </console:OnPlatform>
+        </TextBlock.Margin>
+      </TextBlock>
+      <Border Grid.Row="2" Grid.Column="1" IsVisible="{Binding UseSSH}">
+        <Border.Height>
+          <console:OnPlatform>
+            <console:OnPlatform.Default>32</console:OnPlatform.Default>
+            <console:OnPlatform.Console>3</console:OnPlatform.Console>
+          </console:OnPlatform>
+        </Border.Height>
         <TextBox x:Name="TxtSshKey"
-                 Height="28"
                  VerticalAlignment="Center"
-                 CornerRadius="3"
                  Watermark="{DynamicResource Text.SSHKey.Placeholder}"
                  Text="{Binding SSHKey, Mode=TwoWay}">
+          <TextBox.Height>
+            <console:OnPlatform>
+              <console:OnPlatform.Default>28</console:OnPlatform.Default>
+              <console:OnPlatform.Console>2</console:OnPlatform.Console>
+            </console:OnPlatform>
+          </TextBox.Height>
+          <TextBox.CornerRadius>
+            <console:OnPlatform>
+              <console:OnPlatform.Default>3</console:OnPlatform.Default>
+              <console:OnPlatform.Console>0</console:OnPlatform.Console>
+            </console:OnPlatform>
+          </TextBox.CornerRadius>
           <TextBox.InnerRightContent>
-            <Button Classes="icon_button" Width="30" Height="30" Click="SelectSSHKey">
-              <Path Data="{StaticResource Icons.Folder.Open}" Fill="{DynamicResource Brush.FG1}"/>
+            <Button Classes="icon_button" Click="SelectSSHKey">
+              <Button.Width>
+                <console:OnPlatform>
+                  <console:OnPlatform.Default>30</console:OnPlatform.Default>
+                  <console:OnPlatform.Console>3</console:OnPlatform.Console>
+                </console:OnPlatform>
+              </Button.Width>
+              <Button.Height>
+                <console:OnPlatform>
+                  <console:OnPlatform.Default>30</console:OnPlatform.Default>
+                  <console:OnPlatform.Console>3</console:OnPlatform.Console>
+                </console:OnPlatform>
+              </Button.Height>
+              <console:OnPlatform>
+                <console:OnPlatform.Default>
+                  <Path Data="{StaticResource Icons.Folder.Open}" Fill="{DynamicResource Brush.FG1}"/>
+                </console:OnPlatform.Default>
+                <console:OnPlatform.Console>
+                  <TextBlock Text="{StaticResource TextIcons.Folder.Open}"/>
+                </console:OnPlatform.Console>
+              </console:OnPlatform>
             </Button>
           </TextBox.InnerRightContent>
         </TextBox>

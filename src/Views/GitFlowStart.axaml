@@ -5,10 +5,11 @@
              xmlns:m="using:SourceGit.Models"
              xmlns:vm="using:SourceGit.ViewModels"
              xmlns:v="using:SourceGit.Views"
+             xmlns:console="https://github.com/jinek/consolonia"
              mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="450"
              x:Class="SourceGit.Views.GitFlowStart"
              x:DataType="vm:GitFlowStart">
-  <StackPanel Orientation="Vertical" Margin="8,0">
+  <StackPanel Orientation="Vertical" Margin="{console:OnPlatform Default='8,0', Console='1,0'}">
     <TextBlock FontSize="18"
                Classes="bold"
                Text="{DynamicResource Text.GitFlow.StartFeatureTitle}"
@@ -21,15 +22,15 @@
                Classes="bold"
                Text="{DynamicResource Text.GitFlow.StartHotfixTitle}"
                IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:GitFlowBranchType.Hotfix}}"/>
-    <Grid Margin="0,16,0,0" ColumnDefinitions="120,*">
+    <Grid Margin="{console:OnPlatform Default='0,16,0,0', Console='0,1,0,0'}" ColumnDefinitions="{console:OnPlatform Default='120,*', Console='12,*'}">
       <TextBlock Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
-                 Margin="0,0,8,0"
+                 Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"
                  Text="{Binding Prefix}"/>
       <TextBox Grid.Column="1"
-               Height="26"
+               Height="{console:OnPlatform Default='26', Console='3'}"
                VerticalAlignment="Center"
-               CornerRadius="2"
+               CornerRadius="{console:OnPlatform Default='2', Console='0'}"
                Watermark="{DynamicResource Text.GitFlow.StartPlaceholder}"
                Text="{Binding Name, Mode=TwoWay}"
                v:AutoFocusBehaviour.IsEnabled="True"/>

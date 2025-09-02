@@ -5,6 +5,7 @@
                     xmlns:m="using:SourceGit.Models"
                     xmlns:vm="using:SourceGit.ViewModels"
                     xmlns:v="using:SourceGit.Views"
+                    xmlns:console="https://github.com/jinek/consolonia"
                     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
                     x:Class="SourceGit.Views.ConventionalCommitMessageBuilder"
                     x:DataType="vm:ConventionalCommitMessageBuilder"
@@ -15,18 +16,25 @@
                     SizeToContent="Height"
                     CanResize="False"
                     WindowStartupLocation="CenterOwner">
-  <Grid RowDefinitions="Auto,Auto,Auto">
+  <Grid RowDefinitions="{console:OnPlatform Default='Auto,Auto,Auto', Console='Auto,Auto,Auto'}">
     <!-- TitleBar -->
     <Grid Grid.Row="0" Height="28" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
       <Border Background="{DynamicResource Brush.TitleBar}"
               BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"
               PointerPressed="BeginMoveWindow"/>
 
-      <Path Width="14" Height="14"
-            Margin="10,0,0,0"
-            HorizontalAlignment="Left"
-            Data="{StaticResource Icons.CommitMessageGenerator}"
-            IsVisible="{OnPlatform True, macOS=False}"/>
+      <console:OnPlatform>
+                <console:OnPlatform.Default>
+                  <Path Width="14" Height="14"
+                        Margin="{console:OnPlatform Default='10,0,0,0', Console='1,0,0,0'}"
+                        HorizontalAlignment="Left"
+                        Data="{StaticResource Icons.CommitMessageGenerator}"
+                        IsVisible="{OnPlatform True, macOS=False}"/>
+                </console:OnPlatform.Default>
+                <console:OnPlatform.Console>
+                  <TextBlock Text="{StaticResource TextIcons.CommitMessageGenerator}"/>
+      </console:OnPlatform.Console>
+      </console:OnPlatform>
 
       <TextBlock Classes="bold"
                  Text="{DynamicResource Text.ConventionalCommit}"
@@ -39,13 +47,13 @@
     </Grid>
 
     <!-- Body -->
-    <Grid Grid.Row="1" Margin="16,8" RowDefinitions="32,32,32,100,100,32" ColumnDefinitions="Auto,*">
+    <Grid Grid.Row="1" Margin="{console:OnPlatform Default='16,8', Console='1,1'}" RowDefinitions="{console:OnPlatform Default='32,32,32,100,100,32', Console='3,3,3,10,10,3'}" ColumnDefinitions="{console:OnPlatform Default='Auto,*', Console='Auto,*'}">
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Top"
-                 Margin="0,6,8,0"
+                 Margin="{console:OnPlatform Default='0,6,8,0', Console='0,1,1,0'}"
                  Text="{DynamicResource Text.ConventionalCommit.Type}"/>
       <ComboBox Grid.Row="0" Grid.Column="1"
-                Height="28" Padding="8,0"
+                Height="{console:OnPlatform Default='28', Console='2'}" Padding="{console:OnPlatform Default='8,0', Console='1,0'}"
                 VerticalAlignment="Center" HorizontalAlignment="Stretch"
                 ItemsSource="{Binding Source={x:Static m:ConventionalCommitType.Supported}}"
                 SelectedItem="{Binding Type, Mode=TwoWay}"
@@ -53,8 +61,8 @@
         <ComboBox.SelectionBoxItemTemplate>
           <DataTemplate DataType="m:ConventionalCommitType">
             <StackPanel Orientation="Horizontal">
-              <TextBlock Text="{Binding Name}" Margin="0,0,8,0"/>
-              <Border Height="16" CornerRadius="8" Padding="8,0" VerticalAlignment="Center" Background="Green">
+              <TextBlock Text="{Binding Name}" Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"/>
+              <Border Height="{console:OnPlatform Default='16', Console='1'}" CornerRadius="{console:OnPlatform Default='8', Console='0'}" Padding="{console:OnPlatform Default='8,0', Console='1,0'}" VerticalAlignment="Center" Background="Green">
                 <TextBlock Text="{Binding Type}" VerticalAlignment="Center" FontSize="11" Foreground="White"/>
               </Border>
             </StackPanel>
@@ -63,7 +71,7 @@
 
         <ComboBox.ItemTemplate>
           <DataTemplate DataType="m:ConventionalCommitType">
-            <Grid Height="22">
+            <Grid Height="{console:OnPlatform Default='22', Console='2'}">
               <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" SharedSizeGroup="NameColumn"/>
                 <ColumnDefinition Width="Auto" SharedSizeGroup="TypeColumn"/>
@@ -71,7 +79,7 @@
               </Grid.ColumnDefinitions>
 
               <TextBlock Grid.Column="0" Text="{Binding Name}"/>
-              <Border Grid.Column="1" Height="16" CornerRadius="8" Padding="8,0" Margin="8,0,16,0" HorizontalAlignment="Left" VerticalAlignment="Center" Background="Green">
+              <Border Grid.Column="1" Height="{console:OnPlatform Default='16', Console='1'}" CornerRadius="{console:OnPlatform Default='8', Console='0'}" Padding="{console:OnPlatform Default='8,0', Console='1,0'}" Margin="{console:OnPlatform Default='8,0,16,0', Console='1,0,1,0'}" HorizontalAlignment="Left" VerticalAlignment="Center" Background="Green">
                 <TextBlock Text="{Binding Type}" VerticalAlignment="Center" FontSize="11" Foreground="White"/>
               </Border>
               <TextBlock Grid.Column="2" Text="{Binding Description}" Foreground="{DynamicResource Brush.FG2}"/>
@@ -82,31 +90,31 @@
 
       <TextBlock Grid.Row="1" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Top"
-                 Margin="0,6,8,0"
+                 Margin="{console:OnPlatform Default='0,6,8,0', Console='0,1,1,0'}"
                  Text="{DynamicResource Text.ConventionalCommit.Scope}"/>
       <TextBox Grid.Row="1" Grid.Column="1"
-               Height="26"
+               Height="{console:OnPlatform Default='26', Console='2'}"
                VerticalAlignment="Center"
-               CornerRadius="2"
+               CornerRadius="{console:OnPlatform Default='2', Console='0'}"
                Watermark="{DynamicResource Text.Optional}"
                Text="{Binding Scope, Mode=TwoWay}"/>
 
       <TextBlock Grid.Row="2" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Top"
-                 Margin="0,6,8,0"
+                 Margin="{console:OnPlatform Default='0,6,8,0', Console='0,1,1,0'}"
                  Text="{DynamicResource Text.ConventionalCommit.ShortDescription}"/>
       <TextBox Grid.Row="2" Grid.Column="1"
-               Height="26"
+               Height="{console:OnPlatform Default='26', Console='2'}"
                VerticalAlignment="Center"
-               CornerRadius="2"
+               CornerRadius="{console:OnPlatform Default='2', Console='0'}"
                Text="{Binding Description, Mode=TwoWay}"/>
 
       <TextBlock Grid.Row="3" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Top"
-                 Margin="0,6,8,0"
+                 Margin="{console:OnPlatform Default='0,6,8,0', Console='0,1,1,0'}"
                  Text="{DynamicResource Text.ConventionalCommit.Detail}"/>
       <TextBox Grid.Row="3" Grid.Column="1"
-               Height="96"
+               Height="{console:OnPlatform Default='96', Console='10'}"
                AcceptsReturn="True"
                AcceptsTab="True"
                TextWrapping="Wrap"
@@ -114,16 +122,16 @@
                ScrollViewer.VerticalScrollBarVisibility="Auto"
                VerticalAlignment="Center"
                VerticalContentAlignment="Top"
-               CornerRadius="2"
+               CornerRadius="{console:OnPlatform Default='2', Console='0'}"
                Watermark="{DynamicResource Text.Optional}"
                Text="{Binding Detail, Mode=TwoWay}"/>
 
       <TextBlock Grid.Row="4" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Top"
-                 Margin="0,6,8,0"
+                 Margin="{console:OnPlatform Default='0,6,8,0', Console='0,1,1,0'}"
                  Text="{DynamicResource Text.ConventionalCommit.BreakingChanges}"/>
       <TextBox Grid.Row="4" Grid.Column="1"
-               Height="96"
+               Height="{console:OnPlatform Default='96', Console='10'}"
                AcceptsReturn="True"
                AcceptsTab="True"
                TextWrapping="Wrap"
@@ -131,18 +139,18 @@
                ScrollViewer.VerticalScrollBarVisibility="Auto"
                VerticalAlignment="Center"
                VerticalContentAlignment="Top"
-               CornerRadius="2"
+               CornerRadius="{console:OnPlatform Default='2', Console='0'}"
                Watermark="{DynamicResource Text.Optional}"
                Text="{Binding BreakingChanges, Mode=TwoWay}"/>
 
       <TextBlock Grid.Row="5" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Top"
-                 Margin="0,6,8,0"
+                 Margin="{console:OnPlatform Default='0,6,8,0', Console='0,1,1,0'}"
                  Text="{DynamicResource Text.ConventionalCommit.ClosedIssue}"/>
       <TextBox Grid.Row="5" Grid.Column="1"
-               Height="26"
+               Height="{console:OnPlatform Default='26', Console='2'}"
                VerticalAlignment="Center"
-               CornerRadius="2"
+               CornerRadius="{console:OnPlatform Default='2', Console='0'}"
                Watermark="{DynamicResource Text.Optional}"
                Text="{Binding ClosedIssue, Mode=TwoWay}"/>
     </Grid>
@@ -150,8 +158,8 @@
     <!-- Apply Button -->
     <Button Grid.Row="2"
             Classes="flat primary"
-            Height="32" Width="80"
-            Margin="0,0,0,8"
+            Height="{console:OnPlatform Default='32', Console='3'}" Width="{console:OnPlatform Default='80', Console='8'}"
+            Margin="{console:OnPlatform Default='0,0,0,8', Console='0,0,0,1'}"
             HorizontalAlignment="Center"
             Content="{DynamicResource Text.Sure}"
             Click="OnApplyClicked"
@@ -161,3 +169,5 @@
             ToolTip.VerticalOffset="0"/>
   </Grid>
 </v:ChromelessWindow>
+
+

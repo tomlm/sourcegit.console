@@ -3,22 +3,30 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:console="https://github.com/jinek/consolonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.DeleteSubmodule"
              x:DataType="vm:DeleteSubmodule">
-  <StackPanel Orientation="Vertical" Margin="8,0">
+  <StackPanel Orientation="Vertical" Margin="{console:OnPlatform Default='8,0', Console='1,0'}">
     <TextBlock FontSize="18"
                Classes="bold"
                Text="{DynamicResource Text.DeleteSubmodule}"/>
-    <StackPanel Orientation="Horizontal" Margin="0,16,0,0" Height="28" HorizontalAlignment="Center">
+    <StackPanel Orientation="Horizontal" Margin="{console:OnPlatform Default='0,16,0,0', Console='0,1,0,0'}" Height="{console:OnPlatform Default='28', Console='2'}" HorizontalAlignment="Center">
       <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center"
-                 Margin="0,0,8,0"
+                 Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"
                  Text="{DynamicResource Text.DeleteSubmodule.Path}"/>
-      <Path Width="12" Height="12"
-            HorizontalAlignment="Left" VerticalAlignment="Center"
-            Data="{StaticResource Icons.Submodule}"/>
-
-      <TextBlock VerticalAlignment="Center" Text="{Binding Submodule}" Margin="8,0,0,0"/>
+      <console:OnPlatform>
+                <console:OnPlatform.Default>
+                  <Path Width="12" Height="12"
+                        HorizontalAlignment="Left" VerticalAlignment="Center"
+                        Data="{StaticResource Icons.Submodule}"/>
+                </console:OnPlatform.Default>
+                <console:OnPlatform.Console>
+                  <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Text="{StaticResource TextIcons.Branch}"/>
+      </console:OnPlatform.Console>
+      </console:OnPlatform>
+      <TextBlock VerticalAlignment="Center" Text="{Binding Submodule}" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}"/>
     </StackPanel>
   </StackPanel>
 </UserControl>
+

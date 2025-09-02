@@ -3,10 +3,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:console="https://github.com/jinek/consolonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.WelcomeToolbar"
              x:DataType="vm:Welcome">
-  <Grid ColumnDefinitions="Auto,*,Auto" Margin="4,0">
+  <Grid ColumnDefinitions="{console:OnPlatform Default='Auto,*,Auto', Console='Auto,*,Auto'}" Margin="{console:OnPlatform Default='4,0', Console='1,0'}">
     <StackPanel Grid.Column="0" Orientation="Horizontal">
       <Button Classes="icon_button" Width="32" Command="{Binding Clone}">
         <ToolTip.Tip>
@@ -16,26 +17,62 @@
             <Run Text="{OnPlatform Ctrl+N, macOS=⌘+N}" FontSize="11" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
           </TextBlock>
         </ToolTip.Tip>
-        <Path Width="16" Height="16" Data="{StaticResource Icons.Clone}" Margin="0,4,0,0"/>
+        <console:OnPlatform>
+                    <console:OnPlatform.Default>
+                      <Path Width="16" Height="16" Data="{StaticResource Icons.Clone}" Margin="{console:OnPlatform Default='0,4,0,0', Console='0,1,0,0'}"/>
+                    </console:OnPlatform.Default>
+                    <console:OnPlatform.Console>
+                      <TextBlock Text="{StaticResource TextIcons.Clone}"/>
+        </console:OnPlatform.Console>
+        </console:OnPlatform>
       </Button>
 
       <Button Classes="icon_button" Width="32" Click="OpenLocalRepository" ToolTip.Tip="{DynamicResource Text.Welcome.OpenOrInit}">
-        <Path Width="14" Height="14" Data="{StaticResource Icons.Folder.Open}" Margin="0,2,0,0"/>
+        <console:OnPlatform>
+                    <console:OnPlatform.Default>
+                      <Path Width="14" Height="14" Data="{StaticResource Icons.Folder.Open}" Margin="{console:OnPlatform Default='0,2,0,0', Console='0,1,0,0'}"/>
+                    </console:OnPlatform.Default>
+                    <console:OnPlatform.Console>
+                      <TextBlock Text="{StaticResource TextIcons.FolderOpen}"/>
+        </console:OnPlatform.Console>
+        </console:OnPlatform>
       </Button>
 
       <Button Classes="icon_button" Width="32" Command="{Binding OpenTerminal}" ToolTip.Tip="{DynamicResource Text.Welcome.OpenTerminal}">
-        <Path Width="13" Height="13" Data="{StaticResource Icons.Terminal}"/>
+        <console:OnPlatform>
+                    <console:OnPlatform.Default>
+                      <Path Width="13" Height="13" Data="{StaticResource Icons.Terminal}"/>
+                    </console:OnPlatform.Default>
+                    <console:OnPlatform.Console>
+                      <TextBlock Text="{StaticResource TextIcons.Terminal}"/>
+        </console:OnPlatform.Console>
+        </console:OnPlatform>
       </Button>
     </StackPanel>
 
     <StackPanel Grid.Column="2" Orientation="Horizontal">
       <Button Classes="icon_button" Width="32" Command="{Binding AddRootNode}" ToolTip.Tip="{DynamicResource Text.Welcome.AddRootFolder}">
-        <Path Width="14" Height="14" Margin="0,2,0,0" Data="{StaticResource Icons.Folder.Add}"/>
+        <console:OnPlatform>
+                    <console:OnPlatform.Default>
+                      <Path Width="14" Height="14" Margin="{console:OnPlatform Default='0,2,0,0', Console='0,1,0,0'}" Data="{StaticResource Icons.Folder.Add}"/>
+                    </console:OnPlatform.Default>
+                    <console:OnPlatform.Console>
+                      <TextBlock Text="{StaticResource TextIcons.FolderAdd}"/>
+        </console:OnPlatform.Console>
+        </console:OnPlatform>
       </Button>
 
       <Button Classes="icon_button" Width="32" Command="{Binding ScanDefaultCloneDir}" ToolTip.Tip="{DynamicResource Text.Welcome.ScanDefaultCloneDir}">
-        <Path Width="14" Height="14" Data="{StaticResource Icons.Scan}"/>
+        <console:OnPlatform>
+                    <console:OnPlatform.Default>
+                      <Path Width="14" Height="14" Data="{StaticResource Icons.Scan}"/>
+                    </console:OnPlatform.Default>
+                    <console:OnPlatform.Console>
+                      <TextBlock Text="{StaticResource TextIcons.Scan}"/>
+        </console:OnPlatform.Console>
+        </console:OnPlatform>
       </Button>
     </StackPanel>
   </Grid>
 </UserControl>
+

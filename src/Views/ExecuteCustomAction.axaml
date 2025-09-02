@@ -5,56 +5,92 @@
              xmlns:m="using:SourceGit.Models"
              xmlns:vm="using:SourceGit.ViewModels"
              xmlns:c="using:SourceGit.Converters"
+             xmlns:console="https://github.com/jinek/consolonia"
              mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="450"
              x:Class="SourceGit.Views.ExecuteCustomAction"
              x:DataType="vm:ExecuteCustomAction"
              Loaded="OnLoaded">
-  <StackPanel Orientation="Vertical" Margin="8,0">
+  <StackPanel Orientation="Vertical" Margin="{console:OnPlatform Default='8,0', Console='1,0'}">
     <TextBlock FontSize="18"
                Classes="bold"
                Text="{Binding CustomAction.Name}"/>
 
-    <Grid Margin="0,16,0,0" Height="32" ColumnDefinitions="150,*">
+    <Grid Margin="{console:OnPlatform Default='0,16,0,0', Console='0,1,0,0'}" Height="{console:OnPlatform Default='32', Console='3'}" ColumnDefinitions="{console:OnPlatform Default='150,*', Console='15,*'}">
       <TextBlock Grid.Column="0"
                  Text="{DynamicResource Text.ExecuteCustomAction.Target}"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
-                 Margin="0,0,8,0"/>
+                 Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"/>
 
       <ContentControl Grid.Column="1" Content="{Binding Target}">
         <ContentControl.DataTemplates>
           <DataTemplate DataType="m:Null">
             <StackPanel Orientation="Horizontal">
-              <Path Width="14" Height="14" Data="{StaticResource Icons.Repositories}"/>
-              <SelectableTextBlock VerticalAlignment="Center" Text="{DynamicResource Text.ExecuteCustomAction.Repository}" Margin="8,0,0,0" IsTabStop="False"/>
+              <console:OnPlatform>
+                                <console:OnPlatform.Default>
+                                  <Path Width="14" Height="14" Data="{StaticResource Icons.Repositories}"/>
+                                </console:OnPlatform.Default>
+                                <console:OnPlatform.Console>
+                                  <TextBlock Text="{StaticResource TextIcons.Repositories}"/>
+              </console:OnPlatform.Console>
+              </console:OnPlatform>
+              <SelectableTextBlock VerticalAlignment="Center" Text="{DynamicResource Text.ExecuteCustomAction.Repository}" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}" IsTabStop="False"/>
             </StackPanel>
           </DataTemplate>
 
           <DataTemplate DataType="m:Branch">
             <StackPanel Orientation="Horizontal">
-              <Path Width="14" Height="14" Data="{StaticResource Icons.Branch}"/>
-              <SelectableTextBlock VerticalAlignment="Center" Text="{Binding FriendlyName}" Margin="8,0,0,0" IsTabStop="False"/>
+              <console:OnPlatform>
+                                <console:OnPlatform.Default>
+                                  <Path Width="14" Height="14" Data="{StaticResource Icons.Branch}"/>
+                                </console:OnPlatform.Default>
+                                <console:OnPlatform.Console>
+                                  <TextBlock Text="{StaticResource TextIcons.Branch}"/>
+              </console:OnPlatform.Console>
+              </console:OnPlatform>
+              <SelectableTextBlock VerticalAlignment="Center" Text="{Binding FriendlyName}" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}" IsTabStop="False"/>
             </StackPanel>
           </DataTemplate>
 
           <DataTemplate DataType="m:Commit">
             <Grid ColumnDefinitions="Auto,Auto,*">
-              <Path Grid.Column="0" Width="14" Height="14" Data="{StaticResource Icons.Commit}"/>
-              <TextBlock Grid.Column="1" Classes="primary" VerticalAlignment="Center" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0"/>
-              <TextBlock Grid.Column="2" VerticalAlignment="Center" Text="{Binding Subject}" Margin="4,0,0,0" TextTrimming="CharacterEllipsis"/>
+              <console:OnPlatform>
+                                <console:OnPlatform.Default>
+                                  <Path Grid.Column="0" Width="14" Height="14" Data="{StaticResource Icons.Commit}"/>
+                                </console:OnPlatform.Default>
+                                <console:OnPlatform.Console>
+                                  <TextBlock Grid.Column="0" Text="{StaticResource TextIcons.Commit}"/>
+              </console:OnPlatform.Console>
+              </console:OnPlatform>
+              <TextBlock Grid.Column="1" Classes="primary" VerticalAlignment="Center" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}"/>
+              <TextBlock Grid.Column="2" VerticalAlignment="Center" Text="{Binding Subject}" Margin="{console:OnPlatform Default='4,0,0,0', Console='1,0,0,0'}" TextTrimming="CharacterEllipsis"/>
             </Grid>
           </DataTemplate>
 
           <DataTemplate DataType="m:Tag">
             <StackPanel Orientation="Horizontal">
-              <Path Width="14" Height="14" Data="{StaticResource Icons.Tag}"/>
-              <TextBlock VerticalAlignment="Center" Text="{Binding Name}" Margin="8,0,0,0"/>
+              <console:OnPlatform>
+                                <console:OnPlatform.Default>
+                                  <Path Width="14" Height="14" Data="{StaticResource Icons.Tag}"/>
+                                </console:OnPlatform.Default>
+                                <console:OnPlatform.Console>
+                                  <TextBlock Text="{StaticResource TextIcons.Tag}"/>
+              </console:OnPlatform.Console>
+              </console:OnPlatform>
+              <TextBlock VerticalAlignment="Center" Text="{Binding Name}" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}"/>
             </StackPanel>
           </DataTemplate>
 
           <DataTemplate x:DataType="m:Remote">
-            <StackPanel Orientation="Horizontal" Height="20" VerticalAlignment="Center">
-              <Path Width="14" Height="14" Data="{StaticResource Icons.Remote}"/>
-              <TextBlock VerticalAlignment="Center" Text="{Binding Name}" Margin="8,0,0,0"/>
+            <StackPanel Orientation="Horizontal" Height="{console:OnPlatform Default='20', Console='2'}" VerticalAlignment="Center">
+              <console:OnPlatform>
+                                <console:OnPlatform.Default>
+                                  <Path Width="14" Height="14" Data="{StaticResource Icons.Remote}"/>
+                                </console:OnPlatform.Default>
+                                <console:OnPlatform.Console>
+                                  <TextBlock Text="{StaticResource TextIcons.Remote}"/>
+              </console:OnPlatform.Console>
+              </console:OnPlatform>
+              <TextBlock VerticalAlignment="Center" Text="{Binding Name}" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}"/>
             </StackPanel>
           </DataTemplate>
         </ContentControl.DataTemplates>
@@ -71,23 +107,24 @@
 
       <ItemsControl.DataTemplates>
         <DataTemplate DataType="vm:CustomActionControlTextBox">
-          <Grid Height="32" ColumnDefinitions="150,*">
+          <Grid Height="{console:OnPlatform Default='32', Console='3'}" ColumnDefinitions="{console:OnPlatform Default='150,*', Console='15,*'}">
             <TextBlock Grid.Column="0"
                        Text="{Binding Label}"
                        HorizontalAlignment="Right" VerticalAlignment="Center"
-                       Margin="0,0,8,0"/>
+                       Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"/>
             <TextBox Grid.Column="1"
-                     Height="28"
+                     Height="{console:OnPlatform Default='28', Console='2'}"
                      VerticalAlignment="Center"
-                     CornerRadius="3"
+                     CornerRadius="{console:OnPlatform Default='3', Console='0'}"
                      Watermark="{Binding Placeholder, Mode=OneWay}"
                      Text="{Binding Text, Mode=TwoWay}"/>
           </Grid>
         </DataTemplate>
 
         <DataTemplate DataType="vm:CustomActionControlCheckBox">
-          <Grid Height="32" ColumnDefinitions="150,*">
+          <Grid Height="{console:OnPlatform Default='32', Console='3'}" ColumnDefinitions="{console:OnPlatform Default='150,*', Console='15,*'}">
             <CheckBox Grid.Column="1"
+                      Height="{console:OnPlatform Default='32', Console='3'}"
                       Content="{Binding Label}"
                       ToolTip.Tip="{Binding ToolTip, Mode=OneWay}"
                       IsChecked="{Binding IsChecked, Mode=TwoWay}"/>
@@ -95,19 +132,26 @@
         </DataTemplate>
 
         <DataTemplate DataType="vm:CustomActionControlPathSelector">
-          <Grid Height="32" ColumnDefinitions="150,*">
+          <Grid Height="{console:OnPlatform Default='32', Console='3'}" ColumnDefinitions="{console:OnPlatform Default='150,*', Console='15,*'}">
             <TextBlock Grid.Column="0"
                        Text="{Binding Label}"
                        HorizontalAlignment="Right" VerticalAlignment="Center"
-                       Margin="0,0,8,0"/>
+                       Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"/>
             <TextBox Grid.Column="1"
-                     Height="28"
-                     CornerRadius="3"
+                     Height="{console:OnPlatform Default='28', Console='2'}"
+                     CornerRadius="{console:OnPlatform Default='3', Console='0'}"
                      Watermark="{Binding Placeholder, Mode=OneWay}"
                      Text="{Binding Path, Mode=TwoWay}">
               <TextBox.InnerRightContent>
-                <Button Classes="icon_button" Width="30" Height="30" Click="SelectPath">
-                  <Path Data="{StaticResource Icons.Folder.Open}" Fill="{DynamicResource Brush.FG1}"/>
+                <Button Classes="icon_button" Width="{console:OnPlatform Default='30', Console='3'}" Height="{console:OnPlatform Default='30', Console='3'}" Click="SelectPath">
+                  <console:OnPlatform>
+                                        <console:OnPlatform.Default>
+                                          <Path Data="{StaticResource Icons.Folder.Open}" Fill="{DynamicResource Brush.FG1}"/>
+                                        </console:OnPlatform.Default>
+                                        <console:OnPlatform.Console>
+                                          <TextBlock Text="{StaticResource TextIcons.Folder.Open}"/>
+                  </console:OnPlatform.Console>
+                  </console:OnPlatform>
                 </Button>
               </TextBox.InnerRightContent>
             </TextBox>
@@ -115,20 +159,20 @@
         </DataTemplate>
 
         <DataTemplate DataType="vm:CustomActionControlComboBox">
-          <Grid RowDefinitions="32,Auto" ColumnDefinitions="150,*">
+          <Grid RowDefinitions="{console:OnPlatform Default='32,Auto', Console='3,Auto'}" ColumnDefinitions="{console:OnPlatform Default='150,*', Console='15,*'}">
             <TextBlock Grid.Row="0" Grid.Column="0"
                        Text="{Binding Label}"
                        HorizontalAlignment="Right" VerticalAlignment="Center"
-                       Margin="0,0,8,0"/>
+                       Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"/>
             <ComboBox Grid.Row="0" Grid.Column="1"
-                      Height="28" Padding="8,0"
+                      Height="{console:OnPlatform Default='28', Console='2'}" Padding="{console:OnPlatform Default='8,0', Console='1,0'}"
                       VerticalAlignment="Center" HorizontalAlignment="Stretch"
                       ItemsSource="{Binding Options}"
                       SelectedItem="{Binding Value, Mode=TwoWay}"/>
 
             <TextBlock Grid.Row="1" Grid.Column="1"
                        Classes="small"
-                       Margin="0,2"
+                       Margin="{console:OnPlatform Default='0,2', Console='0,1'}"
                        TextWrapping="Wrap"
                        Text="{Binding Description}"
                        Foreground="{DynamicResource Brush.FG2}"
@@ -139,3 +183,5 @@
     </ItemsControl>
   </StackPanel>
 </UserControl>
+
+

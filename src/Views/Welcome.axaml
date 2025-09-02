@@ -5,6 +5,7 @@
              xmlns:c="using:SourceGit.Converters"
              xmlns:vm="using:SourceGit.ViewModels"
              xmlns:v="using:SourceGit.Views"
+             xmlns:console="https://github.com/jinek/consolonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.Welcome"
              x:DataType="vm:Welcome">
@@ -16,13 +17,13 @@
     </Grid.ColumnDefinitions>
 
     <!-- Managed Repositories -->
-    <Grid Grid.Row="0" Grid.Column="1" Margin="8" RowDefinitions="Auto,*">
+    <Grid Grid.Row="0" Grid.Column="1" Margin="{console:OnPlatform Default='8', Console='1'}" RowDefinitions="Auto,*">
       <!-- Search Box -->
       <TextBox Grid.Row="0"
                x:Name="SearchBox"
-               Height="32"
-               Padding="0"
-               CornerRadius="16"
+               Height="{console:OnPlatform Default='32', Console='3'}"
+               Padding="{console:OnPlatform Default='0', Console='0'}"
+               CornerRadius="{console:OnPlatform Default='16', Console='0'}"
                BorderBrush="{DynamicResource Brush.Border0}"
                BorderThickness="1"
                Background="{DynamicResource Brush.Contents}"
@@ -40,12 +41,26 @@
         </TextBox.Styles>
 
         <TextBox.InnerLeftContent>
-          <Path Width="16" Height="16" Margin="6,0,3,0" Data="{StaticResource Icons.Search}" Fill="{DynamicResource Brush.FG2}"/>
+          <console:OnPlatform>
+            <console:OnPlatform.Default>
+              <Path Width="16" Height="16" Margin="{console:OnPlatform Default='6,0,3,0', Console='1,0,1,0'}" Data="{StaticResource Icons.Search}" Fill="{DynamicResource Brush.FG2}"/>
+            </console:OnPlatform.Default>
+            <console:OnPlatform.Console>
+              <TextBlock Text="{StaticResource TextIcons.Search}"/>
+            </console:OnPlatform.Console>
+          </console:OnPlatform>
         </TextBox.InnerLeftContent>
 
         <TextBox.InnerRightContent>
           <Button Classes="icon_button" IsVisible="{Binding SearchFilter, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Command="{Binding ClearSearchFilter}">
-            <Path Width="16" Height="16" Margin="0,0,0,0" Data="{StaticResource Icons.Clear}" Fill="{DynamicResource Brush.FG1}"/>
+            <console:OnPlatform>
+                            <console:OnPlatform.Default>
+                              <Path Width="16" Height="16" Margin="{console:OnPlatform Default='0,0,0,0', Console='0,0,0,0'}" Data="{StaticResource Icons.Clear}" Fill="{DynamicResource Brush.FG1}"/>
+                            </console:OnPlatform.Default>
+                            <console:OnPlatform.Console>
+                              <TextBlock Text="{StaticResource TextIcons.Clear}"/>
+            </console:OnPlatform.Console>
+            </console:OnPlatform>
           </Button>
         </TextBox.InnerRightContent>
       </TextBox>
@@ -53,7 +68,7 @@
       <!-- Repository Tree -->
       <v:RepositoryListBox Grid.Row="1"
                            x:Name="TreeContainer"
-                           Margin="0,8,8,0"
+                           Margin="{console:OnPlatform Default='0,8,8,0', Console='0,1,1,0'}"
                            Focusable="True"
                            Background="Transparent"
                            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
@@ -72,10 +87,10 @@
           </Style>
 
           <Style Selector="ListBoxItem" x:DataType="vm:RepositoryNode">
-            <Setter Property="Margin" Value="0"/>
-            <Setter Property="Padding" Value="0"/>
-            <Setter Property="Height" Value="30"/>
-            <Setter Property="CornerRadius" Value="4"/>
+            <Setter Property="Margin" Value="{console:OnPlatform Default='0', Console='0'}"/>
+            <Setter Property="Padding" Value="{console:OnPlatform Default='0', Console='0'}"/>
+            <Setter Property="Height" Value="{console:OnPlatform Default='30', Console='3'}"/>
+            <Setter Property="CornerRadius" Value="{console:OnPlatform Default='4', Console='0'}"/>
             <Setter Property="FocusAdorner">
               <FocusAdornerTemplate>
                 <Border Background="Transparent" BorderThickness="0"/>
@@ -94,7 +109,14 @@
           <ContextMenu>
             <MenuItem Header="{DynamicResource Text.Welcome.AddRootFolder}" Command="{Binding AddRootNode}">
               <MenuItem.Icon>
-                <Path Width="12" Height="12" Data="{DynamicResource Icons.Folder.Add}"/>
+                <console:OnPlatform>
+                                    <console:OnPlatform.Default>
+                                      <Path Width="12" Height="12" Data="{StaticResource Icons.Folder.Add}"/>
+                                    </console:OnPlatform.Default>
+                                    <console:OnPlatform.Console>
+                                      <TextBlock Text="{StaticResource TextIcons.FolderAdd}"/>
+                </console:OnPlatform.Console>
+                </console:OnPlatform>
               </MenuItem.Icon>
             </MenuItem>
           </ContextMenu>
@@ -103,9 +125,9 @@
         <ListBox.ItemTemplate>
           <DataTemplate DataType="vm:RepositoryNode">
             <Grid Background="Transparent"
-                  Height="30"
-                  ColumnDefinitions="16,18,Auto,*"
-                  Margin="{Binding Depth, Converter={x:Static c:IntConverters.ToTreeMargin}}"
+                  Height="{console:OnPlatform Default='30', Console='3'}"
+                  ColumnDefinitions="{console:OnPlatform Default='16,18,Auto,*', Console='1,2,Auto,*'}"
+                  Margin="{console:OnPlatform Default='{Binding Depth, Converter={x:Static c:IntConverters.ToTreeMargin}}', Console='0'}"
                   Loaded="SetupTreeNodeDragAndDrop"
                   ContextRequested="OnTreeNodeContextRequested"
                   PointerPressed="OnPointerPressedTreeNode"
@@ -120,12 +142,19 @@
                                                 IsChecked="{Binding IsExpanded, Mode=OneWay}"
                                                 IsVisible="{Binding !IsRepository}"/>
 
-              <Path Grid.Column="1"
-                    Width="14" Height="14"
-                    Fill="{Binding Bookmark, Converter={x:Static c:IntConverters.ToBookmarkBrush}}"
-                    HorizontalAlignment="Center"
-                    Data="{StaticResource Icons.Bookmark}"
-                    IsVisible="{Binding IsRepository}"/>
+              <console:OnPlatform>
+                                <console:OnPlatform.Default>
+                                  <Path Grid.Column="1"
+                                        Width="14" Height="14"
+                                        Fill="{Binding Bookmark, Converter={x:Static c:IntConverters.ToBookmarkBrush}}"
+                                        HorizontalAlignment="Center"
+                                        Data="{StaticResource Icons.Bookmark}"
+                                        IsVisible="{Binding IsRepository}"/>
+                                </console:OnPlatform.Default>
+                                <console:OnPlatform.Console>
+                                  <TextBlock Grid.Column="1" IsVisible="{Binding IsRepository}" Text="{StaticResource TextIcons.Bookmark}"/>
+              </console:OnPlatform.Console>
+              </console:OnPlatform>
 
               <ToggleButton Grid.Column="1"
                             Classes="folder"
@@ -138,14 +167,21 @@
 
               <StackPanel Grid.Column="2" Orientation="Horizontal">
                 <TextBlock Classes="primary" VerticalAlignment="Center" Text="{Binding Name}"/>
-                <Path Margin="2,0,0,0"
-                      Width="12" Height="12"
-                      Data="{StaticResource Icons.Error}"
-                      Fill="Orange"
-                      IsVisible="{Binding IsInvalid}"/>
+                <console:OnPlatform>
+                                    <console:OnPlatform.Default>
+                                      <Path Margin="{console:OnPlatform Default='2,0,0,0', Console='1,0,0,0'}"
+                                            Width="12" Height="12"
+                                            Data="{StaticResource Icons.Error}"
+                                            Fill="Orange"
+                                            IsVisible="{Binding IsInvalid}"/>
+                                    </console:OnPlatform.Default>
+                                    <console:OnPlatform.Console>
+                                      <TextBlock IsVisible="{Binding IsInvalid}" Text="{StaticResource TextIcons.Error}"/>
+                </console:OnPlatform.Console>
+                </console:OnPlatform>
               </StackPanel>
 
-              <Border Grid.Column="3" Margin="8,0" VerticalAlignment="Center" ClipToBounds="True">
+              <Border Grid.Column="3" Margin="{console:OnPlatform Default='8,0', Console='1,0'}" VerticalAlignment="Center" ClipToBounds="True">
                 <TextBlock Classes="primary"
                            HorizontalAlignment="Right"
                            Foreground="{DynamicResource Brush.FG2}"
@@ -161,10 +197,12 @@
     <!-- Tips -->
     <TextBlock Grid.Row="1" Grid.Column="1"
                Classes="italic"
-               Margin="0,0,8,0"
+               Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"
                HorizontalAlignment="Center" VerticalAlignment="Center"
                FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Decrease}}"
                Text="{DynamicResource Text.Welcome.DragDropTip}"
                Foreground="{DynamicResource Brush.FG2}"/>
   </Grid>
 </UserControl>
+
+

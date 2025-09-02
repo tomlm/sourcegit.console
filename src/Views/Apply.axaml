@@ -5,39 +5,50 @@
              xmlns:m="using:SourceGit.Models"
              xmlns:vm="using:SourceGit.ViewModels"
              xmlns:v="using:SourceGit.Views"
+             xmlns:console="https://github.com/jinek/consolonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.Apply"
              x:DataType="vm:Apply">
-  <StackPanel Orientation="Vertical" Margin="8,0">
+  <StackPanel Orientation="Vertical" Margin="{console:OnPlatform Default='8,0', Console='1,0'}">
     <TextBlock FontSize="18"
                Classes="bold"
                Text="{DynamicResource Text.Apply.Title}"/>
 
-    <Grid Margin="0,16,0,0" RowDefinitions="32,32,32" ColumnDefinitions="120,*">
+    <Grid Margin="{console:OnPlatform Default='0,16,0,0', Console='0,1,0,0'}"
+          RowDefinitions="{console:OnPlatform Default='32,32,32', Console='3,3,3'}"
+          ColumnDefinitions="{console:OnPlatform Default='120,*', Console='12,*'}">
       <TextBlock Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
-                 Margin="0,0,8,0"
+                 Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"
                  Text="{DynamicResource Text.Apply.File}"/>
       <TextBox Grid.Row="0" Grid.Column="1"
                x:Name="TxtPatchFile"
-               Height="28"
-               CornerRadius="3"
+               Height="{console:OnPlatform Default='28', Console='2'}"
+               CornerRadius="{console:OnPlatform Default='3', Console='0'}"
                Watermark="{DynamicResource Text.Apply.File.Placeholder}"
                Text="{Binding PatchFile, Mode=TwoWay}"
                v:AutoFocusBehaviour.IsEnabled="True">
         <TextBox.InnerRightContent>
-          <Button Classes="icon_button" Width="30" Height="30" Click="SelectPatchFile">
-            <Path Data="{StaticResource Icons.Folder.Open}" Fill="{DynamicResource Brush.FG1}"/>
+          <Button Classes="icon_button" Width="{console:OnPlatform Default='30', Console='3'}" Height="{console:OnPlatform Default='30', Console='3'}" Click="SelectPatchFile">
+            <console:OnPlatform>
+              <console:OnPlatform.Default>
+                <Path Data="{StaticResource Icons.Folder.Open}" Fill="{DynamicResource Brush.FG1}"/>
+              </console:OnPlatform.Default>
+              <console:OnPlatform.Console>
+                <TextBlock Text="{StaticResource TextIcons.FolderOpen}"/>
+              </console:OnPlatform.Console>
+            </console:OnPlatform>
           </Button>
         </TextBox.InnerRightContent>
       </TextBox>
 
       <TextBlock Grid.Row="1" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
-                 Margin="0,0,8,0"
+                 Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"
                  Text="{DynamicResource Text.Apply.WS}"/>
       <ComboBox Grid.Row="1" Grid.Column="1"
-                Height="28" Padding="8,0"
+                Height="{console:OnPlatform Default='28', Console='2'}"
+                Padding="{console:OnPlatform Default='8,0', Console='1,0'}"
                 VerticalAlignment="Center" HorizontalAlignment="Stretch"
                 ItemsSource="{Binding Source={x:Static m:ApplyWhiteSpaceMode.Supported}}"
                 SelectedItem="{Binding SelectedWhiteSpaceMode, Mode=TwoWay}"
@@ -45,7 +56,7 @@
                 Grid.IsSharedSizeScope="True">
         <ComboBox.ItemTemplate>
           <DataTemplate DataType="m:ApplyWhiteSpaceMode">
-            <Grid Height="20" VerticalAlignment="Center">
+            <Grid Height="{console:OnPlatform Default='20', Console='2'}" VerticalAlignment="Center">
               <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" SharedSizeGroup="ApplyModeNameColumn"/>
                 <ColumnDefinition Width="Auto" SharedSizeGroup="ApplyModeDescColumn"/>
@@ -53,7 +64,7 @@
               </Grid.ColumnDefinitions>
 
               <TextBlock Grid.Column="0" Text="{Binding Name}"/>
-              <TextBlock Grid.Column="1" Text="{Binding Desc}" Margin="8,0" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
+              <TextBlock Grid.Column="1" Text="{Binding Desc}" Margin="{console:OnPlatform Default='8,0', Console='1,0'}" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
               <TextBlock Grid.Column="2" Text="{Binding Arg}" HorizontalAlignment="Right" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
             </Grid>
           </DataTemplate>
@@ -61,8 +72,8 @@
 
         <ComboBox.SelectionBoxItemTemplate>
           <DataTemplate DataType="m:ApplyWhiteSpaceMode">
-            <Grid ColumnDefinitions="Auto,*">
-              <TextBlock Grid.Column="0" Text="{Binding Name}" Margin="0,0,8,0"/>
+            <Grid ColumnDefinitions="{console:OnPlatform Default='Auto,*', Console='Auto,*'}">
+              <TextBlock Grid.Column="0" Text="{Binding Name}" Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"/>
               <TextBlock Grid.Column="1" Text="{Binding Desc}" HorizontalAlignment="Right" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
             </Grid>
           </DataTemplate>

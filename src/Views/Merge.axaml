@@ -5,39 +5,63 @@
              xmlns:m="using:SourceGit.Models"
              xmlns:vm="using:SourceGit.ViewModels"
              xmlns:c="using:SourceGit.Converters"
+             xmlns:console="https://github.com/jinek/consolonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.Merge"
              x:DataType="vm:Merge">
-  <StackPanel Orientation="Vertical" Margin="8,0">
+  <StackPanel Orientation="Vertical" Margin="{console:OnPlatform Default='8,0', Console='1,0'}">
     <TextBlock FontSize="18"
                Classes="bold"
                Text="{DynamicResource Text.Merge}"/>
-    <Grid Margin="0,16,0,0" RowDefinitions="32,32,32,32" ColumnDefinitions="130,*">
+    <Grid Margin="{console:OnPlatform Default='0,16,0,0', Console='0,1,0,0'}"
+          RowDefinitions="{console:OnPlatform Default='32,32,32,32', Console='3,3,3,3'}"
+          ColumnDefinitions="{console:OnPlatform Default='130,*', Console='13,*'}">
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
-                 Margin="0,0,8,0"
+                 Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"
                  Text="{DynamicResource Text.Merge.Source}"/>
       <ContentControl Grid.Row="0" Grid.Column="1" Content="{Binding Source}">
         <ContentControl.DataTemplates>
           <DataTemplate DataType="m:Branch">
             <StackPanel Orientation="Horizontal">
-              <Path Width="14" Height="14" Data="{StaticResource Icons.Branch}"/>
-              <TextBlock VerticalAlignment="Center" Text="{Binding FriendlyName}" Margin="8,0,0,0"/>
+              <console:OnPlatform>
+                                <console:OnPlatform.Default>
+                                  <Path Width="14" Height="14" Data="{StaticResource Icons.Branch}"/>
+                                </console:OnPlatform.Default>
+                                <console:OnPlatform.Console>
+                                  <TextBlock Text="{StaticResource TextIcons.Branch}"/>
+              </console:OnPlatform.Console>
+              </console:OnPlatform>
+              <TextBlock VerticalAlignment="Center" Text="{Binding FriendlyName}" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}"/>
             </StackPanel>
           </DataTemplate>
 
           <DataTemplate DataType="m:Commit">
             <Grid ColumnDefinitions="Auto,Auto,*">
-              <Path Grid.Column="0" Width="14" Height="14" Data="{StaticResource Icons.Commit}"/>
-              <TextBlock Grid.Column="1" Classes="primary" VerticalAlignment="Center" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="8,0,0,0"/>
-              <TextBlock Grid.Column="2" VerticalAlignment="Center" Text="{Binding Subject}" Margin="4,0,0,0" TextTrimming="CharacterEllipsis"/>
+              <console:OnPlatform>
+                                <console:OnPlatform.Default>
+                                  <Path Grid.Column="0" Width="14" Height="14" Data="{StaticResource Icons.Commit}"/>
+                                </console:OnPlatform.Default>
+                                <console:OnPlatform.Console>
+                                  <TextBlock Grid.Column="0" Text="{StaticResource TextIcons.Commit}"/>
+              </console:OnPlatform.Console>
+              </console:OnPlatform>
+              <TextBlock Grid.Column="1" Classes="primary" VerticalAlignment="Center" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}"/>
+              <TextBlock Grid.Column="2" VerticalAlignment="Center" Text="{Binding Subject}" Margin="{console:OnPlatform Default='4,0,0,0', Console='1,0,0,0'}" TextTrimming="CharacterEllipsis"/>
             </Grid>
           </DataTemplate>
 
           <DataTemplate DataType="m:Tag">
             <StackPanel Orientation="Horizontal">
-              <Path Width="14" Height="14" Data="{StaticResource Icons.Tag}"/>
-              <TextBlock VerticalAlignment="Center" Text="{Binding Name}" Margin="8,0,0,0"/>
+              <console:OnPlatform>
+                                <console:OnPlatform.Default>
+                                  <Path Width="14" Height="14" Data="{StaticResource Icons.Tag}"/>
+                                </console:OnPlatform.Default>
+                                <console:OnPlatform.Console>
+                                  <TextBlock Text="{StaticResource TextIcons.Tag}"/>
+              </console:OnPlatform.Console>
+              </console:OnPlatform>
+              <TextBlock VerticalAlignment="Center" Text="{Binding Name}" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}"/>
             </StackPanel>
           </DataTemplate>
         </ContentControl.DataTemplates>
@@ -45,26 +69,33 @@
 
       <TextBlock Grid.Row="1" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
-                 Margin="0,0,8,0"
+                 Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"
                  Text="{DynamicResource Text.Merge.Into}"/>
-      <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Height="20" VerticalAlignment="Center">
-        <Path Margin="0,0,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Branch}"/>
+      <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Height="{console:OnPlatform Default='20', Console='2'}" VerticalAlignment="Center">
+        <console:OnPlatform>
+                    <console:OnPlatform.Default>
+                      <Path Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Branch}"/>
+                    </console:OnPlatform.Default>
+                    <console:OnPlatform.Console>
+                      <TextBlock Text="{StaticResource TextIcons.Branch}"/>
+        </console:OnPlatform.Console>
+        </console:OnPlatform>
         <TextBlock Text="{Binding Into}"/>
       </StackPanel>
 
       <TextBlock Grid.Row="2" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
-                 Margin="0,0,8,0"
+                 Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"
                  Text="{DynamicResource Text.Merge.Mode}"/>
       <ComboBox Grid.Row="2" Grid.Column="1"
-                Height="28" Padding="8,0"
+                Height="{console:OnPlatform Default='28', Console='2'}" Padding="{console:OnPlatform Default='8,0', Console='1,0'}"
                 VerticalAlignment="Center" HorizontalAlignment="Stretch"
                 ItemsSource="{Binding Source={x:Static m:MergeMode.Supported}}"
                 SelectedItem="{Binding Mode, Mode=TwoWay}"
                 Grid.IsSharedSizeScope="True">
         <ComboBox.ItemTemplate>
           <DataTemplate DataType="m:MergeMode">
-            <Grid Height="20">
+            <Grid Height="{console:OnPlatform Default='20', Console='2'}">
               <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" SharedSizeGroup="MergeModeNameColumn"/>
                 <ColumnDefinition Width="Auto" SharedSizeGroup="MergeModeDescriptionColumn"/>
@@ -72,7 +103,7 @@
               </Grid.ColumnDefinitions>
 
               <TextBlock Grid.Column="0" Text="{Binding Name}"/>
-              <TextBlock Grid.Column="1" Text="{Binding Desc}" Margin="8,0" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
+              <TextBlock Grid.Column="1" Text="{Binding Desc}" Margin="{console:OnPlatform Default='8,0', Console='1,0'}" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
               <TextBlock Grid.Column="2" Text="{Binding Arg}" HorizontalAlignment="Right" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
             </Grid>
           </DataTemplate>
@@ -81,7 +112,7 @@
         <ComboBox.SelectionBoxItemTemplate>
           <DataTemplate DataType="m:MergeMode">
             <Grid ColumnDefinitions="Auto,*">
-              <TextBlock Grid.Column="0" Text="{Binding Name}" Margin="0,0,8,0"/>
+              <TextBlock Grid.Column="0" Text="{Binding Name}" Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"/>
               <TextBlock Grid.Column="1" Text="{Binding Desc}" HorizontalAlignment="Right" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
             </Grid>
           </DataTemplate>
@@ -89,10 +120,12 @@
       </ComboBox>
 
       <CheckBox Grid.Row="3" Grid.Column="1"
-                Height="32"
+                Height="{console:OnPlatform Default='32', Console='3'}"
                 Content="{DynamicResource Text.Merge.Edit}"
                 IsChecked="{Binding Edit, Mode=TwoWay}"
                 ToolTip.Tip="--edit"/>
     </Grid>
   </StackPanel>
 </UserControl>
+
+

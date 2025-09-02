@@ -12,6 +12,6 @@ namespace SourceGit.Console
             AvaloniaXamlLoader.Load(this);
         }
 
-      
+
     }
 }

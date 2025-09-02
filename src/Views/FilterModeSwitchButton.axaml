@@ -3,31 +3,55 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:m="using:SourceGit.Models"
+             xmlns:console="https://github.com/jinek/consolonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.FilterModeSwitchButton"
              x:Name="ThisControl">
   <Button Classes="icon_button"
-          Width="12" Height="12"
-          Padding="0"
+          Width="{console:OnPlatform Default='12', Console='1'}"
+          Height="{console:OnPlatform Default='12', Console='1'}"
+          Padding="{console:OnPlatform Default='0', Console='0'}"
           Background="Transparent"
           VerticalContentAlignment="Center"
           Click="OnChangeFilterModeButtonClicked"
           ToolTip.Tip="{DynamicResource Text.Repository.FilterCommits}">
     <Grid>
-      <Path Width="12" Height="12"
-            Data="{StaticResource Icons.Eye}"
-            Fill="{DynamicResource Brush.FG1}"
-            IsVisible="{Binding #ThisControl.Mode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:FilterMode.None}}"/>
+      <console:OnPlatform>
+                <console:OnPlatform.Default>
+                  <Path Width="12" Height="12"
+                        Data="{StaticResource Icons.Eye}"
+                        Fill="{DynamicResource Brush.FG1}"
+                        IsVisible="{Binding #ThisControl.Mode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:FilterMode.None}}"/>
+                </console:OnPlatform.Default>
+                <console:OnPlatform.Console>
+                  <TextBlock Text="{StaticResource TextIcons.Eye}" IsVisible="{Binding #ThisControl.Mode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:FilterMode.None}}"/>
+      </console:OnPlatform.Console>
+      </console:OnPlatform>
 
-      <Path Width="12" Height="12"
-            Data="{StaticResource Icons.Filter}"
-            Fill="{DynamicResource Brush.Accent}"
-            IsVisible="{Binding #ThisControl.Mode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:FilterMode.Included}}"/>
+      <console:OnPlatform>
+                <console:OnPlatform.Default>
+                  <Path Width="12" Height="12"
+                        Data="{StaticResource Icons.Filter}"
+                        Fill="{DynamicResource Brush.Accent}"
+                        IsVisible="{Binding #ThisControl.Mode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:FilterMode.Included}}"/>
+                </console:OnPlatform.Default>
+                <console:OnPlatform.Console>
+                  <TextBlock Text="{StaticResource TextIcons.Filter}" IsVisible="{Binding #ThisControl.Mode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:FilterMode.Included}}"/>
+      </console:OnPlatform.Console>
+      </console:OnPlatform>
 
-      <Path Width="12" Height="12"
-            Data="{StaticResource Icons.EyeClose}"
-            Fill="{DynamicResource Brush.Accent}"
-            IsVisible="{Binding #ThisControl.Mode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:FilterMode.Excluded}}"/>
+      <console:OnPlatform>
+                <console:OnPlatform.Default>
+                  <Path Width="12" Height="12"
+                        Data="{StaticResource Icons.EyeClose}"
+                        Fill="{DynamicResource Brush.Accent}"
+                        IsVisible="{Binding #ThisControl.Mode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:FilterMode.Excluded}}"/>
+                </console:OnPlatform.Default>
+                <console:OnPlatform.Console>
+                  <TextBlock Text="{StaticResource TextIcons.EyeClose}" IsVisible="{Binding #ThisControl.Mode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:FilterMode.Excluded}}"/>
+      </console:OnPlatform.Console>
+      </console:OnPlatform>
     </Grid>
   </Button>
 </UserControl>
+

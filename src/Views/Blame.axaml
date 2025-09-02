@@ -5,6 +5,7 @@
                     xmlns:vm="using:SourceGit.ViewModels"
                     xmlns:v="using:SourceGit.Views"
                     xmlns:c="using:SourceGit.Converters"
+                    xmlns:console="https://github.com/jinek/consolonia"
                     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
                     x:Class="SourceGit.Views.Blame"
                     x:DataType="vm:Blame"
@@ -12,7 +13,7 @@
                     Icon="/App.ico"
                     Title="{DynamicResource Text.Blame}"
                     MinWidth="1280" MinHeight="720">
-  <Grid RowDefinitions="Auto,24,*">
+  <Grid RowDefinitions="{console:OnPlatform Default='Auto,24,*', Console='Auto,2,*'}">
     <!-- TitleBar -->
     <Grid Grid.Row="0" Height="28" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
       <!-- Bottom border -->
@@ -21,11 +22,18 @@
               DoubleTapped="MaximizeOrRestoreWindow"
               PointerPressed="BeginMoveWindow"/>
 
-      <Path Width="12" Height="12"
-            Margin="10,0,0,0"
-            HorizontalAlignment="Left"
-            Data="{StaticResource Icons.Blame}"
-            IsVisible="{OnPlatform True, macOS=False}"/>
+      <console:OnPlatform>
+        <console:OnPlatform.Default>
+          <Path Width="12" Height="12"
+                Margin="{console:OnPlatform Default='10,0,0,0', Console='1,0,0,0'}"
+                HorizontalAlignment="Left"
+                Data="{StaticResource Icons.Blame}"
+                IsVisible="{OnPlatform True, macOS=False}"/>
+        </console:OnPlatform.Default>
+        <console:OnPlatform.Console>
+          <TextBlock Text="{StaticResource TextIcons.Blame}" HorizontalAlignment="Left"/>
+        </console:OnPlatform.Console>
+      </console:OnPlatform>
 
       <TextBlock Classes="bold"
                  Text="{DynamicResource Text.Blame}"
@@ -37,38 +45,59 @@
     </Grid>
 
     <!-- File -->
-    <Border Grid.Row="1" Padding="8,0" >
-      <Grid ColumnDefinitions="Auto,*,Auto,Auto,400">
-        <Path Grid.Column="0"
-              Width="14" Height="14"
-              Data="{StaticResource Icons.File}"/>
+    <Border Grid.Row="1" Padding="{console:OnPlatform Default='8,0', Console='1,0'}" >
+      <Grid ColumnDefinitions="{console:OnPlatform Default='Auto,*,Auto,Auto,400', Console='Auto,*,Auto,Auto,40'}">
+        <console:OnPlatform>
+          <console:OnPlatform.Default>
+            <Path Grid.Column="0"
+                  Width="14" Height="14"
+                  Data="{StaticResource Icons.File}"/>
+          </console:OnPlatform.Default>
+          <console:OnPlatform.Console>
+            <TextBlock Grid.Column="0" Text="{StaticResource TextIcons.File}"/>
+          </console:OnPlatform.Console>
+        </console:OnPlatform>
 
         <TextBlock Grid.Column="1"
-                   Margin="4,0,0,0"
+                   Margin="{console:OnPlatform Default='4,0,0,0', Console='1,0,0,0'}"
                    VerticalAlignment="Center"
                    Text="{Binding FilePath, Mode=OneWay}"/>
 
         <Button Grid.Column="2"
                 Classes="icon_button"
                 IsEnabled="{Binding CanBack}"
-                Width="28"
+                Width="{console:OnPlatform Default='28', Console='2'}"
                 Command="{Binding Back}">
-          <Path Width="12" Height="12" Data="{StaticResource Icons.TriangleLeft}"/>
+          <console:OnPlatform>
+            <console:OnPlatform.Default>
+              <Path Width="12" Height="12" Data="{StaticResource Icons.TriangleLeft}"/>
+            </console:OnPlatform.Default>
+            <console:OnPlatform.Console>
+              <TextBlock Text="{StaticResource TextIcons.TriangleLeft}"/>
+            </console:OnPlatform.Console>
+          </console:OnPlatform>
         </Button>
 
         <Button Grid.Column="3"
                 Classes="icon_button"
                 IsEnabled="{Binding CanForward}"
-                Width="28"
+                Width="{console:OnPlatform Default='28', Console='2'}"
                 Command="{Binding Forward}">
-          <Path Width="12" Height="12" Data="{StaticResource Icons.TriangleRight}"/>
+          <console:OnPlatform>
+            <console:OnPlatform.Default>
+              <Path Width="12" Height="12" Data="{StaticResource Icons.TriangleRight}"/>
+            </console:OnPlatform.Default>
+            <console:OnPlatform.Console>
+              <TextBlock Text="{StaticResource TextIcons.TriangleRight}"/>
+            </console:OnPlatform.Console>
+          </console:OnPlatform>
         </Button>
 
-        <Border Grid.Column="4" Background="#40000000" CornerRadius="3" Padding="4,0" Margin="0,2">
-          <Grid ColumnDefinitions="Auto,*">
+        <Border Grid.Column="4" Background="#40000000" CornerRadius="{console:OnPlatform Default='3', Console='0'}" Padding="{console:OnPlatform Default='4,0', Console='1,0'}" Margin="{console:OnPlatform Default='0,2', Console='0,1'}">
+          <Grid ColumnDefinitions="{console:OnPlatform Default='Auto,*', Console='Auto,*'}">
             <TextBlock Grid.Column="0"
                        FontWeight="Bold"
-                       Margin="0,0,6,0"
+                       Margin="{console:OnPlatform Default='0,0,6,0', Console='0,0,1,0'}"
                        Text="{Binding Revision.SHA, Converter={x:Static c:StringConverters.ToShortSHA}, Mode=OneWay}"/>
 
             <TextBlock Grid.Column="1"
@@ -84,7 +113,7 @@
       <!-- Blame View -->
       <v:BlameTextEditor HorizontalScrollBarVisibility="Auto"
                          VerticalScrollBarVisibility="Auto"
-                         Margin="4,0,4,4"
+                         Margin="{console:OnPlatform Default='4,0,4,4', Console='1,0,1,1'}"
                          BorderBrush="{DynamicResource Brush.Border2}"
                          BorderThickness="1"
                          Background="Transparent"
@@ -106,8 +135,15 @@
       <StackPanel Orientation="Vertical"
                   HorizontalAlignment="Center" VerticalAlignment="Center"
                   IsVisible="{Binding IsBinary}">
-        <Path Width="64" Height="64" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Error}"/>
-        <TextBlock Margin="0,16,0,0" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Foreground="{DynamicResource Brush.FG2}" Text="{DynamicResource Text.BlameTypeNotSupported}"/>
+        <console:OnPlatform>
+          <console:OnPlatform.Default>
+            <Path Width="64" Height="64" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Error}"/>
+          </console:OnPlatform.Default>
+          <console:OnPlatform.Console>
+            <TextBlock Text="{StaticResource TextIcons.Error}"/>
+          </console:OnPlatform.Console>
+        </console:OnPlatform>
+        <TextBlock Margin="{console:OnPlatform Default='0,16,0,0', Console='0,1,0,0'}" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" Foreground="{DynamicResource Brush.FG2}" Text="{DynamicResource Text.BlameTypeNotSupported}"/>
       </StackPanel>
 
       <!-- Loading -->

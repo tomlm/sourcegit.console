@@ -5,21 +5,29 @@
              xmlns:vm="using:SourceGit.ViewModels"
              xmlns:c="using:SourceGit.Converters"
              xmlns:v="using:SourceGit.Views"
+             xmlns:console="https://github.com/jinek/consolonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.LauncherTabBar"
              x:DataType="vm:Launcher"
              x:Name="ThisControl">
-  <Grid ColumnDefinitions="Auto,*,Auto">
+  <Grid ColumnDefinitions="{console:OnPlatform Default='Auto,*,Auto', Console='Auto,*,Auto'}">
     <RepeatButton Grid.Column="0"
                   Classes="icon_button"
-                  Width="18" Height="30"
+                  Width="{console:OnPlatform Default='18', Console='1'}" Height="{console:OnPlatform Default='30', Console='3'}"
                   Click="ScrollTabsLeft"
                   IsVisible="{Binding #ThisControl.IsScrollerVisible}">
-      <Path Width="8" Height="14" Stretch="Fill" Data="{StaticResource Icons.TriangleLeft}"/>
+      <console:OnPlatform>
+                <console:OnPlatform.Default>
+                  <Path Width="{console:OnPlatform Default='8', Console='1'}" Height="{console:OnPlatform Default='14', Console='1'}" Stretch="Fill" Data="{StaticResource Icons.TriangleLeft}"/>
+                </console:OnPlatform.Default>
+                <console:OnPlatform.Console>
+                  <TextBlock Text="◀"/>
+      </console:OnPlatform.Console>
+      </console:OnPlatform>
     </RepeatButton>
 
     <ScrollViewer Grid.Column="1"
-                  Margin="6,0"
+                  Margin="{console:OnPlatform Default='6,0', Console='1,0'}"
                   x:Name="LauncherTabsScroller"
                   HorizontalAlignment="Left"
                   HorizontalScrollBarVisibility="Hidden"
@@ -35,13 +43,13 @@
                  LayoutUpdated="OnTabsLayoutUpdated">
           <ListBox.ItemsPanel>
             <ItemsPanelTemplate>
-              <StackPanel Orientation="Horizontal" Height="30"/>
+              <StackPanel Orientation="Horizontal" Height="{console:OnPlatform Default='30', Console='3'}"/>
             </ItemsPanelTemplate>
           </ListBox.ItemsPanel>
 
           <ListBox.ItemTemplate>
             <DataTemplate DataType="vm:LauncherPage">
-              <Border Height="30"
+              <Border Height="{console:OnPlatform Default='30', Console='3'}"
                       Background="Transparent"
                       PointerPressed="OnPointerPressedTab"
                       PointerMoved="OnPointerMovedOverTab"
@@ -55,28 +63,42 @@
                   </Grid>
                 </ToolTip.Tip>
 
-                <Grid Width="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseFixedTabWidth, Converter={x:Static c:BoolConverters.ToPageTabWidth}}" Height="30" ColumnDefinitions="Auto,*,Auto" VerticalAlignment="Center">
-                  <Path Grid.Column="0"
-                        Width="12" Height="12" Margin="12,0"
-                        Fill="{Binding Node.Bookmark, Converter={x:Static c:IntConverters.ToBookmarkBrush}}"
-                        Data="{StaticResource Icons.Bookmark}"
-                        IsVisible="{Binding Node.IsRepository}"
-                        IsHitTestVisible="False"/>
-                  <Path Grid.Column="0"
-                        Width="12" Height="12" Margin="12,0"
-                        Fill="{DynamicResource Brush.FG1}"
-                        Data="{StaticResource Icons.Repositories}"
-                        IsVisible="{Binding !Node.IsRepository}"
-                        IsHitTestVisible="False"/>
+                <Grid Width="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseFixedTabWidth, Converter={x:Static c:BoolConverters.ToPageTabWidth}}" Height="{console:OnPlatform Default='30', Console='3'}" ColumnDefinitions="{console:OnPlatform Default='Auto,*,Auto', Console='Auto,*,Auto'}" VerticalAlignment="Center">
+                  <console:OnPlatform>
+                                        <console:OnPlatform.Default>
+                                          <Path Grid.Column="0"
+                                                Width="{console:OnPlatform Default='12', Console='1'}" Height="{console:OnPlatform Default='12', Console='1'}" Margin="{console:OnPlatform Default='12,0', Console='1,0'}"
+                                                Fill="{Binding Node.Bookmark, Converter={x:Static c:IntConverters.ToBookmarkBrush}}"
+                                                Data="{StaticResource Icons.Bookmark}"
+                                                IsVisible="{Binding Node.IsRepository}"
+                                                IsHitTestVisible="False"/>
+                                        </console:OnPlatform.Default>
+                                        <console:OnPlatform.Console>
+                                          <TextBlock Text="★"/>
+                  </console:OnPlatform.Console>
+                  </console:OnPlatform>
+                  <console:OnPlatform>
+                                        <console:OnPlatform.Default>
+                                          <Path Grid.Column="0"
+                                                Width="{console:OnPlatform Default='12', Console='1'}" Height="{console:OnPlatform Default='12', Console='1'}" Margin="{console:OnPlatform Default='12,0', Console='1,0'}"
+                                                Fill="{DynamicResource Brush.FG1}"
+                                                Data="{StaticResource Icons.Repositories}"
+                                                IsVisible="{Binding !Node.IsRepository}"
+                                                IsHitTestVisible="False"/>
+                                        </console:OnPlatform.Default>
+                                        <console:OnPlatform.Console>
+                                          <TextBlock Text="📁"/>
+                  </console:OnPlatform.Console>
+                  </console:OnPlatform>
 
                   <Grid Grid.Column="1"
                         HorizontalAlignment="Center" VerticalAlignment="Center"
-                        ColumnDefinitions="Auto,*"
+                        ColumnDefinitions="{console:OnPlatform Default='Auto,*', Console='Auto,*'}"
                         IsHitTestVisible="False"
                         IsVisible="{Binding Node.IsRepository}">
                     <Ellipse Grid.Column="0"
-                             Width="8" Height="8"
-                             Margin="0,0,6,0"
+                             Width="{console:OnPlatform Default='8', Console='1'}" Height="{console:OnPlatform Default='8', Console='1'}"
+                             Margin="{console:OnPlatform Default='0,0,6,0', Console='0,0,1,0'}"
                              VerticalAlignment="Center"
                              IsVisible="{Binding DirtyBrush, Converter={x:Static ObjectConverters.IsNotNull}}"
                              Fill="{Binding DirtyBrush}"/>
@@ -101,19 +123,26 @@
 
                   <Button Grid.Column="2"
                           Classes="icon_button"
-                          Width="16" Height="16" Margin="12,0"
+                          Width="{console:OnPlatform Default='16', Console='1'}" Height="{console:OnPlatform Default='16', Console='1'}" Margin="{console:OnPlatform Default='12,0', Console='1,0'}"
                           Click="OnCloseTab">
                     <ToolTip.Tip>
                       <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         <TextBlock Text="{DynamicResource Text.PageTabBar.Tab.Close}" VerticalAlignment="Center"/>
-                        <TextBlock Margin="16,0,0,0"
+                        <TextBlock Margin="{console:OnPlatform Default='16,0,0,0', Console='1,0,0,0'}"
                                    Text="{OnPlatform Ctrl+W, macOS=⌘+W}"
                                    FontSize="11"
                                    VerticalAlignment="Center"
                                    Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
                       </StackPanel>
                     </ToolTip.Tip>
-                    <Path Width="9" Height="9" Data="{StaticResource Icons.Close}"/>
+                    <console:OnPlatform>
+                                            <console:OnPlatform.Default>
+                                              <Path Width="{console:OnPlatform Default='9', Console='1'}" Height="{console:OnPlatform Default='9', Console='1'}" Data="{StaticResource Icons.Close}"/>
+                                            </console:OnPlatform.Default>
+                                            <console:OnPlatform.Console>
+                                              <TextBlock Text="✕"/>
+                    </console:OnPlatform.Console>
+                    </console:OnPlatform>
                   </Button>
                 </Grid>
               </Border>
@@ -122,63 +151,90 @@
         </ListBox>
 
         <Button Classes="icon_button"
-                Width="16" Height="16"
-                Margin="8,0"
+                Width="{console:OnPlatform Default='16', Console='1'}" Height="{console:OnPlatform Default='16', Console='1'}"
+                Margin="{console:OnPlatform Default='8,0', Console='1,0'}"
                 Command="{Binding AddNewTab}"
                 IsVisible="{Binding !#ThisControl.IsScrollerVisible}">
           <ToolTip.Tip>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
               <TextBlock Text="{DynamicResource Text.PageTabBar.New}" VerticalAlignment="Center"/>
-              <TextBlock Margin="16,0,0,0"
+              <TextBlock Margin="{console:OnPlatform Default='16,0,0,0', Console='1,0,0,0'}"
                          Text="{OnPlatform Ctrl+T, macOS=⌘+T}"
                          FontSize="11"
                          VerticalAlignment="Center"
                          Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
             </StackPanel>
           </ToolTip.Tip>
-
-          <Path Width="12" Height="12" Data="{StaticResource Icons.Plus}"/>
+          <console:OnPlatform>
+                        <console:OnPlatform.Default>
+                          <Path Width="{console:OnPlatform Default='12', Console='1'}" Height="{console:OnPlatform Default='12', Console='1'}" Data="{StaticResource Icons.Plus}"/>
+                        </console:OnPlatform.Default>
+                        <console:OnPlatform.Console>
+                          <TextBlock Text="+"/>
+          </console:OnPlatform.Console>
+          </console:OnPlatform>
         </Button>
       </StackPanel>
     </ScrollViewer>
 
     <StackPanel Grid.Column="2" Orientation="Horizontal" IsVisible="{Binding #ThisControl.IsScrollerVisible}">
-      <RepeatButton Classes="icon_button" Width="18" Height="30" Click="ScrollTabsRight">
-        <Path Width="8" Height="14" Stretch="Fill" Data="{StaticResource Icons.TriangleRight}"/>
+      <RepeatButton Classes="icon_button" Width="{console:OnPlatform Default='18', Console='1'}" Height="{console:OnPlatform Default='30', Console='3'}" Click="ScrollTabsRight">
+        <console:OnPlatform>
+                    <console:OnPlatform.Default>
+                      <Path Width="{console:OnPlatform Default='8', Console='1'}" Height="{console:OnPlatform Default='14', Console='1'}" Stretch="Fill" Data="{StaticResource Icons.TriangleRight}"/>
+                    </console:OnPlatform.Default>
+                    <console:OnPlatform.Console>
+                      <TextBlock Text="▶"/>
+        </console:OnPlatform.Console>
+        </console:OnPlatform>
       </RepeatButton>
 
-      <Button x:Name="PageSelector" Classes="icon_button" Width="16" Height="16" Margin="8,0">
+      <Button x:Name="PageSelector" Classes="icon_button" Width="{console:OnPlatform Default='16', Console='1'}" Height="{console:OnPlatform Default='16', Console='1'}" Margin="{console:OnPlatform Default='8,0', Console='1,0'}">
         <Button.Flyout>
           <Flyout Opened="OnTabsDropdownOpened" Closed="OnTabsDropdownClosed">
-            <Grid RowDefinitions="28,Auto" KeyDown="OnTabsDropdownKeyDown" LostFocus="OnTabsDropdownLostFocus">
+            <Grid RowDefinitions="{console:OnPlatform Default='28,Auto', Console='3,Auto'}" KeyDown="OnTabsDropdownKeyDown" LostFocus="OnTabsDropdownLostFocus">
               <TextBox Grid.Row="0"
-                       Height="24"
-                       Margin="4,0"
+                       Height="{console:OnPlatform Default='24', Console='2'}"
+                       Margin="{console:OnPlatform Default='4,0', Console='1,0'}"
                        BorderThickness="1"
-                       CornerRadius="12"
+                       CornerRadius="{console:OnPlatform Default='12', Console='0'}"
                        Text="{Binding #ThisControl.SearchFilter, Mode=TwoWay}"
                        BorderBrush="{DynamicResource Brush.Border2}"
                        VerticalContentAlignment="Center"
                        KeyDown="OnTabsDropdownSearchBoxKeyDown"
                        v:AutoFocusBehaviour.IsEnabled="True">
                 <TextBox.InnerLeftContent>
-                  <Path Width="14" Height="14"
-                        Margin="6,0,0,0"
-                        Fill="{DynamicResource Brush.FG2}"
-                        Data="{StaticResource Icons.Search}"/>
+                  <console:OnPlatform>
+                                        <console:OnPlatform.Default>
+                                          <Path Width="{console:OnPlatform Default='14', Console='1'}" Height="{console:OnPlatform Default='14', Console='1'}"
+                                                Margin="{console:OnPlatform Default='6,0,0,0', Console='1,0,0,0'}"
+                                                Fill="{DynamicResource Brush.FG2}"
+                                                Data="{StaticResource Icons.Search}"/>
+                                        </console:OnPlatform.Default>
+                                        <console:OnPlatform.Console>
+                                          <TextBlock Text="🔍"/>
+                  </console:OnPlatform.Console>
+                  </console:OnPlatform>
                 </TextBox.InnerLeftContent>
 
                 <TextBox.InnerRightContent>
                   <Button Classes="icon_button"
-                          Width="16"
-                          Margin="0,0,6,0"
+                          Width="{console:OnPlatform Default='16', Console='1'}"
+                          Margin="{console:OnPlatform Default='0,0,6,0', Console='0,0,1,0'}"
                           Click="OnClearSearchFilter"
                           IsVisible="{Binding #ThisControl.SearchFilter, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
                           HorizontalAlignment="Right">
-                    <Path Width="14" Height="14"
-                          Margin="0,1,0,0"
-                          Fill="{DynamicResource Brush.FG1}"
-                          Data="{StaticResource Icons.Clear}"/>
+                    <console:OnPlatform>
+                                            <console:OnPlatform.Default>
+                                              <Path Width="{console:OnPlatform Default='14', Console='1'}" Height="{console:OnPlatform Default='14', Console='1'}"
+                                                    Margin="{console:OnPlatform Default='0,1,0,0', Console='0,1,0,0'}"
+                                                    Fill="{DynamicResource Brush.FG1}"
+                                                    Data="{StaticResource Icons.Clear}"/>
+                                            </console:OnPlatform.Default>
+                                            <console:OnPlatform.Console>
+                                              <TextBlock Text="✕"/>
+                    </console:OnPlatform.Console>
+                    </console:OnPlatform>
                   </Button>
                 </TextBox.InnerRightContent>
               </TextBox>
@@ -186,9 +242,9 @@
               <ListBox Grid.Row="1"
                        x:Name="TabsDropdownList"
                        Focusable="True"
-                       Width="200"
-                       MaxHeight="400"
-                       Margin="0,4,0,0"
+                       Width="{console:OnPlatform Default='200', Console='20'}"
+                       MaxHeight="{console:OnPlatform Default='400', Console='40'}"
+                       Margin="{console:OnPlatform Default='0,4,0,0', Console='0,1,0,0'}"
                        Background="Transparent"
                        SelectionMode="Single"
                        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
@@ -197,9 +253,9 @@
                        SelectedItem="{Binding ActivePage, Mode=OneWay}">
                 <ListBox.Styles>
                   <Style Selector="ListBoxItem">
-                    <Setter Property="Padding" Value="0"/>
-                    <Setter Property="MinHeight" Value="26"/>
-                    <Setter Property="CornerRadius" Value="4"/>
+                    <Setter Property="Padding" Value="{console:OnPlatform Default='0', Console='0'}"/>
+                    <Setter Property="MinHeight" Value="{console:OnPlatform Default='26', Console='2'}"/>
+                    <Setter Property="CornerRadius" Value="{console:OnPlatform Default='4', Console='0'}"/>
                   </Style>
 
                   <Style Selector="ListBox">
@@ -219,19 +275,33 @@
 
                 <ListBox.ItemTemplate>
                   <DataTemplate DataType="vm:LauncherPage">
-                    <Grid ColumnDefinitions="Auto,*" Background="Transparent" Tapped="OnTabsDropdownItemTapped">
-                      <Path Grid.Column="0"
-                            Width="12" Height="12" Margin="12,0"
-                            Fill="{Binding Node.Bookmark, Converter={x:Static c:IntConverters.ToBookmarkBrush}}"
-                            Data="{StaticResource Icons.Bookmark}"
-                            IsVisible="{Binding Node.IsRepository}"
-                            IsHitTestVisible="False"/>
-                      <Path Grid.Column="0"
-                            Width="12" Height="12" Margin="12,0"
-                            Fill="{DynamicResource Brush.FG1}"
-                            Data="{StaticResource Icons.Repositories}"
-                            IsVisible="{Binding !Node.IsRepository}"
-                            IsHitTestVisible="False"/>
+                    <Grid ColumnDefinitions="{console:OnPlatform Default='Auto,*', Console='Auto,*'}" Background="Transparent" Tapped="OnTabsDropdownItemTapped">
+                      <console:OnPlatform>
+                                                <console:OnPlatform.Default>
+                                                  <Path Grid.Column="0"
+                                                        Width="{console:OnPlatform Default='12', Console='1'}" Height="{console:OnPlatform Default='12', Console='1'}" Margin="{console:OnPlatform Default='12,0', Console='1,0'}"
+                                                        Fill="{Binding Node.Bookmark, Converter={x:Static c:IntConverters.ToBookmarkBrush}}"
+                                                        Data="{StaticResource Icons.Bookmark}"
+                                                        IsVisible="{Binding Node.IsRepository}"
+                                                        IsHitTestVisible="False"/>
+                                                </console:OnPlatform.Default>
+                                                <console:OnPlatform.Console>
+                                                  <TextBlock Text="★"/>
+                      </console:OnPlatform.Console>
+                      </console:OnPlatform>
+                      <console:OnPlatform>
+                                                <console:OnPlatform.Default>
+                                                  <Path Grid.Column="0"
+                                                        Width="{console:OnPlatform Default='12', Console='1'}" Height="{console:OnPlatform Default='12', Console='1'}" Margin="{console:OnPlatform Default='12,0', Console='1,0'}"
+                                                        Fill="{DynamicResource Brush.FG1}"
+                                                        Data="{StaticResource Icons.Repositories}"
+                                                        IsVisible="{Binding !Node.IsRepository}"
+                                                        IsHitTestVisible="False"/>
+                                                </console:OnPlatform.Default>
+                                                <console:OnPlatform.Console>
+                                                  <TextBlock Text="📁"/>
+                      </console:OnPlatform.Console>
+                      </console:OnPlatform>
                       <TextBlock Grid.Column="1"
                                  Classes="primary"
                                  VerticalAlignment="Center"
@@ -251,23 +321,38 @@
             </Grid>
           </Flyout>
         </Button.Flyout>
-        <Path Width="14" Height="14" Data="{StaticResource Icons.CircleDown}"/>
+        <console:OnPlatform>
+                    <console:OnPlatform.Default>
+                      <Path Width="{console:OnPlatform Default='14', Console='1'}" Height="{console:OnPlatform Default='14', Console='1'}" Data="{StaticResource Icons.CircleDown}"/>
+                    </console:OnPlatform.Default>
+                    <console:OnPlatform.Console>
+                      <TextBlock Text="⬇"/>
+        </console:OnPlatform.Console>
+        </console:OnPlatform>
       </Button>
 
-      <Button Classes="icon_button" Width="16" Height="16" Command="{Binding AddNewTab}">
+      <Button Classes="icon_button" Width="{console:OnPlatform Default='16', Console='1'}" Height="{console:OnPlatform Default='16', Console='1'}" Command="{Binding AddNewTab}">
         <ToolTip.Tip>
           <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
             <TextBlock Text="{DynamicResource Text.PageTabBar.New}" VerticalAlignment="Center"/>
-            <TextBlock Margin="16,0,0,0"
+            <TextBlock Margin="{console:OnPlatform Default='16,0,0,0', Console='1,0,0,0'}"
                        Text="{OnPlatform Ctrl+T, macOS=⌘+T}"
                        FontSize="11"
                        VerticalAlignment="Center"
                        Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
           </StackPanel>
         </ToolTip.Tip>
-
-        <Path Width="12" Height="12" Data="{StaticResource Icons.Plus}"/>
+        <console:OnPlatform>
+                    <console:OnPlatform.Default>
+                      <Path Width="{console:OnPlatform Default='12', Console='1'}" Height="{console:OnPlatform Default='12', Console='1'}" Data="{StaticResource Icons.Plus}"/>
+                    </console:OnPlatform.Default>
+                    <console:OnPlatform.Console>
+                      <TextBlock Text="+"/>
+        </console:OnPlatform.Console>
+        </console:OnPlatform>
       </Button>
     </StackPanel>
   </Grid>
 </UserControl>
+
+

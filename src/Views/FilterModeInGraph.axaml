@@ -3,10 +3,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:console="https://github.com/jinek/consolonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.FilterModeInGraph"
              x:DataType="vm:FilterModeInGraph">
-  <Grid RowDefinitions="22,26">
+  <Grid RowDefinitions="{console:OnPlatform Default='22,26', Console='2,2'}">
     <TextBlock Grid.Row="0"
                Text="{DynamicResource Text.Repository.FilterCommits}"
                FontWeight="Bold"
@@ -14,19 +15,36 @@
 
     <StackPanel Grid.Row="1" Orientation="Horizontal">
       <ToggleButton Classes="line_path"
-                    Width="15" Height="26"
+                    Width="{console:OnPlatform Default='15', Console='1'}"
+                    Height="{console:OnPlatform Default='26', Console='2'}"
                     Background="Transparent"
                     IsChecked="{Binding IsFiltered, Mode=TwoWay}">
-        <Path Width="13" Height="13" Data="{StaticResource Icons.Filter}"/>
+        <console:OnPlatform>
+                    <console:OnPlatform.Default>
+                      <Path Width="13" Height="13" Data="{StaticResource Icons.Filter}"/>
+                    </console:OnPlatform.Default>
+                    <console:OnPlatform.Console>
+                      <TextBlock Text="{StaticResource TextIcons.Filter}"/>
+        </console:OnPlatform.Console>
+        </console:OnPlatform>
       </ToggleButton>
 
       <ToggleButton Classes="line_path"
-                    Width="15" Height="26"
-                    Margin="12,0,0,0"
+                    Width="{console:OnPlatform Default='15', Console='1'}"
+                    Height="{console:OnPlatform Default='26', Console='2'}"
+                    Margin="{console:OnPlatform Default='12,0,0,0', Console='1,0,0,0'}"
                     Background="Transparent"
                     IsChecked="{Binding IsExcluded, Mode=TwoWay}">
-        <Path Width="13" Height="13" Data="{StaticResource Icons.EyeClose}"/>
+        <console:OnPlatform>
+                    <console:OnPlatform.Default>
+                      <Path Width="13" Height="13" Data="{StaticResource Icons.EyeClose}"/>
+                    </console:OnPlatform.Default>
+                    <console:OnPlatform.Console>
+                      <TextBlock Text="{StaticResource TextIcons.EyeClose}"/>
+        </console:OnPlatform.Console>
+        </console:OnPlatform>
       </ToggleButton>
     </StackPanel>
   </Grid>
 </UserControl>
+

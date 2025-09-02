@@ -6,10 +6,11 @@
              xmlns:vm="using:SourceGit.ViewModels"
              xmlns:v="using:SourceGit.Views"
              xmlns:c="using:SourceGit.Converters"
+             xmlns:console="https://github.com/jinek/consolonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.CommitDetail"
              x:DataType="vm:CommitDetail">
-  <TabControl SelectedIndex="{Binding ActivePageIndex, Mode=TwoWay}" Padding="4">
+  <TabControl SelectedIndex="{Binding ActivePageIndex, Mode=TwoWay}" Padding="{console:OnPlatform Default='4', Console='1'}">
     <!-- Information Page -->
     <TabItem>
       <TabItem.Header>
@@ -27,19 +28,19 @@
                             Children="{Binding Children}"/>
 
           <!-- Line -->
-          <Rectangle Height=".65" Margin="8" Fill="{DynamicResource Brush.Border2}"/>
+          <Rectangle Height=".65" Margin="{console:OnPlatform Default='8', Console='1'}" Fill="{DynamicResource Brush.Border2}"/>
 
           <!-- Change List -->
           <ListBox Background="Transparent"
-                   Margin="64,0,8,4"
+                   Margin="{console:OnPlatform Default='64,0,8,4', Console='1,0,1,1'}"
                    SelectionMode="Single"
                    ItemsSource="{Binding Changes, Converter={x:Static c:ListConverters.Top100Changes}}"
                    KeyDown="OnCommitListKeyDown">
             <ListBox.Styles>
               <Style Selector="ListBoxItem">
-                <Setter Property="Padding" Value="0"/>
-                <Setter Property="MinHeight" Value="24"/>
-                <Setter Property="CornerRadius" Value="4"/>
+                <Setter Property="Padding" Value="{console:OnPlatform Default='0', Console='0'}"/>
+                <Setter Property="MinHeight" Value="{console:OnPlatform Default='24', Console='2'}"/>
+                <Setter Property="CornerRadius" Value="{console:OnPlatform Default='4', Console='0'}"/>
               </Style>
             </ListBox.Styles>
 
@@ -51,7 +52,7 @@
 
             <ListBox.ItemTemplate>
               <DataTemplate DataType="m:Change">
-                <Grid Background="Transparent" Height="24" ColumnDefinitions="36,*" ContextRequested="OnChangeContextRequested" DoubleTapped="OnChangeDoubleTapped">
+                <Grid Background="Transparent" Height="{console:OnPlatform Default='24', Console='2'}" ColumnDefinitions="{console:OnPlatform Default='36,*', Console='3,*'}" ContextRequested="OnChangeContextRequested" DoubleTapped="OnChangeDoubleTapped">
                   <ToolTip.Tip>
                     <TextBlock TextWrapping="Wrap">
                       <Run Text="{Binding Path, Mode=OneWay}"/>
@@ -61,18 +62,18 @@
                   </ToolTip.Tip>
 
                   <v:ChangeStatusIcon Grid.Column="0"
-                                      Width="14" Height="14"
+                                      Width="{console:OnPlatform Default='14', Console='1'}" Height="{console:OnPlatform Default='14', Console='1'}"
                                       HorizontalAlignment="Left"
-                                      Margin="16,0,0,0"
+                                      Margin="{console:OnPlatform Default='16,0,0,0', Console='1,0,0,0'}"
                                       Change="{Binding}"/>
-                  <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Path}" Margin="8,0" HorizontalAlignment="Stretch" TextTrimming="CharacterEllipsis"/>
+                  <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Path}" Margin="{console:OnPlatform Default='8,0', Console='1,0'}" HorizontalAlignment="Stretch" TextTrimming="CharacterEllipsis"/>
                 </Grid>
               </DataTemplate>
             </ListBox.ItemTemplate>
           </ListBox>
 
           <!-- Only Top100 Tip -->
-          <TextBlock Margin="108,0,0,16"
+          <TextBlock Margin="{console:OnPlatform Default='108,0,0,16', Console='1,0,0,1'}"
                      Text="{DynamicResource Text.CommitDetail.Info.GotoChangesPage}"
                      Foreground="{DynamicResource Brush.FG2}"
                      IsVisible="{Binding Changes, Converter={x:Static c:ListConverters.IsOnlyTop100Shows}}"/>

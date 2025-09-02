@@ -4,10 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:c="using:SourceGit.Converters"
              xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:console="https://github.com/jinek/consolonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.DeleteRepositoryNode"
              x:DataType="vm:DeleteRepositoryNode">
-  <StackPanel Orientation="Vertical" Margin="8,0,0,0">
+  <StackPanel Orientation="Vertical" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}">
     <TextBlock FontSize="18"
                Classes="bold"
                Text="{DynamicResource Text.DeleteRepositoryNode.TitleForGroup}"
@@ -17,37 +18,59 @@
                Text="{DynamicResource Text.DeleteRepositoryNode.TitleForRepository}"
                IsVisible="{Binding Node.IsRepository}"/>
 
-    <Grid Margin="0,16,8,0" RowDefinitions="32,Auto,32" ColumnDefinitions="120,*">
+    <Grid Margin="{console:OnPlatform Default='0,16,8,0', Console='0,1,1,0'}"
+          RowDefinitions="{console:OnPlatform Default='32,Auto,32', Console='3,Auto,3'}"
+          ColumnDefinitions="{console:OnPlatform Default='120,*', Console='12,*'}">
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
-                 Margin="0,0,8,0"
+                 Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"
                  Text="{DynamicResource Text.DeleteRepositoryNode.Target}"/>
       <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
-        <Path Width="12" Height="12" Margin="0,0,8,0"
-              Fill="{Binding Node.Bookmark, Converter={x:Static c:IntConverters.ToBookmarkBrush}}"
-              HorizontalAlignment="Left" VerticalAlignment="Center"
-              Data="{StaticResource Icons.Bookmark}"
-              IsVisible="{Binding Node.IsRepository}"/>
-        <Path Width="12" Height="12" Margin="0,0,8,0"
-              Fill="{DynamicResource Brush.FG1}"
-              HorizontalAlignment="Left" VerticalAlignment="Center"
-              Data="{StaticResource Icons.Folder}"
-              IsVisible="{Binding !Node.IsRepository}"/>
-
+        <console:OnPlatform>
+                    <console:OnPlatform.Default>
+                      <Path Width="12" Height="12" Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"
+                            Fill="{Binding Node.Bookmark, Converter={x:Static c:IntConverters.ToBookmarkBrush}}"
+                            HorizontalAlignment="Left" VerticalAlignment="Center"
+                            Data="{StaticResource Icons.Bookmark}"
+                            IsVisible="{Binding Node.IsRepository}"/>
+                    </console:OnPlatform.Default>
+                    <console:OnPlatform.Console>
+                      <TextBlock Text="{StaticResource TextIcons.Bookmark}" IsVisible="{Binding Node.IsRepository}"/>
+        </console:OnPlatform.Console>
+        </console:OnPlatform>
+        <console:OnPlatform>
+                    <console:OnPlatform.Default>
+                      <Path Width="12" Height="12" Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"
+                            Fill="{DynamicResource Brush.FG1}"
+                            HorizontalAlignment="Left" VerticalAlignment="Center"
+                            Data="{StaticResource Icons.Folder}"
+                            IsVisible="{Binding !Node.IsRepository}"/>
+                    </console:OnPlatform.Default>
+                    <console:OnPlatform.Console>
+                      <TextBlock Text="{StaticResource TextIcons.Folder}" IsVisible="{Binding !Node.IsRepository}"/>
+        </console:OnPlatform.Console>
+        </console:OnPlatform>
         <TextBlock VerticalAlignment="Center" Text="{Binding Node.Name}"/>
       </StackPanel>
 
       <TextBlock Grid.Row="1" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
-                 Margin="0,0,8,0"
+                 Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"
                  Text="{DynamicResource Text.DeleteRepositoryNode.Path}"
                  IsVisible="{Binding Node.IsRepository}"/>
-      <StackPanel Grid.Row="1" Grid.Column="1" Height="32" Orientation="Horizontal" IsVisible="{Binding Node.IsRepository}">
-        <Path Width="12" Height="12"
-              Margin="0,0,8,0"
-              Fill="{DynamicResource Brush.FG1}"
-              HorizontalAlignment="Left" VerticalAlignment="Center"
-              Data="{StaticResource Icons.Folder}"/>
+      <StackPanel Grid.Row="1" Grid.Column="1" Height="{console:OnPlatform Default='32', Console='3'}" Orientation="Horizontal" IsVisible="{Binding Node.IsRepository}">
+        <console:OnPlatform>
+                    <console:OnPlatform.Default>
+                      <Path Width="12" Height="12"
+                            Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"
+                            Fill="{DynamicResource Brush.FG1}"
+                            HorizontalAlignment="Left" VerticalAlignment="Center"
+                            Data="{StaticResource Icons.Folder}"/>
+                    </console:OnPlatform.Default>
+                    <console:OnPlatform.Console>
+                      <TextBlock Text="{StaticResource TextIcons.Folder}"/>
+        </console:OnPlatform.Console>
+        </console:OnPlatform>
         <TextBlock Text="{Binding Node.Id}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
       </StackPanel>
 
@@ -64,3 +87,5 @@
     </Grid>
   </StackPanel>
 </UserControl>
+
+

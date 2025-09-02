@@ -3,6 +3,7 @@
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:v="using:SourceGit.Views"
+                    xmlns:console="https://github.com/jinek/consolonia"
                     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
                     x:Class="SourceGit.Views.ConfirmRestart"
                     x:Name="ThisControl"
@@ -18,11 +19,18 @@
               BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"
               PointerPressed="BeginMoveWindow"/>
 
-      <Path Width="14" Height="14"
-            Margin="10,0,0,0"
-            HorizontalAlignment="Left"
-            Data="{StaticResource Icons.Info}"
-            IsVisible="{OnPlatform True, macOS=False}"/>
+      <console:OnPlatform>
+                <console:OnPlatform.Default>
+                  <Path Width="14" Height="14"
+                        Margin="{console:OnPlatform Default='10,0,0,0', Console='1,0,0,0'}"
+                        HorizontalAlignment="Left"
+                        Data="{StaticResource Icons.Info}"
+                        IsVisible="{OnPlatform True, macOS=False}"/>
+                </console:OnPlatform.Default>
+                <console:OnPlatform.Console>
+                  <TextBlock Text="{StaticResource TextIcons.Info}" HorizontalAlignment="Left" Margin="1,0,0,0"/>
+      </console:OnPlatform.Console>
+      </console:OnPlatform>
 
       <TextBlock Classes="bold"
                  Text="{DynamicResource Text.ConfirmRestart.Title}"
@@ -34,14 +42,14 @@
                         IsVisible="{OnPlatform True, macOS=False}"/>
     </Grid>
 
-    <StackPanel Grid.Row="1" Margin="0,16" Orientation="Vertical">
-      <Border Margin="16,0">
+    <StackPanel Grid.Row="1" Margin="{console:OnPlatform Default='0,16', Console='0,1'}" Orientation="Vertical">
+      <Border Margin="{console:OnPlatform Default='16,0', Console='1,0'}">
         <TextBlock Text="{DynamicResource Text.ConfirmRestart.Message}"/>
       </Border>
 
       <Button Classes="flat primary"
-              Width="80"
-              Margin="0,16,0,0"
+              Width="{console:OnPlatform Default='80', Console='8'}"
+              Margin="{console:OnPlatform Default='0,16,0,0', Console='0,1,0,0'}"
               Content="{DynamicResource Text.Sure}"
               Click="Restart"
               HorizontalAlignment="Center"
@@ -49,3 +57,5 @@
     </StackPanel>
   </Grid>
 </v:ChromelessWindow>
+
+

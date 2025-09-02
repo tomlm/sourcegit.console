@@ -5,6 +5,7 @@
                     xmlns:m="using:SourceGit.Models"
                     xmlns:v="using:SourceGit.Views"
                     xmlns:vm="using:SourceGit.ViewModels"
+                    xmlns:console="https://github.com/jinek/consolonia"
                     mc:Ignorable="d" d:DesignWidth="520" d:DesignHeight="230"
                     x:Class="SourceGit.Views.ConfigureCustomActionControls"
                     x:DataType="vm:ConfigureCustomActionControls"
@@ -21,11 +22,18 @@
               BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"
               PointerPressed="BeginMoveWindow"/>
 
-      <Path Width="14" Height="14"
-            Margin="10,0,0,0"
-            HorizontalAlignment="Left"
-            Data="{StaticResource Icons.Settings}"
-            IsVisible="{OnPlatform True, macOS=False}"/>
+      <console:OnPlatform>
+                <console:OnPlatform.Default>
+                  <Path Width="14" Height="14"
+                        Margin="{console:OnPlatform Default='10,0,0,0', Console='1,0,0,0'}"
+                        HorizontalAlignment="Left"
+                        Data="{StaticResource Icons.Settings}"
+                        IsVisible="{OnPlatform True, macOS=False}"/>
+                </console:OnPlatform.Default>
+                <console:OnPlatform.Console>
+                  <TextBlock Text="{StaticResource TextIcons.Settings}"/>
+      </console:OnPlatform.Console>
+      </console:OnPlatform>
 
       <TextBlock Classes="bold"
                  Text="{DynamicResource Text.ConfigureCustomActionControls}"
@@ -38,11 +46,11 @@
     </Grid>
 
     <!-- Body -->
-    <Grid Grid.Row="1" ColumnDefinitions="200,*" MinHeight="340" Margin="8,8,8,16">
+    <Grid Grid.Row="1" ColumnDefinitions="{console:OnPlatform Default='200,*', Console='20,*'}" MinHeight="{console:OnPlatform Default='340', Console='34'}" Margin="{console:OnPlatform Default='8,8,8,16', Console='1,1,1,1'}">
       <Border Grid.Column="0"
               BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}"
               Background="{DynamicResource Brush.Contents}">
-        <Grid RowDefinitions="*,1,Auto">
+        <Grid RowDefinitions="{console:OnPlatform Default='*,1,Auto', Console='*,1,Auto'}">
           <ListBox Grid.Row="0"
                    Background="Transparent"
                    ItemsSource="{Binding Controls}"
@@ -51,8 +59,8 @@
             <ListBox.Styles>
               <Style Selector="ListBoxItem">
                 <Setter Property="MinHeight" Value="0"/>
-                <Setter Property="Height" Value="26"/>
-                <Setter Property="Padding" Value="4,2"/>
+                <Setter Property="Height" Value="{console:OnPlatform Default='26', Console='2'}"/>
+                <Setter Property="Padding" Value="{console:OnPlatform Default='4,2', Console='1,1'}"/>
               </Style>
             </ListBox.Styles>
 
@@ -64,9 +72,16 @@
 
             <ListBox.ItemTemplate>
               <DataTemplate DataType="m:CustomActionControl">
-                <Grid Margin="4,0" ColumnDefinitions="Auto,*">
-                  <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.Parameter}" Fill="{DynamicResource Brush.FG1}"/>
-                  <TextBlock Grid.Column="1" Text="{Binding Label, Mode=OneWay}" Margin="6,0,0,0" TextTrimming="CharacterEllipsis"/>
+                <Grid Margin="{console:OnPlatform Default='4,0', Console='1,0'}" ColumnDefinitions="Auto,*">
+                  <console:OnPlatform>
+                                        <console:OnPlatform.Default>
+                                          <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.Parameter}" Fill="{DynamicResource Brush.FG1}"/>
+                                        </console:OnPlatform.Default>
+                                        <console:OnPlatform.Console>
+                                          <TextBlock Text="{StaticResource TextIcons.Parameter}"/>
+                  </console:OnPlatform.Console>
+                  </console:OnPlatform>
+                  <TextBlock Grid.Column="1" Text="{Binding Label, Mode=OneWay}" Margin="{console:OnPlatform Default='6,0,0,0', Console='1,0,0,0'}" TextTrimming="CharacterEllipsis"/>
                 </Grid>
               </DataTemplate>
             </ListBox.ItemTemplate>
@@ -77,43 +92,78 @@
           <Grid Grid.Row="2" ColumnDefinitions="Auto,Auto,*,Auto,Auto" Background="{DynamicResource Brush.ToolBar}">
             <Button Grid.Column="0"
                     Classes="icon_button"
-                    Width="28" Height="28"
+                    Width="{console:OnPlatform Default='28', Console='2'}" Height="{console:OnPlatform Default='28', Console='2'}"
                     Command="{Binding Add}">
-              <Path Width="14" Height="14" Data="{StaticResource Icons.Plus}"/>
+              <console:OnPlatform>
+                                <console:OnPlatform.Default>
+                                  <Path Width="14" Height="14" Data="{StaticResource Icons.Plus}"/>
+                                </console:OnPlatform.Default>
+                                <console:OnPlatform.Console>
+                                  <TextBlock Text="{StaticResource TextIcons.Plus}"/>
+              </console:OnPlatform.Console>
+              </console:OnPlatform>
             </Button>
             <Button Grid.Column="1"
                     Classes="icon_button"
-                    Width="28" Height="28"
+                    Width="{console:OnPlatform Default='28', Console='2'}" Height="{console:OnPlatform Default='28', Console='2'}"
                     Command="{Binding Remove}">
-              <Path Width="14" Height="14" Data="{StaticResource Icons.Minus}"/>
+              <console:OnPlatform>
+                                <console:OnPlatform.Default>
+                                  <Path Width="14" Height="14" Data="{StaticResource Icons.Minus}"/>
+                                </console:OnPlatform.Default>
+                                <console:OnPlatform.Console>
+                                  <TextBlock Text="{StaticResource TextIcons.Minus}"/>
+              </console:OnPlatform.Console>
+              </console:OnPlatform>
             </Button>
             <Button Grid.Column="3"
                     Classes="icon_button"
-                    Width="28" Height="28"
+                    Width="{console:OnPlatform Default='28', Console='2'}" Height="{console:OnPlatform Default='28', Console='2'}"
                     Command="{Binding MoveUp}"
                     IsVisible="{Binding Edit, Converter={x:Static ObjectConverters.IsNotNull}}">
-              <Path Width="14" Height="14" Margin="0,6,0,0" Data="{StaticResource Icons.Up}"/>
+              <console:OnPlatform>
+                                <console:OnPlatform.Default>
+                                  <Path Width="14" Height="14" Margin="{console:OnPlatform Default='0,6,0,0', Console='0,1,0,0'}" Data="{StaticResource Icons.Up}"/>
+                                </console:OnPlatform.Default>
+                                <console:OnPlatform.Console>
+                                  <TextBlock Text="{StaticResource TextIcons.Up}"/>
+              </console:OnPlatform.Console>
+              </console:OnPlatform>
             </Button>
             <Button Grid.Column="4"
                     Classes="icon_button"
-                    Width="28" Height="28"
+                    Width="{console:OnPlatform Default='28', Console='2'}" Height="{console:OnPlatform Default='28', Console='2'}"
                     Command="{Binding MoveDown}"
                     IsVisible="{Binding Edit, Converter={x:Static ObjectConverters.IsNotNull}}">
-              <Path Width="14" Height="14" Margin="0,6,0,0" Data="{StaticResource Icons.Down}"/>
+              <console:OnPlatform>
+                                <console:OnPlatform.Default>
+                                  <Path Width="14" Height="14" Margin="{console:OnPlatform Default='0,6,0,0', Console='0,1,0,0'}" Data="{StaticResource Icons.Down}"/>
+                                </console:OnPlatform.Default>
+                                <console:OnPlatform.Console>
+                                  <TextBlock Text="{StaticResource TextIcons.Down}"/>
+              </console:OnPlatform.Console>
+              </console:OnPlatform>
             </Button>
           </Grid>
         </Grid>
       </Border>
 
-      <ContentControl Grid.Column="1" Margin="16,0,0,0">
+      <ContentControl Grid.Column="1" Margin="{console:OnPlatform Default='16,0,0,0', Console='1,0,0,0'}">
         <ContentControl.Content>
           <Binding Path="Edit">
             <Binding.TargetNullValue>
-              <Path Width="64" Height="64"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Fill="{DynamicResource Brush.FG2}"
-                    Data="{StaticResource Icons.Empty}"/>
+              <console:OnPlatform>
+                                <console:OnPlatform.Default>
+                                  <Path Width="64" Height="64"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Fill="{DynamicResource Brush.FG2}"
+                                        Data="{StaticResource Icons.Empty}"/>
+                                </console:OnPlatform.Default>
+                                <console:OnPlatform.Console>
+                                  <TextBlock Text="{StaticResource TextIcons.Empty}"/>
+              </console:OnPlatform.Console>
+              </console:OnPlatform>
             </Binding.TargetNullValue>
           </Binding>
         </ContentControl.Content>
@@ -123,11 +173,11 @@
             <StackPanel Orientation="Vertical">
               <!-- Label -->
               <TextBlock Text="{DynamicResource Text.ConfigureCustomActionControls.Label}"/>
-              <TextBox Margin="0,4,0,0" CornerRadius="3" Height="28" Text="{Binding Label, Mode=TwoWay}"/>
+              <TextBox Margin="{console:OnPlatform Default='0,4,0,0', Console='0,1,0,0'}" CornerRadius="{console:OnPlatform Default='3', Console='0'}" Height="{console:OnPlatform Default='28', Console='2'}" Text="{Binding Label, Mode=TwoWay}"/>
 
               <!-- Type -->
-              <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.ConfigureCustomActionControls.Type}"/>
-              <ComboBox Margin="0,4,0,0" Height="28" HorizontalAlignment="Stretch" SelectedIndex="{Binding Type, Mode=TwoWay}">
+              <TextBlock Margin="{console:OnPlatform Default='0,12,0,0', Console='0,1,0,0'}" Text="{DynamicResource Text.ConfigureCustomActionControls.Type}"/>
+              <ComboBox Margin="{console:OnPlatform Default='0,4,0,0', Console='0,1,0,0'}" Height="{console:OnPlatform Default='28', Console='2'}" HorizontalAlignment="Stretch" SelectedIndex="{Binding Type, Mode=TwoWay}">
                 <ComboBoxItem Content="TextBox"/>
                 <ComboBoxItem Content="PathSelector"/>
                 <ComboBoxItem Content="CheckBox"/>
@@ -135,20 +185,20 @@
               </ComboBox>
 
               <!-- Description -->
-              <TextBlock Margin="0,12,0,0" Text="{DynamicResource Text.ConfigureCustomActionControls.Description}"/>
-              <TextBox Margin="0,4,0,0"
-                       CornerRadius="3"
-                       Height="28"
+              <TextBlock Margin="{console:OnPlatform Default='0,12,0,0', Console='0,1,0,0'}" Text="{DynamicResource Text.ConfigureCustomActionControls.Description}"/>
+              <TextBox Margin="{console:OnPlatform Default='0,4,0,0', Console='0,1,0,0'}"
+                       CornerRadius="{console:OnPlatform Default='3', Console='0'}"
+                       Height="{console:OnPlatform Default='28', Console='2'}"
                        Text="{Binding Description, Mode=TwoWay}"/>
 
               <!-- StringValue -->
-              <TextBlock Margin="0,12,0,0"
+              <TextBlock Margin="{console:OnPlatform Default='0,12,0,0', Console='0,1,0,0'}"
                          Text="{DynamicResource Text.ConfigureCustomActionControls.CheckedValue}"
                          IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:CustomActionControlType.CheckBox}}"/>
-              <TextBlock Margin="0,12,0,0"
+              <TextBlock Margin="{console:OnPlatform Default='0,12,0,0', Console='0,1,0,0'}"
                          Text="{DynamicResource Text.ConfigureCustomActionControls.Options}"
                          IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:CustomActionControlType.ComboBox}}"/>
-              <TextBlock Margin="0,12,0,0"
+              <TextBlock Margin="{console:OnPlatform Default='0,12,0,0', Console='0,1,0,0'}"
                          Text="{DynamicResource Text.ConfigureCustomActionControls.DefaultValue}">
                 <TextBlock.IsVisible>
                   <MultiBinding Converter="{x:Static BoolConverters.Or}">
@@ -157,24 +207,24 @@
                   </MultiBinding>
                 </TextBlock.IsVisible>
               </TextBlock>
-              <TextBox Margin="0,4,0,0"
-                       CornerRadius="3"
-                       Height="28"
+              <TextBox Margin="{console:OnPlatform Default='0,4,0,0', Console='0,1,0,0'}"
+                       CornerRadius="{console:OnPlatform Default='3', Console='0'}"
+                       Height="{console:OnPlatform Default='28', Console='2'}"
                        Text="{Binding StringValue, Mode=TwoWay}"/>
-              <TextBlock Margin="0,2,0,0"
+              <TextBlock Margin="{console:OnPlatform Default='0,2,0,0', Console='0,1,0,0'}"
                          Classes="small"
                          TextWrapping="Wrap"
                          Text="{DynamicResource Text.ConfigureCustomActionControls.CheckedValue.Tip}"
                          IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:CustomActionControlType.CheckBox}}"
                          Foreground="{DynamicResource Brush.FG2}"/>
-              <TextBlock Margin="0,2,0,0"
+              <TextBlock Margin="{console:OnPlatform Default='0,2,0,0', Console='0,1,0,0'}"
                          Classes="small"
                          TextWrapping="Wrap"
                          Text="{DynamicResource Text.ConfigureCustomActionControls.Options.Tip}"
                          Foreground="{DynamicResource Brush.FG2}"
                          IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:CustomActionControlType.ComboBox}}">
               </TextBlock>
-              <TextBlock Margin="0,2,0,0"
+              <TextBlock Margin="{console:OnPlatform Default='0,2,0,0', Console='0,1,0,0'}"
                          Classes="small"
                          TextWrapping="Wrap"
                          Text="{DynamicResource Text.Configure.CustomAction.Arguments.Tip}"
@@ -188,7 +238,7 @@
               </TextBlock>
 
               <!-- BoolValue is needed by CheckBox/PathSelector -->
-              <Grid Margin="0,8,0,0" ColumnDefinitions="Auto,*">
+              <Grid Margin="{console:OnPlatform Default='0,8,0,0', Console='0,1,0,0'}" ColumnDefinitions="Auto,*">
                 <Grid.IsVisible>
                   <MultiBinding Converter="{x:Static BoolConverters.Or}">
                     <Binding Path="Type" Converter="{x:Static ObjectConverters.Equal}" ConverterParameter="{x:Static m:CustomActionControlType.CheckBox}"/>
@@ -202,8 +252,8 @@
                            Text="{DynamicResource Text.ConfigureCustomActionControls.IsFolder}"
                            IsVisible="{Binding Type, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:CustomActionControlType.PathSelector}}"/>
                 <CheckBox Grid.Column="1"
-                          Margin="8,0,0,0"
-                          Height="28"
+                          Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}"
+                          Height="{console:OnPlatform Default='28', Console='2'}"
                           IsChecked="{Binding BoolValue, Mode=TwoWay}"/>
               </Grid>
             </StackPanel>
@@ -213,3 +263,5 @@
     </Grid>
   </Grid>
 </v:ChromelessWindow>
+
+

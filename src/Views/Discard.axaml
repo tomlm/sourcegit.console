@@ -4,20 +4,21 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:SourceGit.ViewModels"
              xmlns:c="using:SourceGit.Converters"
+             xmlns:console="https://github.com/jinek/consolonia"
              mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="450"
              x:Class="SourceGit.Views.Discard"
              x:DataType="vm:Discard">
-  <StackPanel Orientation="Vertical" Margin="8,0,0,0">
+  <StackPanel Orientation="Vertical" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}">
     <TextBlock FontSize="18"
                Classes="bold"
                Text="{DynamicResource Text.Discard}"/>
 
-    <ContentControl Margin="0,16,0,8" Content="{Binding Mode}">
+    <ContentControl Margin="{console:OnPlatform Default='0,16,0,8', Console='0,1,0,1'}" Content="{Binding Mode}">
       <ContentControl.DataTemplates>
         <DataTemplate DataType="vm:DiscardAllMode">
-          <Grid RowDefinitions="32,32,32,Auto" ColumnDefinitions="120,*">
+          <Grid RowDefinitions="{console:OnPlatform Default='32,32,32,Auto', Console='3,3,3,Auto'}" ColumnDefinitions="{console:OnPlatform Default='120,*', Console='12,*'}">
             <TextBlock Grid.Row="0" Grid.Column="0"
-                       Margin="0,0,8,0"
+                       Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"
                        HorizontalAlignment="Right"
                        Text="{DynamicResource Text.Discard.Changes}"/>
             <TextBlock Grid.Row="0" Grid.Column="1"
@@ -31,12 +32,19 @@
                       Content="{DynamicResource Text.Discard.IncludeIgnored}"
                       IsChecked="{Binding IncludeIgnored, Mode=TwoWay}"/>
 
-            <Grid Grid.Row="3" Grid.Column="1" ColumnDefinitions="Auto,*" Margin="0,6,0,0">
-              <Path Grid.Column="0"
-                    Width="14" Height="14"
-                    Data="{StaticResource Icons.Error}"
-                    Fill="DarkOrange"/>
-              <TextBlock Grid.Column="1" Margin="8,0,0,0"
+            <Grid Grid.Row="3" Grid.Column="1" ColumnDefinitions="Auto,*" Margin="{console:OnPlatform Default='0,6,0,0', Console='0,1,0,0'}">
+              <console:OnPlatform>
+                                <console:OnPlatform.Default>
+                                  <Path Grid.Column="0"
+                                        Width="14" Height="14"
+                                        Data="{StaticResource Icons.Error}"
+                                        Fill="DarkOrange"/>
+                                </console:OnPlatform.Default>
+                                <console:OnPlatform.Console>
+                                  <TextBlock Grid.Column="0" Text="{StaticResource TextIcons.Warning}"/>
+              </console:OnPlatform.Console>
+              </console:OnPlatform>
+              <TextBlock Grid.Column="1" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}"
                          Text="{DynamicResource Text.Discard.Warning}"
                          TextWrapping="Wrap"
                          Foreground="DarkOrange"/>
@@ -45,23 +53,37 @@
         </DataTemplate>
 
         <DataTemplate DataType="vm:DiscardSingleFile">
-          <Grid RowDefinitions="32,Auto" ColumnDefinitions="120,*">
+          <Grid RowDefinitions="{console:OnPlatform Default='32,Auto', Console='3,Auto'}" ColumnDefinitions="{console:OnPlatform Default='120,*', Console='12,*'}">
             <TextBlock Grid.Row="0" Grid.Column="0"
-                       Margin="0,0,8,0"
+                       Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"
                        HorizontalAlignment="Right"
                        Text="{DynamicResource Text.Discard.Changes}"/>
             
             <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
-              <Path Width="12" Height="12" Data="{StaticResource Icons.File}"/>
-              <TextBlock Text="{Binding Path}" Margin="4,0,0,0"/>
+              <console:OnPlatform>
+                                <console:OnPlatform.Default>
+                                  <Path Width="12" Height="12" Data="{StaticResource Icons.File}"/>
+                                </console:OnPlatform.Default>
+                                <console:OnPlatform.Console>
+                                  <TextBlock Text="{StaticResource TextIcons.File}"/>
+              </console:OnPlatform.Console>
+              </console:OnPlatform>
+              <TextBlock Text="{Binding Path}" Margin="{console:OnPlatform Default='4,0,0,0', Console='1,0,0,0'}"/>
             </StackPanel>
 
-            <Grid Grid.Row="1" Grid.Column="1" ColumnDefinitions="Auto,*" Margin="0,6,0,0">
-              <Path Grid.Column="0"
-                    Width="14" Height="14"
-                    Data="{StaticResource Icons.Error}"
-                    Fill="DarkOrange"/>
-              <TextBlock Grid.Column="1" Margin="8,0,0,0"
+            <Grid Grid.Row="1" Grid.Column="1" ColumnDefinitions="Auto,*" Margin="{console:OnPlatform Default='0,6,0,0', Console='0,1,0,0'}">
+              <console:OnPlatform>
+                                <console:OnPlatform.Default>
+                                  <Path Grid.Column="0"
+                                        Width="14" Height="14"
+                                        Data="{StaticResource Icons.Error}"
+                                        Fill="DarkOrange"/>
+                                </console:OnPlatform.Default>
+                                <console:OnPlatform.Console>
+                                  <TextBlock Grid.Column="0" Text="{StaticResource TextIcons.Warning}"/>
+              </console:OnPlatform.Console>
+              </console:OnPlatform>
+              <TextBlock Grid.Column="1" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}"
                          Text="{DynamicResource Text.Discard.Warning}"
                          TextWrapping="Wrap"
                          Foreground="DarkOrange"/>
@@ -70,23 +92,37 @@
         </DataTemplate>
 
         <DataTemplate DataType="vm:DiscardMultipleFiles">
-          <Grid RowDefinitions="32,Auto" ColumnDefinitions="120,*">
+          <Grid RowDefinitions="{console:OnPlatform Default='32,Auto', Console='3,Auto'}" ColumnDefinitions="{console:OnPlatform Default='120,*', Console='12,*'}">
             <TextBlock Grid.Row="0" Grid.Column="0"
-                       Margin="0,0,8,0"
+                       Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"
                        HorizontalAlignment="Right"
                        Text="{DynamicResource Text.Discard.Changes}"/>
             <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
-              <Path Width="12" Height="12" Data="{StaticResource Icons.File}"/>
+              <console:OnPlatform>
+                                <console:OnPlatform.Default>
+                                  <Path Width="12" Height="12" Data="{StaticResource Icons.File}"/>
+                                </console:OnPlatform.Default>
+                                <console:OnPlatform.Console>
+                                  <TextBlock Text="{StaticResource TextIcons.File}"/>
+              </console:OnPlatform.Console>
+              </console:OnPlatform>
               <TextBlock Text="{Binding Count, Converter={x:Static c:StringConverters.FormatByResourceKey}, ConverterParameter='Discard.Total'}"
-                         Margin="4,0,0,0"/>
+                         Margin="{console:OnPlatform Default='4,0,0,0', Console='1,0,0,0'}"/>
             </StackPanel>
 
-            <Grid Grid.Row="1" Grid.Column="1" ColumnDefinitions="Auto,*" Margin="0,6,0,0">
-              <Path Grid.Column="0"
-                    Width="14" Height="14"
-                    Data="{StaticResource Icons.Error}"
-                    Fill="DarkOrange"/>
-              <TextBlock Grid.Column="1" Margin="8,0,0,0"
+            <Grid Grid.Row="1" Grid.Column="1" ColumnDefinitions="Auto,*" Margin="{console:OnPlatform Default='0,6,0,0', Console='0,1,0,0'}">
+              <console:OnPlatform>
+                                <console:OnPlatform.Default>
+                                  <Path Grid.Column="0"
+                                        Width="14" Height="14"
+                                        Data="{StaticResource Icons.Error}"
+                                        Fill="DarkOrange"/>
+                                </console:OnPlatform.Default>
+                                <console:OnPlatform.Console>
+                                  <TextBlock Grid.Column="0" Text="{StaticResource TextIcons.Warning}"/>
+              </console:OnPlatform.Console>
+              </console:OnPlatform>
+              <TextBlock Grid.Column="1" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}"
                          Text="{DynamicResource Text.Discard.Warning}"
                          TextWrapping="Wrap"
                          Foreground="DarkOrange"/>
@@ -97,3 +133,5 @@
     </ContentControl>
   </StackPanel>
 </UserControl>
+
+

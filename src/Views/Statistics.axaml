@@ -6,6 +6,7 @@
                     xmlns:vm="using:SourceGit.ViewModels"
                     xmlns:v="using:SourceGit.Views"
                     xmlns:lvc="using:LiveChartsCore.SkiaSharpView.Avalonia"
+                    xmlns:console="https://github.com/jinek/consolonia"
                     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
                     x:Class="SourceGit.Views.Statistics"
                     x:DataType="vm:Statistics"
@@ -14,18 +15,25 @@
                     Width="800" Height="500"
                     WindowStartupLocation="CenterOwner"
                     CanResize="False">
-  <Grid RowDefinitions="Auto,Auto,*">
+  <Grid RowDefinitions="{console:OnPlatform Default='Auto,Auto,*', Console='Auto,Auto,*'}">
     <!-- Title bar -->
-    <Grid Grid.Row="0" Height="28" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
+    <Grid Grid.Row="0" Height="{console:OnPlatform Default='28', Console='2'}" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
       <Border Background="{DynamicResource Brush.TitleBar}"
               BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"
               PointerPressed="BeginMoveWindow"/>
 
-      <Path Width="14" Height="14"
-            Margin="10,0,0,0"
-            HorizontalAlignment="Left"
-            Data="{StaticResource Icons.Statistics}"
-            IsVisible="{OnPlatform True, macOS=False}"/>
+      <console:OnPlatform>
+                <console:OnPlatform.Default>
+                  <Path Width="14" Height="14"
+                        Margin="{console:OnPlatform Default='10,0,0,0', Console='1,0,0,0'}"
+                        HorizontalAlignment="Left"
+                        Data="{StaticResource Icons.Statistics}"
+                        IsVisible="{OnPlatform True, macOS=False}"/>
+                </console:OnPlatform.Default>
+                <console:OnPlatform.Console>
+                  <TextBlock Text="{StaticResource TextIcons.Statistics}"/>
+      </console:OnPlatform.Console>
+      </console:OnPlatform>
 
       <TextBlock Classes="bold"
                  Text="{DynamicResource Text.Statistics}"
@@ -39,15 +47,15 @@
 
     <!-- View mode switcher -->
     <ListBox Grid.Row="1"
-             Margin="0,8"
+             Margin="{console:OnPlatform Default='0,8', Console='0,1'}"
              SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}"
              HorizontalAlignment="Center"
              VerticalAlignment="Center"
              Background="Transparent"
              BorderThickness="1"
              BorderBrush="{DynamicResource Brush.Border2}"
-             CornerRadius="14"
-             Padding="3,0">
+             CornerRadius="{console:OnPlatform Default='14', Console='0'}"
+             Padding="{console:OnPlatform Default='3,0', Console='1,0'}">
       <ListBox.ItemsPanel>
         <ItemsPanelTemplate>
           <StackPanel Orientation="Horizontal"/>
@@ -57,7 +65,7 @@
       <ListBox.Styles>
         <Style Selector="ListBoxItem">
           <Setter Property="Width" Value="100"/>
-          <Setter Property="Height" Value="28"/>
+          <Setter Property="Height" Value="{console:OnPlatform Default='28', Console='2'}"/>
           <Setter Property="Padding" Value="0"/>
           <Setter Property="Background" Value="Transparent"/>
         </Style>
@@ -71,8 +79,8 @@
         </Style>
 
         <Style Selector="ListBoxItem Border.switcher_bg">
-          <Setter Property="Height" Value="22"/>
-          <Setter Property="CornerRadius" Value="11"/>
+          <Setter Property="Height" Value="{console:OnPlatform Default='22', Console='2'}"/>
+          <Setter Property="CornerRadius" Value="{console:OnPlatform Default='11', Console='0'}"/>
           <Setter Property="Background" Value="Transparent"/>
           <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
@@ -117,25 +125,32 @@
 
     <!-- Color Picker -->
     <Border Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Center">
-      <Button Background="Transparent" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}" Width="28" Height="28" CornerRadius="14" Margin="0,0,24,0">
+      <Button Background="Transparent" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}" Width="{console:OnPlatform Default='28', Console='2'}" Height="{console:OnPlatform Default='28', Console='2'}" CornerRadius="{console:OnPlatform Default='14', Console='0'}" Margin="{console:OnPlatform Default='0,0,24,0', Console='0,0,1,0'}">
         <Button.Flyout>
           <Flyout>
-            <Border Padding="8">
+            <Border Padding="{console:OnPlatform Default='8', Console='1'}">
               <v:ColorPicker Value="{Binding SampleColor, Mode=TwoWay}"/>
             </Border>
           </Flyout>
         </Button.Flyout>
 
-        <Path Width="14" Height="14" Data="{StaticResource Icons.ColorPicker}" Fill="{Binding SampleBrush}"/>
+        <console:OnPlatform>
+                    <console:OnPlatform.Default>
+                      <Path Width="14" Height="14" Data="{StaticResource Icons.ColorPicker}" Fill="{Binding SampleBrush}"/>
+                    </console:OnPlatform.Default>
+                    <console:OnPlatform.Console>
+                      <TextBlock Text="{StaticResource TextIcons.ColorPicker}"/>
+        </console:OnPlatform.Console>
+        </console:OnPlatform>
       </Button>
     </Border>
 
     <!-- Contents -->
-    <ContentControl Grid.Row="2" Content="{Binding SelectedReport, Mode=OneWay}" Margin="8,8,8,16">
+    <ContentControl Grid.Row="2" Content="{Binding SelectedReport, Mode=OneWay}" Margin="{console:OnPlatform Default='8,8,8,16', Console='1,1,1,1'}">
       <ContentControl.DataTemplates>
         <DataTemplate DataType="m:StatisticsReport">
-          <Grid ColumnDefinitions="256,*">
-            <Grid Grid.Column="0" RowDefinitions="*,16">
+          <Grid ColumnDefinitions="{console:OnPlatform Default='256,*', Console='26,*'}">
+            <Grid Grid.Column="0" RowDefinitions="{console:OnPlatform Default='*,16', Console='*,1'}">
               <!-- Table By Author -->
               <ListBox Grid.Column="0"
                        ItemsSource="{Binding Authors}"
@@ -148,9 +163,9 @@
                        ScrollViewer.VerticalScrollBarVisibility="Auto">
                 <ListBox.Styles>
                   <Style Selector="ListBoxItem">
-                    <Setter Property="Margin" Value="0"/>
-                    <Setter Property="Padding" Value="0"/>
-                    <Setter Property="Height" Value="26"/>
+                    <Setter Property="Margin" Value="{console:OnPlatform Default='0', Console='0'}"/>
+                    <Setter Property="Padding" Value="{console:OnPlatform Default='0', Console='0'}"/>
+                    <Setter Property="Height" Value="{console:OnPlatform Default='26', Console='2'}"/>
                   </Style>
                 </ListBox.Styles>
 
@@ -165,15 +180,15 @@
                     <Border BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border2}"
                             Background="Transparent"
                             ToolTip.Tip="{Binding User}">
-                      <Grid ColumnDefinitions="26,*,72">
+                      <Grid ColumnDefinitions="{console:OnPlatform Default='26,*,72', Console='2,*,7'}">
                         <v:Avatar Grid.Column="0"
-                                  Width="16" Height="16"
+                                  Width="{console:OnPlatform Default='16', Console='1'}" Height="{console:OnPlatform Default='16', Console='1'}"
                                   HorizontalAlignment="Center" VerticalAlignment="Center"
                                   User="{Binding User}"/>
-                        <Border Grid.Column="1" Padding="4,0,8,0" ClipToBounds="True">
+                        <Border Grid.Column="1" Padding="{console:OnPlatform Default='4,0,8,0', Console='1,0,1,0'}" ClipToBounds="True">
                           <TextBlock Text="{Binding User.Name}" HorizontalAlignment="Left"/>
                         </Border>
-                        <Border Grid.Column="2" Padding="8,0" ClipToBounds="True">
+                        <Border Grid.Column="2" Padding="{console:OnPlatform Default='8,0', Console='1,0'}" ClipToBounds="True">
                           <TextBlock Text="{Binding Count}" HorizontalAlignment="Right"/>
                         </Border>
                       </Grid>
@@ -183,25 +198,25 @@
               </ListBox>
 
               <!-- Summary -->
-              <Grid Grid.Row="1" ColumnDefinitions="*,*">
+              <Grid Grid.Row="1" ColumnDefinitions="{console:OnPlatform Default='*,*', Console='*,*'}">
                 <!-- Total Authors -->
                 <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Bottom">
                   <TextBlock Classes="primary" Text="{DynamicResource Text.Statistics.TotalAuthors}" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
-                  <TextBlock Classes="primary" Text="{Binding Authors.Count}" FontSize="11" Margin="4,0,0,0"/>
+                  <TextBlock Classes="primary" Text="{Binding Authors.Count}" FontSize="11" Margin="{console:OnPlatform Default='4,0,0,0', Console='1,0,0,0'}"/>
                 </StackPanel>
 
                 <!-- Total Commits -->
                 <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
                   <TextBlock Classes="primary" Text="{DynamicResource Text.Statistics.TotalCommits}" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
-                  <TextBlock Classes="primary" Text="{Binding Total}" FontSize="11" Margin="4,0,0,0"/>
+                  <TextBlock Classes="primary" Text="{Binding Total}" FontSize="11" Margin="{console:OnPlatform Default='4,0,0,0', Console='1,0,0,0'}"/>
                 </StackPanel>
               </Grid>
             </Grid>
 
             <!-- Graph -->
             <lvc:CartesianChart Grid.Column="1"
-                                Margin="0"
-                                Padding="0"
+                                Margin="{console:OnPlatform Default='0', Console='0'}"
+                                Padding="{console:OnPlatform Default='0', Console='0'}"
                                 Series="{Binding Series}"
                                 XAxes="{Binding XAxes}" YAxes="{Binding YAxes}"
                                 ZoomMode="X"/>
@@ -212,8 +227,10 @@
 
     <!-- Loading Mask -->
     <v:LoadingIcon Grid.Row="2"
-                   Width="48" Height="48"
+                   Width="{console:OnPlatform Default='48', Console='4'}" Height="{console:OnPlatform Default='48', Console='4'}"
                    HorizontalAlignment="Center" VerticalAlignment="Center"
                    IsVisible="{Binding IsLoading}"/>
   </Grid>
 </v:ChromelessWindow>
+
+

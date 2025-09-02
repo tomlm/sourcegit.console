@@ -4,22 +4,26 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:m="using:SourceGit.Models"
              xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:console="https://github.com/jinek/consolonia"
              mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="450"
              x:Class="SourceGit.Views.Push"
              x:DataType="vm:Push">
-  <StackPanel Orientation="Vertical" Margin="8,0">
+  <StackPanel Orientation="Vertical" Margin="{console:OnPlatform Default='8,0', Console='1,0'}">
     <TextBlock FontSize="18"
                Classes="bold"
                Text="{DynamicResource Text.Push.Title}"/>
 
-    <Grid Margin="0,16,0,0" RowDefinitions="32,32,32,Auto,Auto,32,32" ColumnDefinitions="130,*">
+    <Grid Margin="{console:OnPlatform Default='0,16,0,0', Console='0,1,0,0'}"
+          RowDefinitions="{console:OnPlatform Default='32,32,32,Auto,Auto,32,32', Console='3,3,3,Auto,Auto,3,3'}"
+          ColumnDefinitions="{console:OnPlatform Default='130,*', Console='13,*'}">
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
-                 Margin="0,0,8,0"
+                 Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"
                  Text="{DynamicResource Text.Push.Local}"/>
       <ComboBox Grid.Row="0" Grid.Column="1"
                 x:Name="LocalBranchesComboBox"
-                Height="28" Padding="8,0"
+                Height="{console:OnPlatform Default='28', Console='3'}"
+                Padding="{console:OnPlatform Default='8,0', Console='1,0'}"
                 VerticalAlignment="Center" HorizontalAlignment="Stretch"
                 ItemsSource="{Binding LocalBranches}"
                 SelectedItem="{Binding SelectedLocalBranch, Mode=TwoWay}"
@@ -27,8 +31,15 @@
                 IsEnabled="{Binding !HasSpecifiedLocalBranch}">
         <ComboBox.ItemTemplate>
           <DataTemplate x:DataType="{x:Type m:Branch}">
-            <StackPanel Orientation="Horizontal" Height="20" VerticalAlignment="Center">
-              <Path Margin="0,0,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Branch}"/>
+            <StackPanel Orientation="Horizontal" Height="{console:OnPlatform Default='20', Console='2'}" VerticalAlignment="Center">
+              <console:OnPlatform>
+                                <console:OnPlatform.Default>
+                                  <Path Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Branch}"/>
+                                </console:OnPlatform.Default>
+                                <console:OnPlatform.Console>
+                                  <TextBlock Text="{StaticResource TextIcons.Branch}"/>
+              </console:OnPlatform.Console>
+              </console:OnPlatform>
               <TextBlock Text="{Binding Name}"/>
             </StackPanel>
           </DataTemplate>
@@ -37,17 +48,25 @@
 
       <TextBlock Grid.Row="1" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
-                 Margin="0,0,8,0"
+                 Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"
                  Text="{DynamicResource Text.Push.Remote}"/>
       <ComboBox Grid.Row="1" Grid.Column="1"
-                Height="28" Padding="8,0"
+                Height="{console:OnPlatform Default='28', Console='3'}"
+                Padding="{console:OnPlatform Default='8,0', Console='1,0'}"
                 VerticalAlignment="Center" HorizontalAlignment="Stretch"
                 ItemsSource="{Binding Remotes}"
                 SelectedItem="{Binding SelectedRemote, Mode=TwoWay}">
         <ComboBox.ItemTemplate>
           <DataTemplate x:DataType="{x:Type m:Remote}">
-            <StackPanel Orientation="Horizontal" Height="20" VerticalAlignment="Center">
-              <Path Margin="0,2,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Remote}"/>
+            <StackPanel Orientation="Horizontal" Height="{console:OnPlatform Default='20', Console='2'}" VerticalAlignment="Center">
+              <console:OnPlatform>
+                                <console:OnPlatform.Default>
+                                  <Path Margin="{console:OnPlatform Default='0,2,8,0', Console='0,1,1,0'}" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Remote}"/>
+                                </console:OnPlatform.Default>
+                                <console:OnPlatform.Console>
+                                  <TextBlock Text="📡"/>
+              </console:OnPlatform.Console>
+              </console:OnPlatform>
               <TextBlock Text="{Binding Name}"/>
             </StackPanel>
           </DataTemplate>
@@ -56,23 +75,31 @@
 
       <TextBlock Grid.Row="2" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
-                 Margin="0,0,8,0"
+                 Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"
                  Text="{DynamicResource Text.Push.To}"/>
       <ComboBox Grid.Row="2" Grid.Column="1"
                 x:Name="RemoteBranchesComboBox"
-                Height="28" Padding="8,0"
+                Height="{console:OnPlatform Default='28', Console='3'}"
+                Padding="{console:OnPlatform Default='8,0', Console='1,0'}"
                 VerticalAlignment="Center" HorizontalAlignment="Stretch"
                 ItemsSource="{Binding RemoteBranches}"
                 IsTextSearchEnabled="True"
                 SelectedItem="{Binding SelectedRemoteBranch, Mode=TwoWay}">
         <ComboBox.ItemTemplate>
           <DataTemplate x:DataType="{x:Type m:Branch}">
-            <StackPanel Orientation="Horizontal" Height="20" VerticalAlignment="Center">
-              <Path Margin="0,0,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Branch}"/>
+            <StackPanel Orientation="Horizontal" Height="{console:OnPlatform Default='20', Console='2'}" VerticalAlignment="Center">
+              <console:OnPlatform>
+                                <console:OnPlatform.Default>
+                                  <Path Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Branch}"/>
+                                </console:OnPlatform.Default>
+                                <console:OnPlatform.Console>
+                                  <TextBlock Text="{StaticResource TextIcons.Branch}"/>
+              </console:OnPlatform.Console>
+              </console:OnPlatform>
               <TextBlock Text="{Binding Name}" VerticalAlignment="Center"/>
-              <Border Height="14"
-                      CornerRadius="7"
-                      Margin="4,0,0,0" Padding="6,0"
+              <Border Height="{console:OnPlatform Default='14', Console='1'}"
+                      CornerRadius="{console:OnPlatform Default='7', Console='0'}"
+                      Margin="{console:OnPlatform Default='4,0,0,0', Console='1,0,0,0'}" Padding="{console:OnPlatform Default='6,0', Console='1,0'}"
                       VerticalAlignment="Center"
                       Background="Green"
                       IsVisible="{Binding Head, Converter={x:Static StringConverters.IsNullOrEmpty}}">
@@ -84,14 +111,14 @@
       </ComboBox>
 
       <CheckBox Grid.Row="3" Grid.Column="1"
-                Height="32"
+                Height="{console:OnPlatform Default='32', Console='3'}"
                 Content="{DynamicResource Text.Push.Tracking}"
                 IsChecked="{Binding Tracking, Mode=TwoWay}"
                 IsVisible="{Binding IsSetTrackOptionVisible}"
                 ToolTip.Tip="-u"/>
 
       <CheckBox Grid.Row="4" Grid.Column="1"
-                Height="32"
+                Height="{console:OnPlatform Default='32', Console='3'}"
                 Content="{DynamicResource Text.Push.CheckSubmodules}"
                 IsChecked="{Binding CheckSubmodules, Mode=TwoWay}"
                 IsVisible="{Binding IsCheckSubmodulesVisible}"
@@ -109,3 +136,5 @@
     </Grid>
   </StackPanel>
 </UserControl>
+
+

@@ -6,6 +6,7 @@
              xmlns:vm="using:SourceGit.ViewModels"
              xmlns:v="using:SourceGit.Views"
              xmlns:c="using:SourceGit.Converters"
+             xmlns:console="https://github.com/jinek/consolonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.CommitBaseInfo"
              x:Name="ThisControl">
@@ -13,34 +14,34 @@
     <DataTemplate DataType="m:Commit">
       <StackPanel Orientation="Vertical">
         <!-- Author & Committer -->
-        <UniformGrid Rows="1" Margin="0,8">
+        <UniformGrid Rows="1" Margin="{console:OnPlatform Default='0,8', Console='0,1'}">
           <!-- Author -->
-          <Grid ColumnDefinitions="96,*">
+          <Grid ColumnDefinitions="{console:OnPlatform Default='96,*', Console='9, *'}">
             <v:Avatar Grid.Column="0" Width="64" Height="64" HorizontalAlignment="Right" User="{Binding Author}"/>
-            <StackPanel Grid.Column="1" Margin="16,0,8,0" Orientation="Vertical">
+            <StackPanel Grid.Column="1" Margin="{console:OnPlatform Default='16,0,8,0', Console='1,0,1,0'}" Orientation="Vertical">
               <TextBlock Classes="group_header_label" Margin="0" Text="{DynamicResource Text.CommitDetail.Info.Author}"/>
-              <Grid Margin="0,10,0,8" ColumnDefinitions="Auto,*" ClipToBounds="True">
-                <v:EnhancedSelectableTextBlock Grid.Column="0" Text="{Binding Author.Name}" Margin="2,0,8,0"/>
+              <Grid Margin="{console:OnPlatform Default='0,10,0,8', Console='0,1,0,1'}" ColumnDefinitions="{console:OnPlatform Default='Auto,*', Console='Auto,*'}" ClipToBounds="True">
+                <v:EnhancedSelectableTextBlock Grid.Column="0" Text="{Binding Author.Name}" Margin="{console:OnPlatform Default='2,0,8,0', Console='1,0,1,0'}"/>
                 <v:EnhancedSelectableTextBlock Grid.Column="1" Text="{Binding Author.Email}" ToolTip.Tip="{Binding Author.Email}" Foreground="{DynamicResource Brush.FG2}" TextTrimming="CharacterEllipsis"/>
               </Grid>
               <v:EnhancedSelectableTextBlock Text="{Binding AuthorTimeStr}"
-                                             Margin="2,0,0,0"
+                                             Margin="{console:OnPlatform Default='2,0,0,0', Console='1,0,0,0'}"
                                              FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Decrease}}"
                                              Foreground="{DynamicResource Brush.FG2}"/>
             </StackPanel>
           </Grid>
 
           <!-- Committer -->
-          <Grid ColumnDefinitions="96,*" IsVisible="{Binding IsCommitterVisible}">
+          <Grid ColumnDefinitions="{console:OnPlatform Default='96,*', Console='9,*'}" IsVisible="{Binding IsCommitterVisible}">
             <v:Avatar Grid.Column="0" Width="64" Height="64" HorizontalAlignment="Right" User="{Binding Committer}"/>
-            <StackPanel Grid.Column="1" Margin="16,0,8,0" Orientation="Vertical">
+            <StackPanel Grid.Column="1" Margin="{console:OnPlatform Default='16,0,8,0', Console='1,0,1,0'}" Orientation="Vertical">
               <TextBlock Classes="group_header_label" Margin="0" Text="{DynamicResource Text.CommitDetail.Info.Committer}"/>
-              <Grid Margin="0,10,0,8" ColumnDefinitions="Auto,*" ClipToBounds="True">
-                <v:EnhancedSelectableTextBlock Grid.Column="0" Text="{Binding Committer.Name}" Margin="2,0,8,0"/>
+              <Grid Margin="{console:OnPlatform Default='0,10,0,8', Console='0,1,0,1'}" ColumnDefinitions="{console:OnPlatform Default='Auto,*', Console='Auto,*'}" ClipToBounds="True">
+                <v:EnhancedSelectableTextBlock Grid.Column="0" Text="{Binding Committer.Name}" Margin="{console:OnPlatform Default='2,0,8,0', Console='1,0,1,0'}"/>
                 <v:EnhancedSelectableTextBlock Grid.Column="1" Text="{Binding Committer.Email}" ToolTip.Tip="{Binding Committer.Email}" Foreground="{DynamicResource Brush.FG2}" TextTrimming="CharacterEllipsis"/>
               </Grid>
               <v:EnhancedSelectableTextBlock Text="{Binding CommitterTimeStr}"
-                                             Margin="2,0,0,0"
+                                             Margin="{console:OnPlatform Default='2,0,0,0', Console='1,0,0,0'}"
                                              FontSize="{Binding Source={x:Static vm:Preferences.Instance}, Path=DefaultFontSize, Converter={x:Static c:DoubleConverters.Decrease}}"
                                              Foreground="{DynamicResource Brush.FG2}"/>
             </StackPanel>
@@ -48,28 +49,49 @@
         </UniformGrid>
 
         <!-- Line -->
-        <Rectangle Height=".65" Margin="8" Fill="{DynamicResource Brush.Border2}" VerticalAlignment="Center"/>
+        <Rectangle Height=".65" Margin="{console:OnPlatform Default='8', Console='1'}" Fill="{DynamicResource Brush.Border2}" VerticalAlignment="Center"/>
 
         <!-- Base Information -->
-        <Grid RowDefinitions="24,Auto,Auto,Auto,Auto" ColumnDefinitions="96,*">
+        <Grid RowDefinitions="{console:OnPlatform Default='24,Auto,Auto,Auto,Auto', Console='2,Auto,Auto,Auto,Auto'}" ColumnDefinitions="{console:OnPlatform Default='96,*', Console='9,*'}">
           <!-- SHA -->
-          <TextBlock Grid.Row="0" Grid.Column="0" Classes="info_label" VerticalAlignment="Top" Margin="0,4,0,0" Text="{DynamicResource Text.CommitDetail.Info.SHA}" />
+          <TextBlock Grid.Row="0" Grid.Column="0" Classes="info_label" VerticalAlignment="Top" Margin="{console:OnPlatform Default='0,4,0,0', Console='0,1,0,0'}" Text="{DynamicResource Text.CommitDetail.Info.SHA}" />
           <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Height="24">
             <TextBlock Classes="primary"
                        Text="{Binding SHA}"
-                       Margin="12,0,4,0"
+                       Margin="{console:OnPlatform Default='12,0,4,0', Console='1,0,1,0'}"
                        VerticalAlignment="Center"/>
 
             <Button Classes="icon_button" Width="24" Cursor="Hand" Click="OnCopyCommitSHA" ToolTip.Tip="{DynamicResource Text.Copy}">
-              <Path Width="12" Height="12" Data="{StaticResource Icons.Copy}"/>
+              <console:OnPlatform>
+                <console:OnPlatform.Default>
+                  <Path Width="12" Height="12" Data="{StaticResource Icons.Copy}"/>
+                </console:OnPlatform.Default>
+                <console:OnPlatform.Console>
+                  <TextBlock Text="{StaticResource TextIcons.Copy}"/>
+                </console:OnPlatform.Console>
+              </console:OnPlatform>
             </Button>
 
             <Button Classes="icon_button" Width="24" Cursor="Hand" Click="OnOpenContainsIn" IsVisible="{Binding #ThisControl.SupportsContainsIn}" ToolTip.Tip="{DynamicResource Text.CommitDetail.Info.ContainsIn}">
-              <Path Width="14" Height="14" Margin="0,1,0,0" Data="{StaticResource Icons.Relation}"/>
+              <console:OnPlatform>
+                <console:OnPlatform.Default>
+                  <Path Width="14" Height="14" Margin="{console:OnPlatform Default='0,1,0,0', Console='0,1,0,0'}" Data="{StaticResource Icons.Relation}"/>
+                </console:OnPlatform.Default>
+                <console:OnPlatform.Console>
+                  <TextBlock Text="{StaticResource TextIcons.Relation}"/>
+                </console:OnPlatform.Console>
+              </console:OnPlatform>
             </Button>
 
             <Button Classes="icon_button" Width="24" Cursor="Hand" Click="OnOpenWebLink" IsVisible="{Binding #ThisControl.WebLinks, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}" ToolTip.Tip="{DynamicResource Text.CommitDetail.Info.WebLinks}">
-              <Path Width="12" Height="12" Data="{StaticResource Icons.Link}" Fill="{DynamicResource Brush.Link}"/>
+              <console:OnPlatform>
+                <console:OnPlatform.Default>
+                  <Path Width="12" Height="12" Data="{StaticResource Icons.Link}" Fill="{DynamicResource Brush.Link}"/>
+                </console:OnPlatform.Default>
+                <console:OnPlatform.Console>
+                  <TextBlock Text="{StaticResource TextIcons.Link}"/>
+                </console:OnPlatform.Console>
+              </console:OnPlatform>
             </Button>
 
             <ContentControl Content="{Binding #ThisControl.SignInfo}">
@@ -78,8 +100,8 @@
                   <Border Width="24" Background="Transparent">
                     <ToolTip.Tip>
                       <StackPanel Orientation="Vertical">
-                        <TextBlock Margin="0,0,0,12" Text="{Binding ToolTip}"/>
-                        <Grid ColumnDefinitions="Auto,8,Auto" RowDefinitions="Auto,Auto">
+                        <TextBlock Margin="{console:OnPlatform Default='0,0,0,12', Console='0,0,0,1'}" Text="{Binding ToolTip}"/>
+                        <Grid ColumnDefinitions="{console:OnPlatform Default='Auto,8,Auto', Console='Auto,1,Auto'}" RowDefinitions="{console:OnPlatform Default='Auto,Auto', Console='Auto,Auto'}">
                           <TextBlock Grid.Row="0" Grid.Column="0" Text="{DynamicResource Text.CommitDetail.Info.Signer}" IsVisible="{Binding HasSigner}" VerticalAlignment="Center"/>
                           <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding Signer}" IsVisible="{Binding HasSigner}" VerticalAlignment="Center"/>
                           <TextBlock Grid.Row="1" Grid.Column="0" Text="{DynamicResource Text.CommitDetail.Info.Key}" VerticalAlignment="Center"/>
@@ -87,7 +109,14 @@
                         </Grid>
                       </StackPanel>
                     </ToolTip.Tip>
-                    <Path Width="14" Height="14" Data="{StaticResource Icons.Verified}" Fill="{Binding Brush}"/>
+                    <console:OnPlatform>
+                                            <console:OnPlatform.Default>
+                                              <Path Width="14" Height="14" Data="{StaticResource Icons.Verified}" Fill="{Binding Brush}"/>
+                                            </console:OnPlatform.Default>
+                                            <console:OnPlatform.Console>
+                                              <TextBlock Text="{StaticResource TextIcons.Verified}"/>
+                    </console:OnPlatform.Console>
+                    </console:OnPlatform>
                   </Border>
                 </DataTemplate>
               </ContentControl.DataTemplates>
@@ -95,8 +124,8 @@
           </StackPanel>
 
           <!-- PARENTS -->
-          <TextBlock Grid.Row="1" Grid.Column="0" Classes="info_label" VerticalAlignment="Top" Margin="0,4,0,0" Text="{DynamicResource Text.CommitDetail.Info.Parents}" IsVisible="{Binding Parents, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}"/>
-          <ItemsControl Grid.Row="1" Grid.Column="1" Height="24" Margin="12,0,0,0" ItemsSource="{Binding Parents}" IsVisible="{Binding Parents, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}">
+          <TextBlock Grid.Row="1" Grid.Column="0" Classes="info_label" VerticalAlignment="Top" Margin="{console:OnPlatform Default='0,4,0,0', Console='0,1,0,0'}" Text="{DynamicResource Text.CommitDetail.Info.Parents}" IsVisible="{Binding Parents, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}"/>
+          <ItemsControl Grid.Row="1" Grid.Column="1" Height="24" Margin="{console:OnPlatform Default='12,0,0,0', Console='1,0,0,0'}" ItemsSource="{Binding Parents}" IsVisible="{Binding Parents, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}">
             <ItemsControl.ItemsPanel>
               <ItemsPanelTemplate>
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center"/>
@@ -110,7 +139,7 @@
                            Foreground="DarkOrange"
                            TextDecorations="Underline"
                            Cursor="Hand"
-                           Margin="0,0,16,0"
+                           Margin="{console:OnPlatform Default='0,0,16,0', Console='0,0,1,0'}"
                            PointerEntered="OnSHAPointerEntered"
                            PointerPressed="OnSHAPressed"
                            ToolTip.ShowDelay="0">
@@ -124,13 +153,13 @@
                   <TextBlock.DataTemplates>
                     <DataTemplate DataType="m:Commit">
                       <StackPanel MinWidth="400" Orientation="Vertical">
-                        <Grid ColumnDefinitions="Auto,*,Auto">
+                        <Grid ColumnDefinitions="{console:OnPlatform Default='Auto,*,Auto', Console='Auto,*,Auto'}">
                           <v:Avatar Grid.Column="0" Width="16" Height="16" VerticalAlignment="Center" IsHitTestVisible="False" User="{Binding Author}"/>
-                          <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
-                          <TextBlock Grid.Column="2" Classes="primary" Text="{Binding CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+                          <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Author.Name}" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}"/>
+                          <TextBlock Grid.Column="2" Classes="primary" Text="{Binding CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}"/>
                         </Grid>
 
-                        <TextBlock Classes="primary" Margin="0,8,0,0" Text="{Binding Subject}" TextWrapping="Wrap"/>
+                        <TextBlock Classes="primary" Margin="{console:OnPlatform Default='0,8,0,0', Console='0,1,0,0'}" Text="{Binding Subject}" TextWrapping="Wrap"/>
                       </StackPanel>
                     </DataTemplate>
                   </TextBlock.DataTemplates>
@@ -140,8 +169,8 @@
           </ItemsControl>
 
           <!-- CHILDREN -->
-          <TextBlock Grid.Row="2" Grid.Column="0" Classes="info_label" VerticalAlignment="Top" Margin="0,4,0,0" Text="{DynamicResource Text.CommitDetail.Info.Children}" IsVisible="{Binding #ThisControl.Children, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}"/>
-          <ItemsControl Grid.Row="2" Grid.Column="1" Margin="12,0,0,0" ItemsSource="{Binding #ThisControl.Children}" IsVisible="{Binding #ThisControl.Children, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}">
+          <TextBlock Grid.Row="2" Grid.Column="0" Classes="info_label" VerticalAlignment="Top" Margin="{console:OnPlatform Default='0,4,0,0', Console='0,1,0,0'}" Text="{DynamicResource Text.CommitDetail.Info.Children}" IsVisible="{Binding #ThisControl.Children, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}"/>
+          <ItemsControl Grid.Row="2" Grid.Column="1" Margin="{console:OnPlatform Default='12,0,0,0', Console='1,0,0,0'}" ItemsSource="{Binding #ThisControl.Children}" IsVisible="{Binding #ThisControl.Children, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}">
             <ItemsControl.ItemsPanel>
               <ItemsPanelTemplate>
                 <WrapPanel Orientation="Horizontal" VerticalAlignment="Center" ItemHeight="24"/>
@@ -155,7 +184,7 @@
                            Foreground="DarkOrange"
                            TextDecorations="Underline"
                            Cursor="Hand"
-                           Margin="0,0,16,0"
+                           Margin="{console:OnPlatform Default='0,0,16,0', Console='0,0,1,0'}"
                            PointerEntered="OnSHAPointerEntered"
                            PointerPressed="OnSHAPressed"
                            ToolTip.ShowDelay="0">
@@ -169,13 +198,13 @@
                   <TextBlock.DataTemplates>
                     <DataTemplate DataType="m:Commit">
                       <StackPanel MinWidth="400" Orientation="Vertical">
-                        <Grid ColumnDefinitions="Auto,*,Auto">
+                        <Grid ColumnDefinitions="{console:OnPlatform Default='Auto,*,Auto', Console='Auto,*,Auto'}">
                           <v:Avatar Grid.Column="0" Width="16" Height="16" VerticalAlignment="Center" IsHitTestVisible="False" User="{Binding Author}"/>
-                          <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
-                          <TextBlock Grid.Column="2" Classes="primary" Text="{Binding CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+                          <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Author.Name}" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}"/>
+                          <TextBlock Grid.Column="2" Classes="primary" Text="{Binding CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}"/>
                         </Grid>
 
-                        <TextBlock Classes="primary" Margin="0,8,0,0" Text="{Binding Subject}" TextWrapping="Wrap"/>
+                        <TextBlock Classes="primary" Margin="{console:OnPlatform Default='0,8,0,0', Console='0,1,0,0'}" Text="{Binding Subject}" TextWrapping="Wrap"/>
                       </StackPanel>
                     </DataTemplate>
                   </TextBlock.DataTemplates>
@@ -185,20 +214,20 @@
           </ItemsControl>
 
           <!-- REFS -->
-          <TextBlock Grid.Row="3" Grid.Column="0" Classes="info_label" VerticalAlignment="Top" Margin="0,4,0,0" Text="{DynamicResource Text.CommitDetail.Info.Refs}" IsVisible="{Binding HasDecorators}"/>
-          <Border Grid.Row="3" Grid.Column="1" Margin="12,0,0,0" MinHeight="24" IsVisible="{Binding HasDecorators}">
+          <TextBlock Grid.Row="3" Grid.Column="0" Classes="info_label" VerticalAlignment="Top" Margin="{console:OnPlatform Default='0,4,0,0', Console='0,1,0,0'}" Text="{DynamicResource Text.CommitDetail.Info.Refs}" IsVisible="{Binding HasDecorators}"/>
+          <Border Grid.Row="3" Grid.Column="1" Margin="{console:OnPlatform Default='12,0,0,0', Console='1,0,0,0'}" MinHeight="24" IsVisible="{Binding HasDecorators}">
             <v:CommitRefsPresenter Foreground="{DynamicResource Brush.FG1}"
                                    FontFamily="{DynamicResource Fonts.Primary}"
                                    FontSize="12"
                                    AllowWrap="True"
-                                   Margin="0,4,0,0"
+                                   Margin="{console:OnPlatform Default='0,4,0,0', Console='0,1,0,0'}"
                                    UseGraphColor="False"/>
           </Border>
 
           <!-- Messages -->
-          <TextBlock Grid.Row="4" Grid.Column="0" Classes="info_label" VerticalAlignment="Top" Margin="0,4,0,0" Text="{DynamicResource Text.CommitDetail.Info.Message}" />
+          <TextBlock Grid.Row="4" Grid.Column="0" Classes="info_label" VerticalAlignment="Top" Margin="{console:OnPlatform Default='0,4,0,0', Console='0,1,0,0'}" Text="{DynamicResource Text.CommitDetail.Info.Message}" />
           <v:CommitMessagePresenter Grid.Row="4" Grid.Column="1"
-                                    Margin="12,4,8,0"
+                                    Margin="{console:OnPlatform Default='12,4,8,0', Console='1,1,1,0'}"
                                     Classes="primary"
                                     FullMessage="{Binding #ThisControl.FullMessage}"
                                     HorizontalAlignment="Stretch"
@@ -213,13 +242,13 @@
             <v:CommitMessagePresenter.DataTemplates>
               <DataTemplate DataType="m:Commit">
                 <StackPanel MinWidth="400" Orientation="Vertical">
-                  <Grid ColumnDefinitions="Auto,*,Auto">
+                  <Grid ColumnDefinitions="{console:OnPlatform Default='Auto,*,Auto', Console='Auto,*,Auto'}">
                     <v:Avatar Grid.Column="0" Width="16" Height="16" VerticalAlignment="Center" IsHitTestVisible="False" User="{Binding Author}"/>
-                    <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
-                    <TextBlock Grid.Column="2" Classes="primary" Text="{Binding CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+                    <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Author.Name}" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}"/>
+                    <TextBlock Grid.Column="2" Classes="primary" Text="{Binding CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}"/>
                   </Grid>
 
-                  <TextBlock Classes="primary" Margin="0,8,0,0" Text="{Binding Subject}" TextWrapping="Wrap"/>
+                  <TextBlock Classes="primary" Margin="{console:OnPlatform Default='0,8,0,0', Console='0,1,0,0'}" Text="{Binding Subject}" TextWrapping="Wrap"/>
                 </StackPanel>
               </DataTemplate>
             </v:CommitMessagePresenter.DataTemplates>
@@ -229,3 +258,5 @@
     </DataTemplate>
   </UserControl.DataTemplates>
 </UserControl>
+
+

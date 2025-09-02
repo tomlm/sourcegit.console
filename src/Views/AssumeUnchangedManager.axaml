@@ -5,6 +5,7 @@
                     xmlns:vm="using:SourceGit.ViewModels"
                     xmlns:v="using:SourceGit.Views"
                     xmlns:c="using:SourceGit.Converters"
+                    xmlns:console="https://github.com/jinek/consolonia"
                     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
                     x:Class="SourceGit.Views.AssumeUnchangedManager"
                     x:DataType="vm:AssumeUnchangedManager"
@@ -21,11 +22,16 @@
               BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"
               PointerPressed="BeginMoveWindow"/>
 
-      <Path Width="14" Height="14"
-            Margin="10,0,0,0"
-            HorizontalAlignment="Left"
-            Data="{StaticResource Icons.File.Ignore}"
-            IsVisible="{OnPlatform True, macOS=False}"/>
+      <console:OnPlatform.Default>
+        <Path Width="14" Height="14"
+              Margin="{console:OnPlatform Default='10,0,0,0', Console='1,0,0,0'}"
+              HorizontalAlignment="Left"
+              Data="{StaticResource Icons.File.Ignore}"
+              IsVisible="{OnPlatform True, macOS=False}"/>
+      </console:OnPlatform.Default>
+      <console:OnPlatform.Console>
+        <TextBlock Text="{StaticResource TextIcons.FileIgnore}" HorizontalAlignment="Left"/>
+      </console:OnPlatform.Console>
 
       <TextBlock Classes="bold"
                  Text="{DynamicResource Text.AssumeUnchanged}"
@@ -39,7 +45,7 @@
 
     <!-- Unchanged Files -->
     <Grid Grid.Row="1">
-      <ListBox Margin="8"
+      <ListBox Margin="{console:OnPlatform Default='8', Console='1'}"
                BorderThickness="1"
                BorderBrush="{DynamicResource Brush.Border2}"
                Background="{DynamicResource Brush.Contents}"
@@ -49,8 +55,8 @@
                ScrollViewer.VerticalScrollBarVisibility="Auto">
         <ListBox.Styles>
           <Style Selector="ListBoxItem">
-            <Setter Property="Margin" Value="0"/>
-            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="{console:OnPlatform Default='0', Console='0'}"/>
+            <Setter Property="Padding" Value="{console:OnPlatform Default='0', Console='0'}"/>
             <Setter Property="Height" Value="26"/>
           </Style>
         </ListBox.Styles>
@@ -64,12 +70,26 @@
         <ListBox.ItemTemplate>
           <DataTemplate>
             <Grid Height="26" ColumnDefinitions="26,*,30">
-              <Path Grid.Column="0" Width="14" Height="14" Margin="8,0,0,0" HorizontalAlignment="Center" Data="{StaticResource Icons.File}"/>
-              <Border Grid.Column="1" Margin="4,0" ClipToBounds="True">
+              <console:OnPlatform>
+                <console:OnPlatform.Default>
+                  <Path Grid.Column="0" Width="14" Height="14" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}" HorizontalAlignment="Center" Data="{StaticResource Icons.File}"/>
+                </console:OnPlatform.Default>
+                <console:OnPlatform.Console>
+                  <TextBlock Grid.Column="0" Text="{StaticResource TextIcons.File}" HorizontalAlignment="Center"/>
+                </console:OnPlatform.Console>
+              </console:OnPlatform>
+              <Border Grid.Column="1" Margin="{console:OnPlatform Default='4,0', Console='1,0'}" ClipToBounds="True">
                 <TextBlock Text="{Binding}" HorizontalAlignment="Left"/>
               </Border>
               <Button Grid.Column="2" Classes="icon_button" Click="OnRemoveButtonClicked">
-                <Path Width="14" Height="14" Data="{StaticResource Icons.Clear}"/>
+                <console:OnPlatform>
+                  <console:OnPlatform.Default>
+                    <Path Width="14" Height="14" Data="{StaticResource Icons.Clear}"/>
+                  </console:OnPlatform.Default>
+                  <console:OnPlatform.Console>
+                    <TextBlock Text="{StaticResource TextIcons.Clear}"/>
+                  </console:OnPlatform.Console>
+                </console:OnPlatform>
               </Button>
             </Grid>
           </DataTemplate>
@@ -80,8 +100,15 @@
       <StackPanel Orientation="Vertical"
                   HorizontalAlignment="Center" VerticalAlignment="Center"
                   IsVisible="{Binding Files.Count, Converter={x:Static c:IntConverters.IsZero}}">
-        <Path Width="48" Height="48" Data="{StaticResource Icons.Empty}" Fill="{DynamicResource Brush.FG2}"/>
-        <TextBlock Margin="0,16,0,0" Text="{DynamicResource Text.AssumeUnchanged.Empty}" Foreground="{DynamicResource Brush.FG2}"/>
+        <console:OnPlatform>
+          <console:OnPlatform.Default>
+            <Path Width="48" Height="48" Data="{StaticResource Icons.Empty}" Fill="{DynamicResource Brush.FG2}"/>
+          </console:OnPlatform.Default>
+          <console:OnPlatform.Console>
+            <TextBlock Text="{StaticResource TextIcons.Empty}"/>
+          </console:OnPlatform.Console>
+        </console:OnPlatform>
+        <TextBlock Margin="{console:OnPlatform Default='0,16,0,0', Console='0,1,0,0'}" Text="{DynamicResource Text.AssumeUnchanged.Empty}" Foreground="{DynamicResource Brush.FG2}"/>
       </StackPanel>
     </Grid>
   </Grid>

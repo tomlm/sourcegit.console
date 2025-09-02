@@ -6,38 +6,53 @@
              xmlns:vm="using:SourceGit.ViewModels"
              xmlns:v="using:SourceGit.Views"
              xmlns:c="using:SourceGit.Converters"
+             xmlns:console="https://github.com/jinek/consolonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.RevisionFiles"
              x:DataType="vm:CommitDetail">
   <Grid>
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="{Binding Source={x:Static vm:Preferences.Instance}, Path=Layout.CommitDetailFilesLeftWidth, Mode=TwoWay}" MinWidth="200"/>
-      <ColumnDefinition Width="4"/>
+      <ColumnDefinition Width="{console:OnPlatform Default='4', Console='1'}"/>
       <ColumnDefinition Width="*" MinWidth="100"/>
     </Grid.ColumnDefinitions>
 
     <!-- Left -->
-    <Grid Grid.Column="0" RowDefinitions="26,*">
-      <Grid Grid.Row="0" Height="26">
+    <Grid Grid.Column="0" RowDefinitions="{console:OnPlatform Default='26,*', Console='2,*'}">
+      <Grid Grid.Row="0" Height="{console:OnPlatform Default='26', Console='2'}">
         <TextBox Grid.Row="0"
                  x:Name="TxtSearchRevisionFiles"
-                 Height="26"
+                 Height="{console:OnPlatform Default='26', Console='2'}"
                  BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}"
                  Background="Transparent"
-                 CornerRadius="4"
+                 CornerRadius="{console:OnPlatform Default='4', Console='0'}"
                  Watermark="{DynamicResource Text.CommitDetail.Files.Search}"
                  Text="{Binding RevisionFileSearchFilter, Mode=TwoWay}"
                  KeyDown="OnSearchBoxKeyDown"
                  TextChanged="OnSearchBoxTextChanged">
           <TextBox.InnerLeftContent>
-            <Path Width="14" Height="14" Margin="4,0,0,0" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Search}"/>
+            <console:OnPlatform>
+                            <console:OnPlatform.Default>
+                              <Path Width="14" Height="14" Margin="{console:OnPlatform Default='4,0,0,0', Console='1,0,0,0'}" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Search}"/>
+                            </console:OnPlatform.Default>
+                            <console:OnPlatform.Console>
+                              <TextBlock Text="{StaticResource TextIcons.Search}"/>
+            </console:OnPlatform.Console>
+            </console:OnPlatform>
           </TextBox.InnerLeftContent>
 
           <TextBox.InnerRightContent>
             <Button Classes="icon_button"
                     IsVisible="{Binding RevisionFileSearchFilter, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
                     Command="{Binding ClearRevisionFileSearchFilter}">
-              <Path Width="14" Height="14" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Clear}"/>
+              <console:OnPlatform>
+                                <console:OnPlatform.Default>
+                                  <Path Width="14" Height="14" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Clear}"/>
+                                </console:OnPlatform.Default>
+                                <console:OnPlatform.Console>
+                                  <TextBlock Text="{StaticResource TextIcons.Clear}"/>
+              </console:OnPlatform.Console>
+              </console:OnPlatform>
             </Button>
           </TextBox.InnerRightContent>
         </TextBox>
@@ -52,8 +67,8 @@
             </MultiBinding>
           </Popup.IsOpen>
 
-          <Border Margin="8" VerticalAlignment="Top" Effect="drop-shadow(0 0 8 #80000000)">
-            <Border Background="{DynamicResource Brush.Popup}" CornerRadius="4" Padding="4" BorderThickness="0.65" BorderBrush="{DynamicResource Brush.Accent}">
+          <Border Margin="{console:OnPlatform Default='8', Console='1'}" VerticalAlignment="Top" Effect="drop-shadow(0 0 8 #80000000)">
+            <Border Background="{DynamicResource Brush.Popup}" CornerRadius="{console:OnPlatform Default='4', Console='0'}" Padding="{console:OnPlatform Default='4', Console='1'}" BorderThickness="0.65" BorderBrush="{DynamicResource Brush.Accent}">
               <ListBox x:Name="SearchSuggestionBox"
                        Background="Transparent"
                        SelectionMode="Single"
@@ -63,11 +78,10 @@
                        KeyDown="OnSearchSuggestionBoxKeyDown">
                 <ListBox.Styles>
                   <Style Selector="ListBoxItem">
-                    <Setter Property="Padding" Value="0"/>
-                    <Setter Property="MinHeight" Value="26"/>
-                    <Setter Property="CornerRadius" Value="4"/>
+                    <Setter Property="Padding" Value="{console:OnPlatform Default='0', Console='0'}"/>
+                    <Setter Property="MinHeight" Value="{console:OnPlatform Default='26', Console='2'}"/>
+                    <Setter Property="CornerRadius" Value="{console:OnPlatform Default='4', Console='0'}"/>
                   </Style>
-
                   <Style Selector="ListBox">
                     <Setter Property="FocusAdorner">
                       <FocusAdornerTemplate>
@@ -76,21 +90,26 @@
                     </Setter>
                   </Style>
                 </ListBox.Styles>
-
                 <ListBox.ItemsPanel>
                   <ItemsPanelTemplate>
                     <StackPanel Orientation="Vertical"/>
                   </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
-
                 <ListBox.ItemTemplate>
                   <DataTemplate DataType="x:String">
-                    <StackPanel Background="Transparent" Orientation="Vertical" Margin="8,4" DoubleTapped="OnSearchSuggestionDoubleTapped">
+                    <StackPanel Background="Transparent" Orientation="Vertical" Margin="{console:OnPlatform Default='8,4', Console='1,1'}" DoubleTapped="OnSearchSuggestionDoubleTapped">
                       <StackPanel Orientation="Horizontal">
-                        <Path Width="12" Height="12" Data="{StaticResource Icons.File}"/>
-                        <TextBlock Classes="primary" Margin="6,0,0,0" Text="{Binding Converter={x:Static c:PathConverters.PureFileName}}"/>
+                        <console:OnPlatform>
+                                                    <console:OnPlatform.Default>
+                                                      <Path Width="12" Height="12" Data="{StaticResource Icons.File}"/>
+                                                    </console:OnPlatform.Default>
+                                                    <console:OnPlatform.Console>
+                                                      <TextBlock Text="{StaticResource TextIcons.File}"/>
+                        </console:OnPlatform.Console>
+                        </console:OnPlatform>
+                        <TextBlock Classes="primary" Margin="{console:OnPlatform Default='6,0,0,0', Console='1,0,0,0'}" Text="{Binding Converter={x:Static c:PathConverters.PureFileName}}"/>
                       </StackPanel>
-                      <TextBlock Classes="primary" FontSize="12" Margin="18,2,0,0" Foreground="{DynamicResource Brush.FG2}" Text="{Binding Converter={x:Static c:PathConverters.PureDirectoryName}}"/>
+                      <TextBlock Classes="primary" FontSize="12" Margin="{console:OnPlatform Default='18,2,0,0', Console='1,1,0,0'}" Foreground="{DynamicResource Brush.FG2}" Text="{Binding Converter={x:Static c:PathConverters.PureDirectoryName}}"/>
                     </StackPanel>
                   </DataTemplate>
                 </ListBox.ItemTemplate>
@@ -99,38 +118,41 @@
           </Border>
         </Popup>
       </Grid>
-
       <!-- File Tree -->
-      <Border Grid.Row="1" Margin="0,4,0,0" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}">
+      <Border Grid.Row="1" Margin="{console:OnPlatform Default='0,4,0,0', Console='0,1,0,0'}" BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="1" Background="{DynamicResource Brush.Contents}">
         <v:RevisionFileTreeView x:Name="FileTree" Revision="{Binding Commit.SHA}"/>
       </Border>
     </Grid>
-
     <GridSplitter Grid.Column="1"
                   MinWidth="1"
                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                   Background="Transparent"/>
-
     <!-- Right: File Content Viewer -->
     <Grid Grid.Column="2">
       <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
-        <Grid RowDefinitions="Auto,*">
+        <Grid RowDefinitions="{console:OnPlatform Default='Auto,*', Console='Auto,*'}">
           <Border Grid.Row="0"
-                  Height="26"
+                  Height="{console:OnPlatform Default='26', Console='2'}"
                   BorderBrush="{DynamicResource Brush.Border2}" BorderThickness="0,0,0,1"
                   IsVisible="{Binding ViewRevisionFilePath, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
-            <Grid ColumnDefinitions="Auto,*,Auto,Auto">
-              <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.File}" Margin="8,0,0,0"/>
+            <Grid ColumnDefinitions="{console:OnPlatform Default='Auto,*,Auto,Auto', Console='Auto,*,Auto,Auto'}">
+              <console:OnPlatform>
+                                <console:OnPlatform.Default>
+                                  <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.File}" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}"/>
+                                </console:OnPlatform.Default>
+                                <console:OnPlatform.Console>
+                                  <TextBlock Text="{StaticResource TextIcons.File}"/>
+              </console:OnPlatform.Console>
+              </console:OnPlatform>
               <TextBlock Grid.Column="1"
                          Classes="primary"
-                         Margin="4,0,0,0"
+                         Margin="{console:OnPlatform Default='4,0,0,0', Console='1,0,0,0'}"
                          Text="{Binding ViewRevisionFilePath}"
                          FontSize="11"
                          TextTrimming="CharacterEllipsis"/>
-
               <ToggleButton Grid.Column="2"
                             Classes="line_path"
-                            Width="28"
+                            Width="{console:OnPlatform Default='28', Console='2'}"
                             Background="Transparent"
                             IsChecked="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseSyntaxHighlighting, Mode=TwoWay}"
                             ToolTip.Tip="{DynamicResource Text.Diff.SyntaxHighlight}">
@@ -140,12 +162,18 @@
                            Converter="{x:Static c:ObjectConverters.IsTypeOf}"
                            ConverterParameter="{x:Type m:RevisionTextFile}"/>
                 </ToggleButton.IsVisible>
-                <Path Width="13" Height="13" Data="{StaticResource Icons.SyntaxHighlight}" Margin="0,2,0,0"/>
+                <console:OnPlatform>
+                                    <console:OnPlatform.Default>
+                                      <Path Width="13" Height="13" Data="{StaticResource Icons.SyntaxHighlight}" Margin="{console:OnPlatform Default='0,2,0,0', Console='0,1,0,0'}"/>
+                                    </console:OnPlatform.Default>
+                                    <console:OnPlatform.Console>
+                                      <TextBlock Text="{StaticResource TextIcons.SyntaxHighlight}"/>
+                </console:OnPlatform.Console>
+                </console:OnPlatform>
               </ToggleButton>
-
               <Button Grid.Column="3"
                       Classes="icon_button"
-                      Width="28"
+                      Width="{console:OnPlatform Default='28', Console='2'}"
                       Background="Transparent"
                       Click="OnOpenFileWithDefaultEditor"
                       IsVisible="{Binding CanOpenRevisionFileWithDefaultEditor, Mode=OneWay}"
@@ -157,14 +185,22 @@
                     <Run Text="{OnPlatform Ctrl+O, macOS=⌘+O}" FontSize="11" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
                   </TextBlock>
                 </ToolTip.Tip>
-                <Path Width="12" Height="12" Data="{StaticResource Icons.OpenWith}"/>
+                <console:OnPlatform>
+                                    <console:OnPlatform.Default>
+                                      <Path Width="12" Height="12" Data="{StaticResource Icons.OpenWith}"/>
+                                    </console:OnPlatform.Default>
+                                    <console:OnPlatform.Console>
+                                      <TextBlock Text="{StaticResource TextIcons.OpenWith}"/>
+                </console:OnPlatform.Console>
+                </console:OnPlatform>
               </Button>
             </Grid>
           </Border>
-
           <v:RevisionFileContentViewer Grid.Row="1" Content="{Binding ViewRevisionFileContent}"/>
         </Grid>
       </Border>
     </Grid>
   </Grid>
 </UserControl>
+
+

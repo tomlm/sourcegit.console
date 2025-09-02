@@ -5,34 +5,37 @@
              xmlns:m="using:SourceGit.Models"
              xmlns:vm="using:SourceGit.ViewModels"
              xmlns:c="using:SourceGit.Converters"
+             xmlns:console="https://github.com/jinek/consolonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.MergeMultiple"
              x:DataType="vm:MergeMultiple">
-  <StackPanel Orientation="Vertical" Margin="8,0">
+  <StackPanel Orientation="Vertical" Margin="{console:OnPlatform Default='8,0', Console='1,0'}">
     <TextBlock FontSize="18"
                Classes="bold"
                Text="{DynamicResource Text.MergeMultiple}"/>
 
-    <Grid Margin="0,16,0,0" RowDefinitions="Auto,32,32" ColumnDefinitions="100,*">
+    <Grid Margin="{console:OnPlatform Default='0,16,0,0', Console='0,1,0,0'}"
+          RowDefinitions="{console:OnPlatform Default='Auto,32,32', Console='Auto,3,3'}"
+          ColumnDefinitions="{console:OnPlatform Default='100,*', Console='10,*'}">
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Top"
-                 Margin="0,6,8,0"
+                 Margin="{console:OnPlatform Default='0,6,8,0', Console='0,1,1,0'}"
                  Text="{DynamicResource Text.MergeMultiple.Targets}"/>
       <ListBox Grid.Row="0" Grid.Column="1"
-               MinHeight="32" MaxHeight="100" Margin="0,0,0,4"
+               MinHeight="32" MaxHeight="100" Margin="{console:OnPlatform Default='0,0,0,4', Console='0,0,0,1'}"
                ItemsSource="{Binding Targets}"
                Background="{DynamicResource Brush.Contents}"
                BorderThickness="1"
                BorderBrush="{DynamicResource Brush.Border2}"
-               Padding="4"
-               CornerRadius="4"
+               Padding="{console:OnPlatform Default='4', Console='1'}"
+               CornerRadius="{console:OnPlatform Default='4', Console='0'}"
                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                ScrollViewer.VerticalScrollBarVisibility="Auto">
         <ListBox.Styles>
           <Style Selector="ListBoxItem">
-            <Setter Property="Padding" Value="4,0"/>
-            <Setter Property="Height" Value="26"/>
-            <Setter Property="CornerRadius" Value="4"/>
+            <Setter Property="Padding" Value="{console:OnPlatform Default='4,0', Console='1,0'}"/>
+            <Setter Property="Height" Value="{console:OnPlatform Default='26', Console='3'}"/>
+            <Setter Property="CornerRadius" Value="{console:OnPlatform Default='4', Console='0'}"/>
           </Style>
         </ListBox.Styles>
 
@@ -47,17 +50,31 @@
             <ContentControl Content="{Binding}">
               <ContentControl.DataTemplates>
                 <DataTemplate DataType="m:Commit">
-                  <Grid ColumnDefinitions="14,Auto,*">
-                    <Path Grid.Column="0" Width="14" Height="14" Data="{StaticResource Icons.Commit}"/>
-                    <TextBlock Grid.Column="1" FontFamily="{DynamicResource Fonts.Monospace}" VerticalAlignment="Center" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="6,0,4,0"/>
+                  <Grid ColumnDefinitions="{console:OnPlatform Default='14,Auto,*', Console='1,Auto,*'}">
+                    <console:OnPlatform>
+                                            <console:OnPlatform.Default>
+                                              <Path Grid.Column="0" Width="14" Height="14" Data="{StaticResource Icons.Commit}"/>
+                                            </console:OnPlatform.Default>
+                                            <console:OnPlatform.Console>
+                                              <TextBlock Grid.Column="0">🗑️</TextBlock>
+                    </console:OnPlatform.Console>
+                    </console:OnPlatform>
+                    <TextBlock Grid.Column="1" FontFamily="{DynamicResource Fonts.Monospace}" VerticalAlignment="Center" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="{console:OnPlatform Default='6,0,4,0', Console='1,0,1,0'}"/>
                     <TextBlock Grid.Column="2" VerticalAlignment="Center" Text="{Binding Subject}" TextTrimming="CharacterEllipsis"/>
                   </Grid>
                 </DataTemplate>
 
                 <DataTemplate DataType="m:Branch">
                   <StackPanel Orientation="Horizontal">
-                    <Path Width="14" Height="14" Data="{StaticResource Icons.Branch}"/>
-                    <TextBlock VerticalAlignment="Center" Text="{Binding FriendlyName}" Margin="8,0,0,0"/>
+                    <console:OnPlatform>
+                                            <console:OnPlatform.Default>
+                                              <Path Width="14" Height="14" Data="{StaticResource Icons.Branch}"/>
+                                            </console:OnPlatform.Default>
+                                            <console:OnPlatform.Console>
+                                              <TextBlock Text="{StaticResource TextIcons.Branch}"/>
+                    </console:OnPlatform.Console>
+                    </console:OnPlatform>
+                    <TextBlock VerticalAlignment="Center" Text="{Binding FriendlyName}" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}"/>
                   </StackPanel>
                 </DataTemplate>
               </ContentControl.DataTemplates>
@@ -68,18 +85,18 @@
 
       <TextBlock Grid.Row="1" Grid.Column="0"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
-                 Margin="0,0,8,0"
+                 Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"
                  Text="{DynamicResource Text.MergeMultiple.Strategy}"/>
       <ComboBox Grid.Row="1" Grid.Column="1"
-                Height="28" Padding="8,0"
+                Height="{console:OnPlatform Default='28', Console='3'}" Padding="{console:OnPlatform Default='8,0', Console='1,0'}"
                 VerticalAlignment="Center" HorizontalAlignment="Stretch"
                 ItemsSource="{Binding Source={x:Static m:MergeStrategy.ForMultiple}}"
                 SelectedItem="{Binding Strategy, Mode=TwoWay}">
         <ComboBox.ItemTemplate>
           <DataTemplate DataType="m:MergeStrategy">
-            <StackPanel Orientation="Horizontal" Height="20" VerticalAlignment="Center">
+            <StackPanel Orientation="Horizontal" Height="{console:OnPlatform Default='20', Console='2'}" VerticalAlignment="Center">
               <TextBlock Text="{Binding Name}"/>
-              <TextBlock Text="{Binding Desc}" Margin="8,0,0,0" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
+              <TextBlock Text="{Binding Desc}" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
             </StackPanel>
           </DataTemplate>
         </ComboBox.ItemTemplate>
@@ -91,3 +108,5 @@
     </Grid>
   </StackPanel>
 </UserControl>
+
+

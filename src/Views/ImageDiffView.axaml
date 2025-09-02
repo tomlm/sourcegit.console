@@ -5,10 +5,11 @@
              xmlns:m="using:SourceGit.Models"
              xmlns:v="using:SourceGit.Views"
              xmlns:c="using:SourceGit.Converters"
+             xmlns:console="https://github.com/jinek/consolonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.ImageDiffView"
              x:DataType="m:ImageDiff">
-  <TabControl Margin="0,0,0,8" TabStripPlacement="Bottom">
+  <TabControl Margin="{console:OnPlatform Default='0,0,0,8', Console='0,0,0,1'}" TabStripPlacement="Bottom">
     <TabControl.Styles>
       <Style Selector="TabControl /template/ ItemsPresenter#PART_ItemsPresenter > WrapPanel">
         <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -20,19 +21,19 @@
         <TextBlock Text="{DynamicResource Text.Diff.Image.SideBySide}" FontSize="11"/>
       </TabItem.Header>
 
-      <UniformGrid Rows="1" Margin="0,16" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <Grid RowDefinitions="Auto,*" Margin="16,0" IsVisible="{Binding Old, Converter={x:Static ObjectConverters.IsNotNull}}">
+      <UniformGrid Rows="1" Margin="{console:OnPlatform Default='0,16', Console='0,1'}" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Grid RowDefinitions="{console:OnPlatform Default='Auto,*', Console='Auto,*'}" Margin="{console:OnPlatform Default='16,0', Console='1,0'}" IsVisible="{Binding Old, Converter={x:Static ObjectConverters.IsNotNull}}">
           <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Border Height="16" Background="{DynamicResource Brush.Badge}" CornerRadius="8" VerticalAlignment="Center">
-              <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.Old}" Margin="8,0" FontSize="10" Foreground="{DynamicResource Brush.BadgeFG}"/>
+            <Border Height="16" Background="{DynamicResource Brush.Badge}" CornerRadius="{console:OnPlatform Default='8', Console='0'}" VerticalAlignment="Center">
+              <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.Old}" Margin="{console:OnPlatform Default='8,0', Console='1,0'}" FontSize="10" Foreground="{DynamicResource Brush.BadgeFG}"/>
             </Border>
 
-            <TextBlock Classes="primary" Text="{Binding OldImageSize}" Margin="8,0,0,0"/>
-            <TextBlock Classes="primary" Text="{Binding OldFileSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" Margin="16,0,0,0"/>
+            <TextBlock Classes="primary" Text="{Binding OldImageSize}" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}"/>
+            <TextBlock Classes="primary" Text="{Binding OldFileSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" Margin="{console:OnPlatform Default='16,0,0,0', Console='1,0,0,0'}"/>
           </StackPanel>
 
-          <Border Grid.Row="1" Margin="0,12,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Effect="drop-shadow(0 0 8 #A0000000)">
-            <Border Background="{DynamicResource Brush.Popup}" Padding="8">
+          <Border Grid.Row="1" Margin="{console:OnPlatform Default='0,12,0,0', Console='0,1,0,0'}" HorizontalAlignment="Center" VerticalAlignment="Center" Effect="drop-shadow(0 0 8 #A0000000)">
+            <Border Background="{DynamicResource Brush.Popup}" Padding="{console:OnPlatform Default='8', Console='1'}">
               <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}">
                 <v:ImageView Image="{Binding Old}"/>
               </Border>
@@ -40,18 +41,18 @@
           </Border>
         </Grid>
 
-        <Grid RowDefinitions="Auto,*" Margin="16,0" IsVisible="{Binding New, Converter={x:Static ObjectConverters.IsNotNull}}">
+        <Grid RowDefinitions="{console:OnPlatform Default='Auto,*', Console='Auto,*'}" Margin="{console:OnPlatform Default='16,0', Console='1,0'}" IsVisible="{Binding New, Converter={x:Static ObjectConverters.IsNotNull}}">
           <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Border Height="16" Background="Green" CornerRadius="8" VerticalAlignment="Center">
-              <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.New}" Margin="8,0" FontSize="10" Foreground="White"/>
+            <Border Height="16" Background="Green" CornerRadius="{console:OnPlatform Default='8', Console='0'}" VerticalAlignment="Center">
+              <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.New}" Margin="{console:OnPlatform Default='8,0', Console='1,0'}" FontSize="10" Foreground="White"/>
             </Border>
 
-            <TextBlock Classes="primary" Text="{Binding NewImageSize}" Margin="8,0,0,0"/>
-            <TextBlock Classes="primary" Text="{Binding NewFileSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" Margin="16,0,0,0"/>
+            <TextBlock Classes="primary" Text="{Binding NewImageSize}" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}"/>
+            <TextBlock Classes="primary" Text="{Binding NewFileSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" Margin="{console:OnPlatform Default='16,0,0,0', Console='1,0,0,0'}"/>
           </StackPanel>
 
-          <Border Grid.Row="1" Margin="0,12,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" Effect="drop-shadow(0 0 8 #A0000000)">
-            <Border Background="{DynamicResource Brush.Popup}" Padding="8">
+          <Border Grid.Row="1" Margin="{console:OnPlatform Default='0,12,0,0', Console='0,1,0,0'}" HorizontalAlignment="Center" VerticalAlignment="Center" Effect="drop-shadow(0 0 8 #A0000000)">
+            <Border Background="{DynamicResource Brush.Popup}" Padding="{console:OnPlatform Default='8', Console='1'}">
               <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}">
                 <v:ImageView Image="{Binding New}"/>
               </Border>
@@ -66,26 +67,26 @@
         <TextBlock Text="{DynamicResource Text.Diff.Image.Swipe}" FontSize="11"/>
       </TabItem.Header>
 
-      <Grid RowDefinitions="Auto,*" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8,16">
-        <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" HorizontalAlignment="Center">
-          <Border Grid.Column="0" Height="16" Background="{DynamicResource Brush.Badge}" CornerRadius="8" VerticalAlignment="Center">
-            <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.Old}" Margin="8,0" FontSize="10" Foreground="{DynamicResource Brush.BadgeFG}"/>
+      <Grid RowDefinitions="{console:OnPlatform Default='Auto,*', Console='Auto,*'}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{console:OnPlatform Default='8,16', Console='1,1'}">
+        <Grid Grid.Row="0" ColumnDefinitions="{console:OnPlatform Default='Auto,Auto,Auto,Auto,Auto,Auto', Console='Auto,Auto,Auto,Auto,Auto,Auto'}" HorizontalAlignment="Center">
+          <Border Grid.Column="0" Height="16" Background="{DynamicResource Brush.Badge}" CornerRadius="{console:OnPlatform Default='8', Console='0'}" VerticalAlignment="Center">
+            <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.Old}" Margin="{console:OnPlatform Default='8,0', Console='1,0'}" FontSize="10" Foreground="{DynamicResource Brush.BadgeFG}"/>
           </Border>
 
-          <TextBlock Grid.Column="1" Classes="primary" Text="{Binding OldImageSize}" Margin="8,0,0,0"/>
-          <TextBlock Grid.Column="2" Classes="primary" Text="{Binding OldFileSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" Margin="16,0,0,0"/>
+          <TextBlock Grid.Column="1" Classes="primary" Text="{Binding OldImageSize}" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}"/>
+          <TextBlock Grid.Column="2" Classes="primary" Text="{Binding OldFileSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" Margin="{console:OnPlatform Default='16,0,0,0', Console='1,0,0,0'}"/>
 
-          <Border Grid.Column="3" Height="16" Background="Green" CornerRadius="8" VerticalAlignment="Center" Margin="32,0,0,0">
-            <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.New}" Margin="8,0" FontSize="10" Foreground="White"/>
+          <Border Grid.Column="3" Height="16" Background="Green" CornerRadius="{console:OnPlatform Default='8', Console='0'}" VerticalAlignment="Center" Margin="{console:OnPlatform Default='32,0,0,0', Console='1,0,0,0'}">
+            <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.New}" Margin="{console:OnPlatform Default='8,0', Console='1,0'}" FontSize="10" Foreground="White"/>
           </Border>
 
-          <TextBlock Grid.Column="4" Classes="primary" Text="{Binding NewImageSize}" Margin="8,0,0,0"/>
-          <TextBlock Grid.Column="5" Classes="primary" Text="{Binding NewFileSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" Margin="16,0,0,0"/>
+          <TextBlock Grid.Column="4" Classes="primary" Text="{Binding NewImageSize}" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}"/>
+          <TextBlock Grid.Column="5" Classes="primary" Text="{Binding NewFileSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" Margin="{console:OnPlatform Default='16,0,0,0', Console='1,0,0,0'}"/>
         </Grid>
 
-        <Border Grid.Row="1" Margin="0,12,0,0" HorizontalAlignment="Center" Effect="drop-shadow(0 0 8 #A0000000)">
+        <Border Grid.Row="1" Margin="{console:OnPlatform Default='0,12,0,0', Console='0,1,0,0'}" HorizontalAlignment="Center" Effect="drop-shadow(0 0 8 #A0000000)">
           <Border Background="{DynamicResource Brush.Window}">
-            <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}" Margin="8">
+            <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}" Margin="{console:OnPlatform Default='8', Console='1'}">
               <v:ImageSwipeControl OldImage="{Binding Old}"
                                    NewImage="{Binding New}"
                                    RenderOptions.BitmapInterpolationMode="HighQuality"/>
@@ -100,26 +101,26 @@
         <TextBlock Text="{DynamicResource Text.Diff.Image.Blend}" FontSize="11"/>
       </TabItem.Header>
 
-      <Grid RowDefinitions="Auto,*,Auto" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8,16,8,0">
-        <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" HorizontalAlignment="Center">
-          <Border Grid.Column="0" Height="16" Background="{DynamicResource Brush.Badge}" CornerRadius="8" VerticalAlignment="Center">
-            <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.Old}" Margin="8,0" FontSize="10" Foreground="{DynamicResource Brush.BadgeFG}"/>
+      <Grid RowDefinitions="{console:OnPlatform Default='Auto,*,Auto', Console='Auto,*,Auto'}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{console:OnPlatform Default='8,16,8,0', Console='1,1,1,0'}">
+        <Grid Grid.Row="0" ColumnDefinitions="{console:OnPlatform Default='100,200,100,Auto,Auto,Auto,Auto,Auto', Console='10,20,10,Auto,Auto,Auto,Auto,Auto'}" HorizontalAlignment="Center">
+          <Border Grid.Column="0" Height="16" Background="{DynamicResource Brush.Badge}" CornerRadius="{console:OnPlatform Default='8', Console='0'}" VerticalAlignment="Center">
+            <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.Old}" Margin="{console:OnPlatform Default='8,0', Console='1,0'}" FontSize="10" Foreground="{DynamicResource Brush.BadgeFG}"/>
           </Border>
 
-          <TextBlock Grid.Column="1" Classes="primary" Text="{Binding OldImageSize}" Margin="8,0,0,0"/>
-          <TextBlock Grid.Column="2" Classes="primary" Text="{Binding OldFileSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" Margin="16,0,0,0"/>
+          <TextBlock Grid.Column="1" Classes="primary" Text="{Binding OldImageSize}" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}"/>
+          <TextBlock Grid.Column="2" Classes="primary" Text="{Binding OldFileSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" Margin="{console:OnPlatform Default='16,0,0,0', Console='1,0,0,0'}"/>
 
-          <Border Grid.Column="3" Height="16" Background="Green" CornerRadius="8" VerticalAlignment="Center" Margin="32,0,0,0">
-            <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.New}" Margin="8,0" FontSize="10" Foreground="White"/>
+          <Border Grid.Column="3" Height="16" Background="Green" CornerRadius="{console:OnPlatform Default='8', Console='0'}" VerticalAlignment="Center" Margin="{console:OnPlatform Default='32,0,0,0', Console='1,0,0,0'}">
+            <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.New}" Margin="{console:OnPlatform Default='8,0', Console='1,0'}" FontSize="10" Foreground="White"/>
           </Border>
 
-          <TextBlock Grid.Column="4" Classes="primary" Text="{Binding NewImageSize}" Margin="8,0,0,0"/>
-          <TextBlock Grid.Column="5" Classes="primary" Text="{Binding NewFileSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" Margin="16,0,0,0"/>
+          <TextBlock Grid.Column="4" Classes="primary" Text="{Binding NewImageSize}" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}"/>
+          <TextBlock Grid.Column="5" Classes="primary" Text="{Binding NewFileSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" Margin="{console:OnPlatform Default='16,0,0,0', Console='1,0,0,0'}"/>
         </Grid>
 
-        <Border Grid.Row="1" Margin="0,12,0,0" HorizontalAlignment="Center" Effect="drop-shadow(0 0 8 #A0000000)">
+        <Border Grid.Row="1" Margin="{console:OnPlatform Default='0,12,0,0', Console='0,1,0,0'}" HorizontalAlignment="Center" Effect="drop-shadow(0 0 8 #A0000000)">
           <Border Background="{DynamicResource Brush.Window}">
-            <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}" Margin="8">
+            <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}" Margin="{console:OnPlatform Default='8', Console='1'}">
               <v:ImageBlendControl Alpha="{Binding #ImageBlendSlider.Value}"
                                    OldImage="{Binding Old}"
                                    NewImage="{Binding New}"/>
@@ -127,11 +128,11 @@
           </Border>
         </Border>
 
-        <Grid Grid.Row="2" ColumnDefinitions="100,200,100" Margin="0,12,0,0" HorizontalAlignment="Center">
-          <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,8,0">
+        <Grid Grid.Row="2" ColumnDefinitions="{console:OnPlatform Default='100,200,100', Console='10,20,10'}" Margin="{console:OnPlatform Default='0,12,0,0', Console='0,1,0,0'}" HorizontalAlignment="Center">
+          <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}">
             <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.Old}"/>
             <TextBlock Classes="primary"
-                       Margin="8,0,0,0"
+                       Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}"
                        Text="{Binding #ImageBlendSlider.Value, Converter={x:Static c:DoubleConverters.OneMinusToPercentage}}"
                        Foreground="{DynamicResource Brush.FG2}"/>
           </StackPanel>
@@ -142,14 +143,14 @@
                   VerticalAlignment="Top"
                   TickPlacement="None"
                   Margin="0"
-                  MinHeight="0"
+                  MinHeight="{console:OnPlatform Default='0', Console='1'}"
                   Foreground="{DynamicResource Brush.Border1}"
                   Value="0.5"/>
 
-          <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Top" Margin="8,0,0,0">
+          <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Top" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}">
             <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.New}"/>
             <TextBlock Classes="primary"
-                       Margin="8,0,0,0"
+                       Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}"
                        Text="{Binding #ImageBlendSlider.Value, Converter={x:Static c:DoubleConverters.ToPercentage}}"
                        Foreground="{DynamicResource Brush.FG2}"/>
           </StackPanel>

@@ -2,18 +2,41 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:console="https://github.com/jinek/consolonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.CaptionButtons"
              x:Name="ThisControl">
   <StackPanel Orientation="Horizontal">
     <Button Classes="caption_button" Click="MinimizeWindow" IsVisible="{Binding !#ThisControl.IsCloseButtonOnly}">
-      <Path Width="11" Height="11" Margin="0,2,0,0" Data="{StaticResource Icons.Window.Minimize}"/>
+      <console:OnPlatform>
+        <console:OnPlatform.Default>
+          <Path Width="11" Height="11" Margin="{console:OnPlatform Default='0,2,0,0' Console='0,1,0,0'}" Data="{StaticResource Icons.Window.Minimize}"/>
+        </console:OnPlatform.Default>
+        <console:OnPlatform.Console>
+          <TextBlock Text="{StaticResource TextIcons.Window.Minimize}"/>
+        </console:OnPlatform.Console>
+      </console:OnPlatform>
     </Button>
+    
     <Button Classes="caption_button max_or_restore_btn" Click="MaximizeOrRestoreWindow" IsVisible="{Binding !#ThisControl.IsCloseButtonOnly}">
-      <Path Width="10" Height="10" Margin="0,4,0,0"/>
+      <console:OnPlatform>
+        <console:OnPlatform.Default>
+          <Path Width="10" Height="10" Margin="{console:OnPlatform Default='0,4,0,0' Console='0,1,0,0'}"/>
+        </console:OnPlatform.Default>
+        <console:OnPlatform.Console>
+          <TextBlock Text="{StaticResource TextIcons.Window.MaximizeOrRestore}"/>
+        </console:OnPlatform.Console>
+      </console:OnPlatform>
     </Button>
     <Button Classes="caption_button" Click="CloseWindow">
-      <Path Width="9" Height="9" Margin="0,4,2,0" Data="{StaticResource Icons.Window.Close}"/>
+      <console:OnPlatform>
+        <console:OnPlatform.Default>
+          <Path Width="9" Height="9" Margin="{console:OnPlatform Default='0,4,2,0' Console='0,1,1,0'}" Data="{StaticResource Icons.Window.Close}"/>
+        </console:OnPlatform.Default>
+        <console:OnPlatform.Console>
+          <TextBlock Text="{StaticResource TextIcons.Window.Close}"/>
+        </console:OnPlatform.Console>
+      </console:OnPlatform>
     </Button>
   </StackPanel>
 </UserControl>

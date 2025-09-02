@@ -3,23 +3,25 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:console="https://github.com/jinek/consolonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.Init"
              x:DataType="vm:Init">
-  <StackPanel Orientation="Vertical" Margin="8,0,0,0">
+  <StackPanel Orientation="Vertical" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}">
     <TextBlock FontSize="18"
                Classes="bold"
                Text="{DynamicResource Text.Init}"/>
-    <Grid Margin="0,16,8,0" ColumnDefinitions="100,*">
+    <Grid Margin="{console:OnPlatform Default='0,16,8,0', Console='0,1,1,0'}"
+          ColumnDefinitions="{console:OnPlatform Default='100,*', Console='10,*'}">
       <Grid.RowDefinitions>
-        <RowDefinition Height="32"/>
-        <RowDefinition Height="Auto" MinHeight="32"/>
+        <RowDefinition Height="{console:OnPlatform Default='32', Console='3'}"/>
+        <RowDefinition Height="Auto" MinHeight="{console:OnPlatform Default='32', Console='3'}"/>
       </Grid.RowDefinitions>
 
       <TextBlock Grid.Row="0" Grid.Column="0"
                  Text="{DynamicResource Text.Init.Path}"
                  HorizontalAlignment="Right" VerticalAlignment="Center"
-                 Margin="0,0,8,0"/>
+                 Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"/>
       <TextBlock Grid.Row="0" Grid.Column="1"
                  Text="{Binding TargetPath}"/>
       <TextBlock Grid.Row="1" Grid.Column="1"

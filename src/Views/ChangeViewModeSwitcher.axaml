@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:m="using:SourceGit.Models"
+             xmlns:console="https://github.com/jinek/consolonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.ChangeViewModeSwitcher"
              x:Name="ThisControl">
@@ -11,32 +12,74 @@
       <MenuFlyout Placement="BottomEdgeAlignedLeft">
         <MenuItem Header="{DynamicResource Text.ChangeDisplayMode.List}" Click="SwitchToList">
           <MenuItem.Icon>
-            <Path Width="12" Height="12" Data="{StaticResource Icons.List}"/>
+            <console:OnPlatform>
+              <console:OnPlatform.Default>
+                <Path Width="12" Height="12" Data="{StaticResource Icons.List}"/>
+              </console:OnPlatform.Default>
+              <console:OnPlatform.Console>
+                <TextBlock Text="{StaticResource TextIcons.List}"/>
+              </console:OnPlatform.Console>
+            </console:OnPlatform>
           </MenuItem.Icon>
         </MenuItem>
         <MenuItem Header="{DynamicResource Text.ChangeDisplayMode.Grid}" Click="SwitchToGrid">
           <MenuItem.Icon>
-            <Path Width="12" Height="12" Data="{StaticResource Icons.Grid}"/>
+            <console:OnPlatform>
+              <console:OnPlatform.Default>
+                <Path Width="12" Height="12" Data="{StaticResource Icons.Grid}"/>
+              </console:OnPlatform.Default>
+              <console:OnPlatform.Console>
+                <TextBlock Text="{StaticResource TextIcons.Grid}"/>
+              </console:OnPlatform.Console>
+            </console:OnPlatform>
           </MenuItem.Icon>
         </MenuItem>
         <MenuItem Header="{DynamicResource Text.ChangeDisplayMode.Tree}" Click="SwitchToTree">
           <MenuItem.Icon>
-            <Path Width="12" Height="12" Data="{StaticResource Icons.Tree}"/>
+            <console:OnPlatform>
+              <console:OnPlatform.Default>
+                <Path Width="12" Height="12" Data="{StaticResource Icons.Tree}"/>
+              </console:OnPlatform.Default>
+              <console:OnPlatform.Console>
+                <TextBlock Text="{StaticResource TextIcons.Tree}"/>
+              </console:OnPlatform.Console>
+            </console:OnPlatform>
           </MenuItem.Icon>
         </MenuItem>
       </MenuFlyout>
     </Button.Flyout>
 
     <Grid Width="14" Height="14" HorizontalAlignment="Center" VerticalAlignment="Center">
-      <Path Width="14" Height="14"
-            Data="{StaticResource Icons.List}"
-            IsVisible="{Binding #ThisControl.ViewMode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:ChangeViewMode.List}}"/>
-      <Path Width="14" Height="14"
-            Data="{StaticResource Icons.Grid}"
-            IsVisible="{Binding #ThisControl.ViewMode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:ChangeViewMode.Grid}}"/>
-      <Path Width="14" Height="14"
-            Data="{StaticResource Icons.Tree}"
-            IsVisible="{Binding #ThisControl.ViewMode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:ChangeViewMode.Tree}}"/>
+      <console:OnPlatform>
+        <console:OnPlatform.Default>
+          <Path Width="14" Height="14"
+                Data="{StaticResource Icons.List}"
+                IsVisible="{Binding #ThisControl.ViewMode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:ChangeViewMode.List}}"/>
+        </console:OnPlatform.Default>
+        <console:OnPlatform.Console>
+          <TextBlock Text="{StaticResource TextIcons.List}" IsVisible="{Binding #ThisControl.ViewMode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:ChangeViewMode.List}}"/>
+        </console:OnPlatform.Console>
+      </console:OnPlatform>
+      <console:OnPlatform>
+        <console:OnPlatform.Default>
+          <Path Width="14" Height="14"
+                Data="{StaticResource Icons.Grid}"
+                IsVisible="{Binding #ThisControl.ViewMode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:ChangeViewMode.Grid}}"/>
+        </console:OnPlatform.Default>
+        <console:OnPlatform.Console>
+          <TextBlock Text="{StaticResource TextIcons.Grid}" IsVisible="{Binding #ThisControl.ViewMode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:ChangeViewMode.Grid}}"/>
+        </console:OnPlatform.Console>
+      </console:OnPlatform>
+      <console:OnPlatform>
+        <console:OnPlatform.Default>
+          <Path Width="14" Height="14"
+                Data="{StaticResource Icons.Tree}"
+                IsVisible="{Binding #ThisControl.ViewMode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:ChangeViewMode.Tree}}"/>
+        </console:OnPlatform.Default>
+        <console:OnPlatform.Console>
+          <TextBlock Text="{StaticResource TextIcons.Tree}" IsVisible="{Binding #ThisControl.ViewMode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:ChangeViewMode.Tree}}"/>
+        </console:OnPlatform.Console>
+      </console:OnPlatform>
     </Grid>
   </Button>
 </UserControl>

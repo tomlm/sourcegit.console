@@ -5,6 +5,7 @@
              xmlns:c="using:SourceGit.Converters"
              xmlns:v="using:SourceGit.Views"
              xmlns:vm="using:SourceGit.ViewModels"
+             xmlns:console="https://github.com/jinek/consolonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.RevisionFileTreeView"
              x:Name="ThisControl">
@@ -22,15 +23,15 @@
 
     <ListBox.Styles>
       <Style Selector="ListBoxItem">
-        <Setter Property="Height" Value="24"/>
-        <Setter Property="Margin" Value="0"/>
-        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Height" Value="{console:OnPlatform Default=24, Console=2}"/>
+        <Setter Property="Margin" Value="{console:OnPlatform Default=0, Console=0}"/>
+        <Setter Property="Padding" Value="{console:OnPlatform Default=0, Console=0}"/>
       </Style>
     </ListBox.Styles>
 
     <ListBox.ItemTemplate>
       <DataTemplate DataType="vm:RevisionFileTreeNode">
-        <Grid ColumnDefinitions="16,Auto,Auto,*"
+        <Grid ColumnDefinitions="{console:OnPlatform Default='16,Auto,Auto,*', Console='1,Auto,Auto,*'}"
               Margin="{Binding Depth, Converter={x:Static c:IntConverters.ToTreeMargin}}"
               Background="Transparent"
               DoubleTapped="OnTreeNodeDoubleTapped"
@@ -42,7 +43,7 @@
                                               IsChecked="{Binding IsExpanded, Mode=OneWay}"
                                               IsVisible="{Binding IsFolder}"/>
           <v:RevisionTreeNodeIcon Grid.Column="1" Width="14" Height="14" Node="{Binding}" IsExpanded="{Binding IsExpanded, Mode=OneWay}"/>
-          <TextBlock Grid.Column="2" Classes="primary" Text="{Binding Name}" Margin="6,0,0,0"/>
+          <TextBlock Grid.Column="2" Classes="primary" Text="{Binding Name}" Margin="{console:OnPlatform Default='6,0,0,0', Console='1,0,0,0'}"/>
         </Grid>
       </DataTemplate>
     </ListBox.ItemTemplate>
