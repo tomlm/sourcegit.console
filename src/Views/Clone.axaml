@@ -8,36 +8,36 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.Clone"
              x:DataType="vm:Clone">
-  <StackPanel Orientation="Vertical" Margin="{console:OnPlatform Default=8,0,0,0, Console=1,0,0,0}">
+  <StackPanel Orientation="Vertical" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}">
     <TextBlock Classes="bold" FontSize="18" Text="{DynamicResource Text.Clone}"/>
 
-    <Grid Margin="{console:OnPlatform Default=8,16,0,0, Console=1,1,0,0}"
+    <Grid Margin="{console:OnPlatform Default='8,16,0,0', Console='1,1,0,0'}"
           RowDefinitions="{console:OnPlatform Default='32,Auto,32,32,32,32', Console='3,Auto,3,3,3,3'}"
           ColumnDefinitions="{console:OnPlatform Default='Auto,*', Console='Auto,*'}">
       <TextBlock Grid.Row="0" Grid.Column="0"
                  HorizontalAlignment="Right"
-                 Margin="{console:OnPlatform Default=0,0,8,0, Console=0,0,1,0}"
+                 Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"
                  Text="{DynamicResource Text.Clone.RemoteURL}"/>
       <TextBox Grid.Row="0" Grid.Column="1"
-               Height="{console:OnPlatform Default=28, Console=2}"
-               CornerRadius="{console:OnPlatform Default=3, Console=0}"
+               Height="{console:OnPlatform Default='28', Console='2'}"
+               CornerRadius="{console:OnPlatform Default='3', Console='0'}"
                Text="{Binding Remote, Mode=TwoWay}"
                v:AutoFocusBehaviour.IsEnabled="True"/>
 
       <TextBlock Grid.Row="1" Grid.Column="0"
                  HorizontalAlignment="Right"
-                 Margin="{console:OnPlatform Default=0,0,8,0, Console=0,0,1,0}"
+                 Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"
                  Text="{DynamicResource Text.SSHKey}"
                  IsVisible="{Binding UseSSH}"/>
       <TextBox Grid.Row="1" Grid.Column="1"
                x:Name="TxtSshKey"
-               Height="{console:OnPlatform Default=28, Console=2}"
-               CornerRadius="{console:OnPlatform Default=3, Console=0}"
+               Height="{console:OnPlatform Default='28', Console='2'}"
+               CornerRadius="{console:OnPlatform Default='3', Console='0'}"
                Watermark="{DynamicResource Text.SSHKey.Placeholder}"
                Text="{Binding SSHKey, Mode=TwoWay}"
                IsVisible="{Binding UseSSH}">
         <TextBox.InnerRightContent>
-          <Button Classes="icon_button" Width="28" Height="{console:OnPlatform Default=28, Console=2}" Click="SelectSSHKey">
+          <Button Classes="icon_button" Width="28" Height="{console:OnPlatform Default='28', Console='2'}" Click="SelectSSHKey">
             <console:OnPlatform>
               <console:OnPlatform.Default>
                 <Path Data="{StaticResource Icons.Folder.Open}" Fill="{DynamicResource Brush.FG1}"/>
@@ -52,15 +52,15 @@
 
       <TextBlock Grid.Row="2" Grid.Column="0"
                  HorizontalAlignment="Right"
-                 Margin="{console:OnPlatform Default=0,0,8,0, Console=0,0,1,0}"
+                 Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"
                  Text="{DynamicResource Text.Clone.ParentFolder}"/>
       <TextBox Grid.Row="2" Grid.Column="1"
                x:Name="TxtParentFolder"
-               Height="{console:OnPlatform Default=28, Console=2}"
-               CornerRadius="{console:OnPlatform Default=3, Console=0}"
+               Height="{console:OnPlatform Default='28', Console='2'}"
+               CornerRadius="{console:OnPlatform Default='3', Console='0'}"
                Text="{Binding ParentFolder, Mode=TwoWay}">
         <TextBox.InnerRightContent>
-          <Button Classes="icon_button" Width="28" Height="{console:OnPlatform Default=28, Console=2}" Margin="{console:OnPlatform Default=4,0,0,0, Console=1,0,0,0}" Click="SelectParentFolder">
+          <Button Classes="icon_button" Width="28" Height="{console:OnPlatform Default='28', Console='2'}" Margin="{console:OnPlatform Default='4,0,0,0', Console='1,0,0,0'}" Click="SelectParentFolder">
             <console:OnPlatform.Default>
               <Path Data="{StaticResource Icons.Folder.Open}" Fill="{DynamicResource Brush.FG1}"/>
             </console:OnPlatform.Default>
@@ -73,21 +73,21 @@
 
       <TextBlock Grid.Row="3" Grid.Column="0"
                  HorizontalAlignment="Right"
-                 Margin="{console:OnPlatform Default=0,0,8,0, Console=0,0,1,0}"
+                 Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"
                  Text="{DynamicResource Text.Clone.LocalName}"/>
       <TextBox Grid.Row="3" Grid.Column="1"
-               Height="{console:OnPlatform Default=28, Console=2}"
-               CornerRadius="{console:OnPlatform Default=3, Console=0}"
+               Height="{console:OnPlatform Default='28', Console='2'}"
+               CornerRadius="{console:OnPlatform Default='3', Console='0'}"
                Watermark="{DynamicResource Text.Clone.LocalName.Placeholder}"
                Text="{Binding Local, Mode=TwoWay}"/>
 
       <TextBlock Grid.Row="4" Grid.Column="0"
                  HorizontalAlignment="Right"
-                 Margin="{console:OnPlatform Default=0,0,8,0, Console=0,0,1,0}"
+                 Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"
                  Text="{DynamicResource Text.Clone.AdditionalParam}"/>
       <TextBox Grid.Row="4" Grid.Column="1"
-               Height="{console:OnPlatform Default=28, Console=2}"
-               CornerRadius="{console:OnPlatform Default=3, Console=0}"
+               Height="{console:OnPlatform Default='28', Console='2'}"
+               CornerRadius="{console:OnPlatform Default='3', Console='0'}"
                Watermark="{DynamicResource Text.Clone.AdditionalParam.Placeholder}"
                Text="{Binding ExtraArgs, Mode=TwoWay}"/>
 

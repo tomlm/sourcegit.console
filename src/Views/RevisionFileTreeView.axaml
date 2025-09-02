@@ -23,9 +23,9 @@
 
     <ListBox.Styles>
       <Style Selector="ListBoxItem">
-        <Setter Property="Height" Value="{console:OnPlatform Default=24, Console=2}"/>
-        <Setter Property="Margin" Value="{console:OnPlatform Default=0, Console=0}"/>
-        <Setter Property="Padding" Value="{console:OnPlatform Default=0, Console=0}"/>
+        <Setter Property="Height" Value="{console:OnPlatform Default='24', Console='2'}"/>
+        <Setter Property="Margin" Value="{console:OnPlatform Default='0', Console='0'}"/>
+        <Setter Property="Padding" Value="{console:OnPlatform Default='0', Console='0'}"/>
       </Style>
     </ListBox.Styles>
 
