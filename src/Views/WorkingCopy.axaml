@@ -5,119 +5,169 @@
              xmlns:vm="using:SourceGit.ViewModels"
              xmlns:v="using:SourceGit.Views"
              xmlns:c="using:SourceGit.Converters"
+             xmlns:console="https://github.com/jinek/consolonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
              x:Class="SourceGit.Views.WorkingCopy"
              x:DataType="vm:WorkingCopy">
   <Grid SizeChanged="OnMainLayoutSizeChanged">
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="{Binding Source={x:Static vm:Preferences.Instance}, Path=Layout.WorkingCopyLeftWidth, Mode=TwoWay}" MinWidth="300"/>
-      <ColumnDefinition Width="5"/>
+      <ColumnDefinition Width="{console:OnPlatform Default='5', Console='1'}"/>
       <ColumnDefinition Width="*" MinWidth="300"/>
     </Grid.ColumnDefinitions>
 
     <!-- Left -->
     <Grid Grid.Column="0">
       <Grid.RowDefinitions>
-        <RowDefinition Height="36"/>
+        <RowDefinition Height="{console:OnPlatform Default='36', Console='3'}"/>
         <RowDefinition Height="*" MinHeight="100"/>
-        <RowDefinition Height="1"/>
+        <RowDefinition Height="{console:OnPlatform Default='1', Console='1'}"/>
         <RowDefinition Height="*" MinHeight="100"/>
       </Grid.RowDefinitions>
 
       <!-- Search Filter -->
       <Border Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}">
-        <TextBox Height="24"
-                 Margin="4,0"
+        <TextBox Height="{console:OnPlatform Default='24', Console='2'}"
+                 Margin="{console:OnPlatform Default='4,0', Console='1,0'}"
                  BorderThickness="1"
-                 CornerRadius="12"
+                 CornerRadius="{console:OnPlatform Default='12', Console='0'}"
                  Text="{Binding Filter, Mode=TwoWay}"
                  BorderBrush="{DynamicResource Brush.Border2}"
                  VerticalContentAlignment="Center">
           <TextBox.InnerLeftContent>
-            <Path Width="14" Height="14"
-                  Margin="6,0,0,0"
-                  Fill="{DynamicResource Brush.FG2}"
-                  Data="{StaticResource Icons.Search}"/>
+            <console:OnPlatform>
+              <console:OnPlatform.Default>
+                <Path Width="14" Height="14"
+                      Margin="6,0,0,0"
+                      Fill="{DynamicResource Brush.FG2}"
+                      Data="{StaticResource Icons.Search}"/>
+              </console:OnPlatform.Default>
+              <console:OnPlatform.Console>
+                <TextBlock Text="🔍"/>
+              </console:OnPlatform.Console>
+            </console:OnPlatform>
           </TextBox.InnerLeftContent>
 
           <TextBox.InnerRightContent>
             <Button Classes="icon_button"
                     Width="16"
-                    Margin="0,0,6,0"
+                    Margin="{console:OnPlatform Default='0,0,6,0', Console='0,0,1,0'}"
                     Command="{Binding ClearFilter}"
                     IsVisible="{Binding Filter, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
                     HorizontalAlignment="Right">
-              <Path Width="14" Height="14"
-                    Margin="0,1,0,0"
-                    Fill="{DynamicResource Brush.FG1}"
-                    Data="{StaticResource Icons.Clear}"/>
+              <console:OnPlatform>
+                <console:OnPlatform.Default>
+                  <Path Width="14" Height="14"
+                        Margin="0,1,0,0"
+                        Fill="{DynamicResource Brush.FG1}"
+                        Data="{StaticResource Icons.Clear}"/>
+                </console:OnPlatform.Default>
+                <console:OnPlatform.Console>
+                  <TextBlock Text="✖"/>
+                </console:OnPlatform.Console>
+              </console:OnPlatform>
             </Button>
           </TextBox.InnerRightContent>
         </TextBox>
       </Border>
 
       <!-- Unstaged -->
-      <Grid Grid.Row="1" RowDefinitions="28,*">
+      <Grid Grid.Row="1" RowDefinitions="{console:OnPlatform Default='28,*', Console='2,*'}">
         <!-- Unstaged Toolbar -->
         <Border Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}">
           <Grid ColumnDefinitions="Auto,Auto,Auto,*,Auto,Auto,Auto,Auto,Auto,Auto">
-            <Path Grid.Column="0" Margin="8,0,0,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Changes}"/>
-            <TextBlock Grid.Column="1" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold" Margin="4,0,0,0">
+            <console:OnPlatform>
+              <console:OnPlatform.Default>
+                <Path Grid.Column="0" Margin="8,0,0,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Changes}"/>
+              </console:OnPlatform.Default>
+              <console:OnPlatform.Console>
+                <TextBlock Grid.Column="0" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}" Text="✱"/>
+              </console:OnPlatform.Console>
+            </console:OnPlatform>
+            <TextBlock Grid.Column="1" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold" Margin="{console:OnPlatform Default='4,0,0,0', Console='1,0,0,0'}">
               <Run Text="{DynamicResource Text.WorkingCopy.Unstaged}"/>
               <Run Text="{Binding Unstaged, Converter={x:Static c:ListConverters.ToCount}, Mode=OneWay}"/>
             </TextBlock>
-            <v:LoadingIcon Grid.Column="2" Width="14" Height="14" Margin="8,0,0,0" IsVisible="{Binding IsStaging}"/>
+            <v:LoadingIcon Grid.Column="2" Width="14" Height="14" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}" IsVisible="{Binding IsStaging}"/>
 
             <Button Grid.Column="4"
                     Classes="icon_button"
-                    Width="26" Height="14"
-                    Padding="0"
+                    Width="26" Height="{console:OnPlatform Default='14', Console='1'}"
+                    Padding="{console:OnPlatform Default='0', Console='0'}"
                     ToolTip.Tip="{DynamicResource Text.WorkingCopy.Unstaged.ViewAssumeUnchanged}"
                     Click="OnOpenAssumeUnchanged">
-              <Path Width="14" Height="14" Data="{StaticResource Icons.File.Ignore}"/>
+              <console:OnPlatform>
+                <console:OnPlatform.Default>
+                  <Path Width="14" Height="14" Data="{StaticResource Icons.File.Ignore}"/>
+                </console:OnPlatform.Default>
+                <console:OnPlatform.Console>
+                  <TextBlock Text="🚫"/>
+                </console:OnPlatform.Console>
+              </console:OnPlatform>
             </Button>
             <ToggleButton Grid.Column="5"
                           Classes="toggle_untracked"
-                          Width="26" Height="14"
+                          Width="26" Height="{console:OnPlatform Default='14', Console='1'}"
                           ToolTip.Tip="{DynamicResource Text.WorkingCopy.IncludeUntracked}"
                           IsChecked="{Binding IncludeUntracked, Mode=TwoWay}"/>
             <Button Grid.Column="6"
                     Classes="icon_button"
-                    Width="26" Height="14"
-                    Padding="0"
+                    Width="26" Height="{console:OnPlatform Default='14', Console='1'}"
+                    Padding="{console:OnPlatform Default='0', Console='0'}"
                     IsVisible="{Binding HasUnsolvedConflicts}"
                     ToolTip.Tip="{DynamicResource Text.WorkingCopy.Conflicts.OpenExternalMergeToolAllConflicts}"
                     Click="OnOpenExternalMergeToolAllConflicts">
-              <Path Width="14" Height="14" Data="{StaticResource Icons.Conflict}"/>
+              <console:OnPlatform>
+                <console:OnPlatform.Default>
+                  <Path Width="14" Height="14" Data="{StaticResource Icons.Conflict}"/>
+                </console:OnPlatform.Default>
+                <console:OnPlatform.Console>
+                  <TextBlock Text="⚠"/>
+                </console:OnPlatform.Console>
+              </console:OnPlatform>
             </Button>
             <Button Grid.Column="7"
                     Classes="icon_button"
-                    Width="26" Height="14"
-                    Padding="0"
+                    Width="26" Height="{console:OnPlatform Default='14', Console='1'}"
+                    Padding="{console:OnPlatform Default='0', Console='0'}"
                     Click="OnStageSelectedButtonClicked">
               <ToolTip.Tip>
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                   <TextBlock Text="{DynamicResource Text.WorkingCopy.Unstaged.Stage}" VerticalAlignment="Center"/>
-                  <TextBlock Margin="16,0,0,0"
+                  <TextBlock Margin="{console:OnPlatform Default='16,0,0,0', Console='1,0,0,0'}"
                              Text="{OnPlatform Space/Enter, macOS=␣/Enter}"
                              Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"
                              FontSize="11"
                              VerticalAlignment="Center"/>
                 </StackPanel>
               </ToolTip.Tip>
-              <Path Width="14" Height="14" Margin="0,6,0,0" Data="{StaticResource Icons.Down}"/>
+              <console:OnPlatform>
+                <console:OnPlatform.Default>
+                  <Path Width="14" Height="14" Margin="0,6,0,0" Data="{StaticResource Icons.Down}"/>
+                </console:OnPlatform.Default>
+                <console:OnPlatform.Console>
+                  <TextBlock Text="↓"/>
+                </console:OnPlatform.Console>
+              </console:OnPlatform>
             </Button>
             <Button Grid.Column="8"
                     Classes="icon_button"
-                    Width="26" Height="14"
-                    Padding="0"
+                    Width="26" Height="{console:OnPlatform Default='14', Console='1'}"
+                    Padding="{console:OnPlatform Default='0', Console='0'}"
                     ToolTip.Tip="{DynamicResource Text.WorkingCopy.Unstaged.StageAll}"
                     Click="OnStageAllButtonClicked">
-              <Path Width="14" Height="14" Data="{StaticResource Icons.DoubleDown}"/>
+              <console:OnPlatform>
+                <console:OnPlatform.Default>
+                  <Path Width="14" Height="14" Data="{StaticResource Icons.DoubleDown}"/>
+                </console:OnPlatform.Default>
+                <console:OnPlatform.Console>
+                  <TextBlock Text="⇊"/>
+                </console:OnPlatform.Console>
+              </console:OnPlatform>
             </Button>
             <v:ChangeViewModeSwitcher Grid.Column="9"
-                                      Width="26" Height="14"
-                                      Margin="0,1,0,0"
+                                      Width="26" Height="{console:OnPlatform Default='14', Console='1'}"
+                                      Margin="{console:OnPlatform Default='0,1,0,0', Console='0,1,0,0'}"
                                       ViewMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=UnstagedChangeViewMode, Mode=TwoWay}"/>
           </Grid>
         </Border>
@@ -144,35 +194,56 @@
                     Background="{DynamicResource Brush.Border0}"/>
 
       <!-- Staged -->
-      <Grid Grid.Row="3" RowDefinitions="28,*">
+      <Grid Grid.Row="3" RowDefinitions="{console:OnPlatform Default='28,*', Console='2,*'}">
         <!-- Staged Toolbar -->
         <Border Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}">
           <Grid ColumnDefinitions="Auto,Auto,Auto,*,Auto,Auto,Auto">
-            <Path Grid.Column="0" Margin="8,0,0,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Changes}"/>
-            <TextBlock Grid.Column="1" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold" Margin="4,0,0,0">
+            <console:OnPlatform>
+              <console:OnPlatform.Default>
+                <Path Grid.Column="0" Margin="8,0,0,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG2}" Data="{StaticResource Icons.Changes}"/>
+              </console:OnPlatform.Default>
+              <console:OnPlatform.Console>
+                <TextBlock Grid.Column="0" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}" Text="✱"/>
+              </console:OnPlatform.Console>
+            </console:OnPlatform>
+            <TextBlock Grid.Column="1" Foreground="{DynamicResource Brush.FG2}" FontWeight="Bold" Margin="{console:OnPlatform Default='4,0,0,0', Console='1,0,0,0'}">
               <Run Text="{DynamicResource Text.WorkingCopy.Staged}"/>
               <Run Text="{Binding Staged, Converter={x:Static c:ListConverters.ToCount}, Mode=OneWay}"/>
             </TextBlock>
-            <v:LoadingIcon Grid.Column="2" Width="14" Height="14" Margin="8,0,0,0" IsVisible="{Binding IsUnstaging}"/>
-            <Button Grid.Column="4" Classes="icon_button" Width="26" Height="14" Padding="0" Click="OnUnstageSelectedButtonClicked">
+            <v:LoadingIcon Grid.Column="2" Width="14" Height="14" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}" IsVisible="{Binding IsUnstaging}"/>
+            <Button Grid.Column="4" Classes="icon_button" Width="26" Height="{console:OnPlatform Default='14', Console='1'}" Padding="{console:OnPlatform Default='0', Console='0'}" Click="OnUnstageSelectedButtonClicked">
               <ToolTip.Tip>
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                   <TextBlock Text="{DynamicResource Text.WorkingCopy.Staged.Unstage}" VerticalAlignment="Center"/>
-                  <TextBlock Margin="16,0,0,0"
+                  <TextBlock Margin="{console:OnPlatform Default='16,0,0,0', Console='1,0,0,0'}"
                              Text="{OnPlatform Space/Enter, macOS=␣/Enter}"
                              FontSize="11"
                              VerticalAlignment="Center"
                              Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
                 </StackPanel>
               </ToolTip.Tip>
-              <Path Width="14" Height="14" Margin="0,6,0,0" Data="{StaticResource Icons.Up}"/>
+              <console:OnPlatform>
+                <console:OnPlatform.Default>
+                  <Path Width="14" Height="14" Margin="0,6,0,0" Data="{StaticResource Icons.Up}"/>
+                </console:OnPlatform.Default>
+                <console:OnPlatform.Console>
+                  <TextBlock Text="↑"/>
+                </console:OnPlatform.Console>
+              </console:OnPlatform>
             </Button>
-            <Button Grid.Column="5" Classes="icon_button" Width="26" Height="14" Padding="0" ToolTip.Tip="{DynamicResource Text.WorkingCopy.Staged.UnstageAll}" Click="OnUnstageAllButtonClicked">
-              <Path Width="14" Height="14" Data="{StaticResource Icons.DoubleUp}"/>
+            <Button Grid.Column="5" Classes="icon_button" Width="26" Height="{console:OnPlatform Default='14', Console='1'}" Padding="{console:OnPlatform Default='0', Console='0'}" ToolTip.Tip="{DynamicResource Text.WorkingCopy.Staged.UnstageAll}" Click="OnUnstageAllButtonClicked">
+              <console:OnPlatform>
+                <console:OnPlatform.Default>
+                  <Path Width="14" Height="14" Data="{StaticResource Icons.DoubleUp}"/>
+                </console:OnPlatform.Default>
+                <console:OnPlatform.Console>
+                  <TextBlock Text="⇈"/>
+                </console:OnPlatform.Console>
+              </console:OnPlatform>
             </Button>
             <v:ChangeViewModeSwitcher Grid.Column="6"
-                                      Width="26" Height="14"
-                                      Margin="0,1,0,0"
+                                      Width="26" Height="{console:OnPlatform Default='14', Console='1'}"
+                                      Margin="{console:OnPlatform Default='0,1,0,0', Console='0,1,0,0'}"
                                       ViewMode="{Binding Source={x:Static vm:Preferences.Instance}, Path=StagedChangeViewMode, Mode=TwoWay}"/>
           </Grid>
         </Border>
@@ -201,20 +272,27 @@
                   BorderBrush="{DynamicResource Brush.Border0}"/>
 
     <!-- Right -->
-    <Grid Grid.Column="2" Margin="0,4,4,4">
+    <Grid Grid.Column="2" Margin="{console:OnPlatform Default='0,4,4,4', Console='0,1,1,1'}">
       <Grid.RowDefinitions>
         <RowDefinition Height="*" MinHeight="400"/>
-        <RowDefinition Height="4"/>
-        <RowDefinition Height="128" MinHeight="100"/>
-        <RowDefinition Height="36"/>
+        <RowDefinition Height="{console:OnPlatform Default='4', Console='1'}"/>
+        <RowDefinition Height="{console:OnPlatform Default='128', Console='12'}" MinHeight="100"/>
+        <RowDefinition Height="{console:OnPlatform Default='36', Console='3'}"/>
       </Grid.RowDefinitions>
 
       <!-- Select Change Detail -->
       <Grid Grid.Row="0">
         <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}">
           <StackPanel Orientation="Vertical" VerticalAlignment="Center">
-            <Path Width="64" Height="64" Data="{StaticResource Icons.Diff}" Fill="{DynamicResource Brush.FG2}"/>
-            <TextBlock Margin="0,16,0,0"
+            <console:OnPlatform>
+              <console:OnPlatform.Default>
+                <Path Width="64" Height="64" Data="{StaticResource Icons.Diff}" Fill="{DynamicResource Brush.FG2}"/>
+              </console:OnPlatform.Default>
+              <console:OnPlatform.Console>
+                <TextBlock Text="≠"/>
+              </console:OnPlatform.Console>
+            </console:OnPlatform>
+            <TextBlock Margin="{console:OnPlatform Default='0,16,0,0', Console='0,1,0,0'}"
                        Text="{DynamicResource Text.Diff.Welcome}"
                        FontSize="18" FontWeight="Bold"
                        Foreground="{DynamicResource Brush.FG2}"
@@ -244,10 +322,10 @@
       <v:CommitMessageTextBox Grid.Row="2" ShowAdvancedOptions="True" Text="{Binding CommitMessage, Mode=TwoWay}"/>
 
       <!-- Commit Options -->
-      <Grid Grid.Row="3" Margin="0,6,0,0" ColumnDefinitions="Auto,Auto,Auto,Auto,*,Auto,Auto,Auto">
+      <Grid Grid.Row="3" Margin="{console:OnPlatform Default='0,6,0,0', Console='0,1,0,0'}" ColumnDefinitions="Auto,Auto,Auto,Auto,*,Auto,Auto,Auto">
         <CheckBox Grid.Column="0"
-                  Height="24"
-                  Margin="1,0,0,0"
+                  Height="{console:OnPlatform Default='24', Console='2'}"
+                  Margin="{console:OnPlatform Default='1,0,0,0', Console='1,0,0,0'}"
                   HorizontalAlignment="Left"
                   IsChecked="{Binding EnableSignOff, Mode=TwoWay}"
                   Content="{DynamicResource Text.WorkingCopy.SignOff}"
@@ -256,8 +334,8 @@
                   ToolTip.VerticalOffset="0"/>
 
         <CheckBox Grid.Column="1"
-                  Height="24"
-                  Margin="12,0,0,0"
+                  Height="{console:OnPlatform Default='24', Console='2'}"
+                  Margin="{console:OnPlatform Default='12,0,0,0', Console='1,0,0,0'}"
                   HorizontalAlignment="Left"
                   IsChecked="{Binding NoVerifyOnCommit, Mode=TwoWay}"
                   Content="{DynamicResource Text.WorkingCopy.NoVerify}"
@@ -266,8 +344,8 @@
                   ToolTip.VerticalOffset="0"/>
 
         <CheckBox Grid.Column="2"
-                  Height="24"
-                  Margin="12,0,0,0"
+                  Height="{console:OnPlatform Default='24', Console='2'}"
+                  Margin="{console:OnPlatform Default='12,0,0,0', Console='1,0,0,0'}"
                   HorizontalAlignment="Left"
                   IsChecked="{Binding UseAmend, Mode=TwoWay}"
                   Content="{DynamicResource Text.WorkingCopy.Amend}"
@@ -276,8 +354,8 @@
                   ToolTip.VerticalOffset="0"/>
 
         <CheckBox Grid.Column="3"
-                  Height="24"
-                  Margin="12,0,0,0"
+                  Height="{console:OnPlatform Default='24', Console='2'}"
+                  Margin="{console:OnPlatform Default='12,0,0,0', Console='1,0,0,0'}"
                   HorizontalAlignment="Left"
                   IsChecked="{Binding ResetAuthor, Mode=TwoWay}"
                   IsVisible="{Binding UseAmend}"
@@ -293,9 +371,9 @@
 
         <SplitButton Grid.Column="5"
                      Content="{DynamicResource Text.Repository.Continue}"
-                     Height="28"
-                     Margin="8,0,0,0"
-                     Padding="8,0"
+                     Height="{console:OnPlatform Default='28', Console='2'}"
+                     Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}"
+                     Padding="{console:OnPlatform Default='8,0', Console='1,0'}"
                      Click="OnContinue"
                      IsVisible="{Binding InProgressContext, Converter={x:Static ObjectConverters.IsNotNull}}">
           <SplitButton.IsEnabled>
@@ -316,9 +394,9 @@
         <Button Grid.Column="5"
                 Classes="flat primary"
                 Content="{DynamicResource Text.WorkingCopy.Commit}"
-                Height="28"
-                Margin="8,0,0,0"
-                Padding="8,0"
+                Height="{console:OnPlatform Default='28', Console='2'}"
+                Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}"
+                Padding="{console:OnPlatform Default='8,0', Console='1,0'}"
                 Click="OnCommit"
                 HotKey="{OnPlatform Ctrl+Enter, macOS=⌘+Enter}"
                 IsVisible="{Binding InProgressContext, Converter={x:Static ObjectConverters.IsNull}}"
@@ -330,7 +408,7 @@
                 <Run Text="{OnPlatform Ctrl+Enter, macOS=⌘+Enter}"/>
                 <Run Foreground="{DynamicResource Brush.FG2}" Text="{DynamicResource Text.WorkingCopy.CommitTip}"/>
               </TextBlock>
-              <TextBlock TextAlignment="Left" TextWrapping="Wrap" Margin="0,4,0,0">
+              <TextBlock TextAlignment="Left" TextWrapping="Wrap" Margin="{console:OnPlatform Default='0,4,0,0', Console='0,1,0,0'}">
                 <Run Text="{OnPlatform Ctrl+Shift+Enter, macOS=⌘+⇧+Enter}"/>
                 <Run Foreground="{DynamicResource Brush.FG2}" Text="{DynamicResource Text.WorkingCopy.CommitWithAutoStage}"/>
               </TextBlock>
@@ -347,7 +425,7 @@
 
         <!-- Invisible button just to add another hotkey `Ctrl+Shift+Enter` to commit with auto-stage -->
         <Button Grid.Column="6"
-                Width="0" Height="0"
+                Width="0" Height="{console:OnPlatform Default='0', Console='1'}"
                 Background="Transparent"
                 Click="OnCommitWithAutoStage"
                 HotKey="{OnPlatform Ctrl+Shift+Enter, macOS=⌘+Shift+Enter}">
@@ -362,9 +440,9 @@
         <Button Grid.Column="7"
                 Classes="flat"
                 Content="{DynamicResource Text.WorkingCopy.CommitAndPush}"
-                Height="28"
-                Margin="8,0,0,0"
-                Padding="8,0"
+                Height="{console:OnPlatform Default='28', Console='2'}"
+                Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}"
+                Padding="{console:OnPlatform Default='8,0', Console='1,0'}"
                 Click="OnCommitWithPush"
                 HotKey="{OnPlatform Ctrl+Alt+Enter, macOS=⌘+Alt+Enter}"
                 ToolTip.Tip="{OnPlatform Ctrl+Alt+Enter, macOS=⌘+⌥+Enter}"

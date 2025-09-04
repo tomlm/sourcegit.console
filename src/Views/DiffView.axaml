@@ -6,34 +6,42 @@
              xmlns:vm="using:SourceGit.ViewModels"
              xmlns:v="using:SourceGit.Views"
              xmlns:c="using:SourceGit.Converters"
+             xmlns:console="https://github.com/jinek/consolonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.DiffView"
              x:DataType="vm:DiffContext">
   <Border BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}" Background="{DynamicResource Brush.Window}">
-    <Grid RowDefinitions="26,*">
+    <Grid RowDefinitions="{console:OnPlatform Default='26,*', Console='2,*'}">
       <!-- Toolbar -->
       <Border Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border2}">
         <Grid ColumnDefinitions="Auto,Auto,*,Auto">
           <!-- File Icon -->
-          <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.File}" Margin="8,0,0,0"/>
+          <console:OnPlatform>
+            <console:OnPlatform.Default>
+              <Path Grid.Column="0" Width="12" Height="12" Data="{StaticResource Icons.File}" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}"/>
+            </console:OnPlatform.Default>
+            <console:OnPlatform.Console>
+              <TextBlock Grid.Column="0" Text="📄" Margin="1,0,0,0"/>
+            </console:OnPlatform.Console>
+          </console:OnPlatform>
 
           <!-- File Mode Change -->
           <Border Grid.Column="1"
-                  Margin="4,0,0,0"
-                  Height="18"
-                  CornerRadius="4"
+                  Margin="{console:OnPlatform Default='4,0,0,0', Console='1,0,0,0'}"
+                  Height="{console:OnPlatform Default='18', Console='2'}"
+                  CornerRadius="{console:OnPlatform Default='4', Console='0'}"
                   VerticalAlignment="Center"
                   Background="{DynamicResource Brush.Badge}"
                   IsVisible="{Binding FileModeChange, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
                   ToolTip.Tip="{DynamicResource Text.Diff.FileModeChanged}">
-            <TextBlock Classes="primary" FontSize="10" HorizontalAlignment="Center" Margin="4,0" Text="{Binding FileModeChange}" Foreground="{DynamicResource Brush.BadgeFG}"/>
+            <TextBlock Classes="primary" FontSize="10" HorizontalAlignment="Center" Margin="{console:OnPlatform Default='4,0', Console='1,0'}" Text="{Binding FileModeChange}" Foreground="{DynamicResource Brush.BadgeFG}"/>
           </Border>
 
           <!-- Title -->
-          <TextBlock Grid.Column="2" Classes="primary" Margin="4,0,0,0" Text="{Binding Title}" ToolTip.Tip="{Binding Title}" FontSize="11" TextTrimming="CharacterEllipsis"/>
+          <TextBlock Grid.Column="2" Classes="primary" Margin="{console:OnPlatform Default='4,0,0,0', Console='1,0,0,0'}" Text="{Binding Title}" ToolTip.Tip="{Binding Title}" FontSize="11" TextTrimming="CharacterEllipsis"/>
 
           <!-- Toolbar Buttons -->
-          <StackPanel Grid.Column="3" Margin="8,0,0,0" Orientation="Horizontal" VerticalAlignment="Center">
+          <StackPanel Grid.Column="3" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}" Orientation="Horizontal" VerticalAlignment="Center">
             <Button Classes="icon_button"
                     Width="28"
                     Click="OnGotoFirstChange"
@@ -46,7 +54,14 @@
                   <Run Text="{OnPlatform Ctrl+Alt+Home, macOS=⌘+⌥+Home}" FontSize="11" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
                 </TextBlock>
               </ToolTip.Tip>
-              <Path Width="12" Height="12" Stretch="Uniform" Margin="0,6,0,0" Data="{StaticResource Icons.Top}"/>
+              <console:OnPlatform>
+                <console:OnPlatform.Default>
+                  <Path Width="12" Height="12" Stretch="Uniform" Margin="0,6,0,0" Data="{StaticResource Icons.Top}"/>
+                </console:OnPlatform.Default>
+                <console:OnPlatform.Console>
+                  <TextBlock Text="⤒"/>
+                </console:OnPlatform.Console>
+              </console:OnPlatform>
             </Button>
 
             <Button Classes="icon_button"
@@ -61,13 +76,20 @@
                   <Run Text="{OnPlatform Ctrl+Alt+Up, macOS=⌘+⌥+Up}" FontSize="11" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
                 </TextBlock>
               </ToolTip.Tip>
-              <Path Width="12" Height="12" Stretch="Uniform" Margin="0,6,0,0" Data="{StaticResource Icons.Up}"/>
+              <console:OnPlatform>
+                <console:OnPlatform.Default>
+                  <Path Width="12" Height="12" Stretch="Uniform" Margin="0,6,0,0" Data="{StaticResource Icons.Up}"/>
+                </console:OnPlatform.Default>
+                <console:OnPlatform.Console>
+                  <TextBlock Text="↑"/>
+                </console:OnPlatform.Console>
+              </console:OnPlatform>
             </Button>
 
             <ContentControl Content="{Binding Content, Mode=OneWay}" IsVisible="{Binding IsTextDiff}">
               <ContentControl.DataTemplates>
                 <DataTemplate DataType="vm:TextDiffContext">
-                  <TextBlock Classes="primary" Margin="0,0,0,0" FontSize="11" Text="{Binding BlockNavigation.Indicator}"/>
+                  <TextBlock Classes="primary" Margin="0" FontSize="11" Text="{Binding BlockNavigation.Indicator}"/>
                 </DataTemplate>
               </ContentControl.DataTemplates>
             </ContentControl>
@@ -84,7 +106,14 @@
                   <Run Text="{OnPlatform Ctrl+Alt+Down, macOS=⌘+⌥+Down}" FontSize="11" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
                 </TextBlock>
               </ToolTip.Tip>
-              <Path Width="12" Height="12" Stretch="Uniform" Margin="0,6,0,0" Data="{StaticResource Icons.Down}"/>
+              <console:OnPlatform>
+                <console:OnPlatform.Default>
+                  <Path Width="12" Height="12" Stretch="Uniform" Margin="0,6,0,0" Data="{StaticResource Icons.Down}"/>
+                </console:OnPlatform.Default>
+                <console:OnPlatform.Console>
+                  <TextBlock Text="↓"/>
+                </console:OnPlatform.Console>
+              </console:OnPlatform>
             </Button>
 
             <Button Classes="icon_button"
@@ -99,7 +128,14 @@
                   <Run Text="{OnPlatform Ctrl+Alt+End, macOS=⌘+⌥+End}" FontSize="11" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
                 </TextBlock>
               </ToolTip.Tip>
-              <Path Width="12" Height="12" Stretch="Uniform" Margin="0,6,0,0" Data="{StaticResource Icons.Bottom}"/>
+              <console:OnPlatform>
+                <console:OnPlatform.Default>
+                  <Path Width="12" Height="12" Stretch="Uniform" Margin="0,6,0,0" Data="{StaticResource Icons.Bottom}"/>
+                </console:OnPlatform.Default>
+                <console:OnPlatform.Console>
+                  <TextBlock Text="⤓"/>
+                </console:OnPlatform.Console>
+              </console:OnPlatform>
             </Button>
 
             <Button Classes="icon_button"
@@ -108,7 +144,14 @@
                     IsVisible="{Binding IsTextDiff}"
                     IsEnabled="{Binding ShowEntireFile, Mode=OneWay, Converter={x:Static BoolConverters.Not}}"
                     ToolTip.Tip="{DynamicResource Text.Diff.VisualLines.Incr}">
-              <Path Width="12" Height="12" Stretch="Uniform" Margin="0,6,0,0" Data="{StaticResource Icons.Lines.Incr}"/>
+              <console:OnPlatform>
+                <console:OnPlatform.Default>
+                  <Path Width="12" Height="12" Stretch="Uniform" Margin="0,6,0,0" Data="{StaticResource Icons.Lines.Incr}"/>
+                </console:OnPlatform.Default>
+                <console:OnPlatform.Console>
+                  <TextBlock Text="＋"/>
+                </console:OnPlatform.Console>
+              </console:OnPlatform>
             </Button>
 
             <Button Classes="icon_button"
@@ -122,7 +165,14 @@
                   <Binding Path="ShowEntireFile" Mode="OneWay" Converter="{x:Static BoolConverters.Not}"/>
                 </MultiBinding>
               </Button.IsEnabled>
-              <Path Width="12" Height="12" Stretch="Uniform" Margin="0,6,0,0" Data="{StaticResource Icons.Lines.Decr}"/>
+              <console:OnPlatform>
+                <console:OnPlatform.Default>
+                  <Path Width="12" Height="12" Stretch="Uniform" Margin="0,6,0,0" Data="{StaticResource Icons.Lines.Decr}"/>
+                </console:OnPlatform.Default>
+                <console:OnPlatform.Console>
+                  <TextBlock Text="－"/>
+                </console:OnPlatform.Console>
+              </console:OnPlatform>
             </Button>
 
             <ToggleButton Classes="line_path"
@@ -130,7 +180,14 @@
                           IsChecked="{Binding ShowEntireFile, Mode=TwoWay}"
                           IsVisible="{Binding IsTextDiff}"
                           ToolTip.Tip="{DynamicResource Text.Diff.VisualLines.All}">
-              <Path Width="13" Height="13" Data="{StaticResource Icons.Lines.All}" Margin="0,3,0,0"/>
+              <console:OnPlatform>
+                <console:OnPlatform.Default>
+                  <Path Width="13" Height="13" Data="{StaticResource Icons.Lines.All}" Margin="0,3,0,0"/>
+                </console:OnPlatform.Default>
+                <console:OnPlatform.Console>
+                  <TextBlock Text="≡"/>
+                </console:OnPlatform.Console>
+              </console:OnPlatform>
             </ToggleButton>
 
             <ToggleButton Classes="line_path"
@@ -139,7 +196,14 @@
                           IsChecked="{Binding Source={x:Static vm:Preferences.Instance}, Path=UseSyntaxHighlighting, Mode=TwoWay}"
                           IsVisible="{Binding IsTextDiff}"
                           ToolTip.Tip="{DynamicResource Text.Diff.SyntaxHighlight}">
-              <Path Width="13" Height="13" Data="{StaticResource Icons.SyntaxHighlight}" Margin="0,3,0,0"/>
+              <console:OnPlatform>
+                <console:OnPlatform.Default>
+                  <Path Width="13" Height="13" Data="{StaticResource Icons.SyntaxHighlight}" Margin="0,3,0,0"/>
+                </console:OnPlatform.Default>
+                <console:OnPlatform.Console>
+                  <TextBlock Text="✎"/>
+                </console:OnPlatform.Console>
+              </console:OnPlatform>
             </ToggleButton>
 
             <ToggleButton Classes="line_path"
@@ -152,15 +216,28 @@
                   <Binding Path="UseSideBySide" Mode="OneWay" Converter="{x:Static BoolConverters.Not}"/>
                 </MultiBinding>
               </ToggleButton.IsVisible>
-
-              <Path Width="12" Height="12" Data="{StaticResource Icons.WordWrap}" Margin="0,2,0,0"/>
+              <console:OnPlatform>
+                <console:OnPlatform.Default>
+                  <Path Width="12" Height="12" Data="{StaticResource Icons.WordWrap}" Margin="0,2,0,0"/>
+                </console:OnPlatform.Default>
+                <console:OnPlatform.Console>
+                  <TextBlock Text="↩"/>
+                </console:OnPlatform.Console>
+              </console:OnPlatform>
             </ToggleButton>
 
             <ToggleButton Classes="line_path"
                           Width="28"
                           IsChecked="{Binding IgnoreWhitespace, Mode=TwoWay}"
                           ToolTip.Tip="{DynamicResource Text.Diff.IgnoreWhitespace}">
-              <Path Width="14" Height="14" Stretch="Uniform" Data="{StaticResource Icons.Whitespace}"/>
+              <console:OnPlatform>
+                <console:OnPlatform.Default>
+                  <Path Width="14" Height="14" Stretch="Uniform" Data="{StaticResource Icons.Whitespace}"/>
+                </console:OnPlatform.Default>
+                <console:OnPlatform.Console>
+                  <TextBlock Text="␣"/>
+                </console:OnPlatform.Console>
+              </console:OnPlatform>
             </ToggleButton>
 
             <ToggleButton Classes="line_path"
@@ -168,15 +245,29 @@
                           IsChecked="{Binding Source={x:Static vm:Preferences.Instance}, Path=ShowHiddenSymbolsInDiffView, Mode=TwoWay}"
                           IsVisible="{Binding IsTextDiff}"
                           ToolTip.Tip="{DynamicResource Text.Diff.ShowHiddenSymbols}">
-              <Path Width="11" Height="11" Stretch="Uniform" Data="{StaticResource Icons.HiddenSymbol}" Margin="0,1,0,0"/>
+              <console:OnPlatform>
+                <console:OnPlatform.Default>
+                  <Path Width="11" Height="11" Stretch="Uniform" Data="{StaticResource Icons.HiddenSymbol}" Margin="0,1,0,0"/>
+                </console:OnPlatform.Default>
+                <console:OnPlatform.Console>
+                  <TextBlock Text="¶"/>
+                </console:OnPlatform.Console>
+              </console:OnPlatform>
             </ToggleButton>
 
             <ToggleButton Classes="line_path"
-                          Width="28" Height="18"
+                          Width="28" Height="{console:OnPlatform Default='18', Console='2'}"
                           IsChecked="{Binding UseSideBySide, Mode=TwoWay}"
                           IsVisible="{Binding IsTextDiff}"
                           ToolTip.Tip="{DynamicResource Text.Diff.SideBySide}">
-              <Path Width="12" Height="12" Data="{StaticResource Icons.Layout}" Margin="0,2,0,0"/>
+              <console:OnPlatform>
+                <console:OnPlatform.Default>
+                  <Path Width="12" Height="12" Data="{StaticResource Icons.Layout}" Margin="0,2,0,0"/>
+                </console:OnPlatform.Default>
+                <console:OnPlatform.Console>
+                  <TextBlock Text="⇄"/>
+                </console:OnPlatform.Console>
+              </console:OnPlatform>
             </ToggleButton>
 
             <Button Classes="icon_button"
@@ -190,7 +281,14 @@
                   <Run Text="{OnPlatform Ctrl+Shift+D, macOS=⌘+⇧+D}" FontSize="11" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
                 </TextBlock>
               </ToolTip.Tip>
-              <Path Width="12" Height="12" Stretch="Uniform" Data="{StaticResource Icons.OpenWith}"/>
+              <console:OnPlatform>
+                <console:OnPlatform.Default>
+                  <Path Width="12" Height="12" Stretch="Uniform" Data="{StaticResource Icons.OpenWith}"/>
+                </console:OnPlatform.Default>
+                <console:OnPlatform.Console>
+                  <TextBlock Text="🔗"/>
+                </console:OnPlatform.Console>
+              </console:OnPlatform>
             </Button>
           </StackPanel>
         </Grid>
@@ -207,19 +305,23 @@
                          FontSize="18" FontWeight="Bold"
                          Foreground="{DynamicResource Brush.FG2}"
                          HorizontalAlignment="Center"/>
-              <Path Width="64" Height="64" Data="{StaticResource Icons.Binary}" Fill="{DynamicResource Brush.FG2}"/>
+              <console:OnPlatform>
+                <console:OnPlatform.Default>
+                  <Path Width="64" Height="64" Data="{StaticResource Icons.Binary}" Fill="{DynamicResource Brush.FG2}"/>
+                </console:OnPlatform.Default>
+                <console:OnPlatform.Console>
+                  <TextBlock Text="📦"/>
+                </console:OnPlatform.Console>
+              </console:OnPlatform>
               <Grid Margin="0,16,0,0" HorizontalAlignment="Center" RowDefinitions="32,32" ColumnDefinitions="Auto,Auto">
-                <Border Grid.Row="0" Grid.Column="0" Height="16" Background="{DynamicResource Brush.Badge}" CornerRadius="8" VerticalAlignment="Center">
-                  <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.Old}" Margin="8,0" FontSize="10" Foreground="{DynamicResource Brush.BadgeFG}"/>
+                <Border Grid.Row="0" Grid.Column="0" Height="16" Background="{DynamicResource Brush.Badge}" CornerRadius="{console:OnPlatform Default='8', Console='0'}" VerticalAlignment="Center">
+                  <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.Old}" Margin="{console:OnPlatform Default='8,0', Console='1,0'}" FontSize="10" Foreground="{DynamicResource Brush.BadgeFG}"/>
                 </Border>
-
-                <TextBlock Grid.Row="0" Grid.Column="1" Classes="primary" Text="{Binding OldSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right" FontSize="16" Margin="8,0"/>
-
-                <Border Grid.Row="1" Grid.Column="0" Height="16" Background="Green" CornerRadius="8" VerticalAlignment="Center">
-                  <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.New}" Margin="8,0" FontSize="10" Foreground="White"/>
+                <TextBlock Grid.Row="0" Grid.Column="1" Classes="primary" Text="{Binding OldSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right" FontSize="16" Margin="{console:OnPlatform Default='8,0', Console='1,0'}"/>
+                <Border Grid.Row="1" Grid.Column="0" Height="16" Background="Green" CornerRadius="{console:OnPlatform Default='8', Console='0'}" VerticalAlignment="Center">
+                  <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.New}" Margin="{console:OnPlatform Default='8,0', Console='1,0'}" FontSize="10" Foreground="White"/>
                 </Border>
-
-                <TextBlock Grid.Row="1" Grid.Column="1" Classes="primary" Text="{Binding NewSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right" FontSize="16" Margin="8,0"/>
+                <TextBlock Grid.Row="1" Grid.Column="1" Classes="primary" Text="{Binding NewSize, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right" FontSize="16" Margin="{console:OnPlatform Default='8,0', Console='1,0'}"/>
               </Grid>
             </StackPanel>
           </DataTemplate>
@@ -232,19 +334,23 @@
                          FontSize="18" FontWeight="Bold"
                          Foreground="{DynamicResource Brush.FG2}"
                          HorizontalAlignment="Center"/>
-              <Path Width="64" Height="64" Data="{StaticResource Icons.LFS}" Fill="{DynamicResource Brush.FG2}"/>
+              <console:OnPlatform>
+                <console:OnPlatform.Default>
+                  <Path Width="64" Height="64" Data="{StaticResource Icons.LFS}" Fill="{DynamicResource Brush.FG2}"/>
+                </console:OnPlatform.Default>
+                <console:OnPlatform.Console>
+                  <TextBlock Text="📦"/>
+                </console:OnPlatform.Console>
+              </console:OnPlatform>
               <Grid Margin="0,16,0,0" HorizontalAlignment="Center" RowDefinitions="32,32" ColumnDefinitions="Auto,Auto">
-                <Border Grid.Row="0" Grid.Column="0" Height="16" Background="{DynamicResource Brush.Badge}" CornerRadius="8" VerticalAlignment="Center">
-                  <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.Old}" Margin="8,0" FontSize="10" Foreground="{DynamicResource Brush.BadgeFG}"/>
+                <Border Grid.Row="0" Grid.Column="0" Height="16" Background="{DynamicResource Brush.Badge}" CornerRadius="{console:OnPlatform Default='8', Console='0'}" VerticalAlignment="Center">
+                  <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.Old}" Margin="{console:OnPlatform Default='8,0', Console='1,0'}" FontSize="10" Foreground="{DynamicResource Brush.BadgeFG}"/>
                 </Border>
-
-                <TextBlock Grid.Row="0" Grid.Column="1" Classes="primary" Text="{Binding Old.Size, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right" FontSize="16" Margin="8,0"/>
-
-                <Border Grid.Row="1" Grid.Column="0" Height="16" Background="Green" CornerRadius="8" VerticalAlignment="Center">
-                  <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.New}" Margin="8,0" FontSize="10" Foreground="White"/>
+                <TextBlock Grid.Row="0" Grid.Column="1" Classes="primary" Text="{Binding Old.Size, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right" FontSize="16" Margin="{console:OnPlatform Default='8,0', Console='1,0'}"/>
+                <Border Grid.Row="1" Grid.Column="0" Height="16" Background="Green" CornerRadius="{console:OnPlatform Default='8', Console='0'}" VerticalAlignment="Center">
+                  <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.New}" Margin="{console:OnPlatform Default='8,0', Console='1,0'}" FontSize="10" Foreground="White"/>
                 </Border>
-
-                <TextBlock Grid.Row="1" Grid.Column="1" Classes="primary" Text="{Binding New.Size, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right" FontSize="16" Margin="8,0"/>
+                <TextBlock Grid.Row="1" Grid.Column="1" Classes="primary" Text="{Binding New.Size, Converter={x:Static c:LongConverters.ToFileSize}}" Foreground="{DynamicResource Brush.FG2}" HorizontalAlignment="Right" FontSize="16" Margin="{console:OnPlatform Default='8,0', Console='1,0'}"/>
               </Grid>
             </StackPanel>
           </DataTemplate>
@@ -254,15 +360,15 @@
             <Grid Background="{DynamicResource Brush.Contents}" RowDefinitions="Auto,*">
               <TextBlock Grid.Row="0"
                          Text="{DynamicResource Text.Diff.Submodule}"
-                         Margin="8,8,8,8"
+                         Margin="{console:OnPlatform Default='8,8,8,8', Console='1,1,1,1'}"
                          FontSize="18" FontWeight="Bold"
                          Foreground="{DynamicResource Brush.FG2}"
                          HorizontalAlignment="Center"/>
 
               <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-                <StackPanel Orientation="Vertical" Margin="8,0">
-                  <Border Height="16" HorizontalAlignment="Center" Background="Red" CornerRadius="8" IsVisible="{Binding New, Converter={x:Static ObjectConverters.IsNull}}">
-                    <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.Submodule.Deleted}" Margin="8,0" FontSize="10" Foreground="White"/>
+                <StackPanel Orientation="Vertical" Margin="{console:OnPlatform Default='8,0', Console='1,0'}">
+                  <Border Height="16" HorizontalAlignment="Center" Background="Red" CornerRadius="{console:OnPlatform Default='8', Console='0'}" IsVisible="{Binding New, Converter={x:Static ObjectConverters.IsNull}}">
+                    <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.Submodule.Deleted}" Margin="{console:OnPlatform Default='8,0', Console='1,0'}" FontSize="10" Foreground="White"/>
                   </Border>
 
                   <Border Margin="0,8,0,0" IsVisible="{Binding Old, Converter={x:Static ObjectConverters.IsNotNull}}">
@@ -277,17 +383,31 @@
                     </ContentControl>
                   </Border>
 
-                  <Path Width="16" Height="16" Data="{StaticResource Icons.DoubleDown}" HorizontalAlignment="Center">
-                    <Path.IsVisible>
-                      <MultiBinding Converter="{x:Static BoolConverters.And}">
-                        <Binding Path="Old" Converter="{x:Static ObjectConverters.IsNotNull}"/>
-                        <Binding Path="New" Converter="{x:Static ObjectConverters.IsNotNull}"/>
-                      </MultiBinding>
-                    </Path.IsVisible>
-                  </Path>
+                  <console:OnPlatform>
+                    <console:OnPlatform.Default>
+                      <Path Width="16" Height="16" Data="{StaticResource Icons.DoubleDown}" HorizontalAlignment="Center">
+                        <Path.IsVisible>
+                          <MultiBinding Converter="{x:Static BoolConverters.And}">
+                            <Binding Path="Old" Converter="{x:Static ObjectConverters.IsNotNull}"/>
+                            <Binding Path="New" Converter="{x:Static ObjectConverters.IsNotNull}"/>
+                          </MultiBinding>
+                        </Path.IsVisible>
+                      </Path>
+                    </console:OnPlatform.Default>
+                    <console:OnPlatform.Console>
+                      <TextBlock Text="⇊" HorizontalAlignment="Center">
+                        <TextBlock.IsVisible>
+                          <MultiBinding Converter="{x:Static BoolConverters.And}">
+                            <Binding Path="Old" Converter="{x:Static ObjectConverters.IsNotNull}"/>
+                            <Binding Path="New" Converter="{x:Static ObjectConverters.IsNotNull}"/>
+                          </MultiBinding>
+                        </TextBlock.IsVisible>
+                      </TextBlock>
+                    </console:OnPlatform.Console>
+                  </console:OnPlatform>
 
-                  <Border Height="16" HorizontalAlignment="Center" Background="Green" CornerRadius="8" IsVisible="{Binding Old, Converter={x:Static ObjectConverters.IsNull}}">
-                    <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.Submodule.New}" Margin="8,0" FontSize="10" Foreground="White"/>
+                  <Border Height="16" HorizontalAlignment="Center" Background="Green" CornerRadius="{console:OnPlatform Default='8', Console='0'}" IsVisible="{Binding Old, Converter={x:Static ObjectConverters.IsNull}}">
+                    <TextBlock Classes="primary" Text="{DynamicResource Text.Diff.Submodule.New}" Margin="{console:OnPlatform Default='8,0', Console='1,0'}" FontSize="10" Foreground="White"/>
                   </Border>
 
                   <Border Margin="0,8,0,0" BorderThickness="1" BorderBrush="Green" Background="{DynamicResource Brush.Window}" IsVisible="{Binding New, Converter={x:Static ObjectConverters.IsNotNull}}">
@@ -344,8 +464,15 @@
           <!-- Empty or only EOL changes -->
           <DataTemplate DataType="m:NoOrEOLChange">
             <StackPanel Orientation="Vertical" VerticalAlignment="Center">
-              <Path Width="64" Height="64" Data="{StaticResource Icons.Check}" Fill="{DynamicResource Brush.FG2}"/>
-              <TextBlock Margin="0,16,0,0"
+              <console:OnPlatform>
+                <console:OnPlatform.Default>
+                  <Path Width="64" Height="64" Data="{StaticResource Icons.Check}" Fill="{DynamicResource Brush.FG2}"/>
+                </console:OnPlatform.Default>
+                <console:OnPlatform.Console>
+                  <TextBlock Text="✔"/>
+                </console:OnPlatform.Console>
+              </console:OnPlatform>
+              <TextBlock Margin="{console:OnPlatform Default='0,16,0,0', Console='0,1,0,0'}"
                          Text="{DynamicResource Text.Diff.NoChange}"
                          FontSize="18" FontWeight="Bold"
                          Foreground="{DynamicResource Brush.FG2}"

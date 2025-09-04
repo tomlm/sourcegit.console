@@ -6,20 +6,21 @@
              xmlns:vm="using:SourceGit.ViewModels"
              xmlns:v="using:SourceGit.Views"
              xmlns:c="using:SourceGit.Converters"
+             xmlns:console="https://github.com/jinek/consolonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SourceGit.Views.Repository"
              x:DataType="vm:Repository">
   <Grid>
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="{Binding Source={x:Static vm:Preferences.Instance}, Path=Layout.RepositorySidebarWidth, Mode=TwoWay}" MinWidth="200" MaxWidth="500"/>
-      <ColumnDefinition Width="3"/>
+      <ColumnDefinition Width="{console:OnPlatform Default='3', Console='1'}"/>
       <ColumnDefinition Width="*"/>
     </Grid.ColumnDefinitions>
 
     <!-- Left Panel -->
     <Grid Grid.Column="0" RowDefinitions="Auto,*">
       <!-- Page Switcher for Left Contents (Dashboard or CommitSearch) -->
-      <StackPanel Grid.Row="0" Margin="0,6" Height="24" HorizontalAlignment="Center" Orientation="Horizontal">
+      <StackPanel Grid.Row="0" Margin="{console:OnPlatform Default='0,6', Console='0,1'}" Height="{console:OnPlatform Default='24', Console='2'}" HorizontalAlignment="Center" Orientation="Horizontal">
         <RadioButton Classes="switch_button"
                      Width="48"
                      GroupName="SearchGroup"
@@ -31,7 +32,14 @@
               <Run Text="{OnPlatform Ctrl+Shift+H, macOS=⌘+⇧+H}" FontSize="11" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
             </TextBlock>
           </ToolTip.Tip>
-          <Path Width="12" Height="12" Stretch="Fill" HorizontalAlignment="Center" Data="{StaticResource Icons.Home}"/>
+          <console:OnPlatform>
+            <console:OnPlatform.Default>
+              <Path Width="12" Height="12" Stretch="Fill" HorizontalAlignment="Center" Data="{StaticResource Icons.Home}"/>
+            </console:OnPlatform.Default>
+            <console:OnPlatform.Console>
+              <TextBlock Text="🏠"/>
+            </console:OnPlatform.Console>
+          </console:OnPlatform>
         </RadioButton>
 
         <RadioButton Classes="switch_button"
@@ -45,15 +53,22 @@
               <Run Text="{OnPlatform Ctrl+F, macOS=⌘+F}" FontSize="11" Foreground="{DynamicResource MenuFlyoutItemKeyboardAcceleratorTextForeground}"/>
             </TextBlock>
           </ToolTip.Tip>
-          <Path Width="12" Height="12" Stretch="Fill" HorizontalAlignment="Center" Data="{StaticResource Icons.Search}"/>
+          <console:OnPlatform>
+            <console:OnPlatform.Default>
+              <Path Width="12" Height="12" Stretch="Fill" HorizontalAlignment="Center" Data="{StaticResource Icons.Search}"/>
+            </console:OnPlatform.Default>
+            <console:OnPlatform.Console>
+              <TextBlock Text="🔍"/>
+            </console:OnPlatform.Console>
+          </console:OnPlatform>
         </RadioButton>
       </StackPanel>
 
       <!-- Dashboard -->
-      <Grid Grid.Row="1" Margin="0,0,0,8" RowDefinitions="Auto,Auto,*" IsVisible="{Binding !IsSearching}">
+      <Grid Grid.Row="1" Margin="{console:OnPlatform Default='0,0,0,8', Console='0,0,0,1'}" RowDefinitions="Auto,Auto,*" IsVisible="{Binding !IsSearching}">
         <!-- Page Switcher for Right Panel -->
-        <Border Grid.Row="0" Margin="8,0,4,0" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}" CornerRadius="6">
-          <Border CornerRadius="6" ClipToBounds="True">
+        <Border Grid.Row="0" Margin="{console:OnPlatform Default='8,0,4,0', Console='1,0,1,0'}" BorderThickness="1" BorderBrush="{DynamicResource Brush.Border2}" CornerRadius="{console:OnPlatform Default='6', Console='0'}">
+          <Border CornerRadius="{console:OnPlatform Default='6', Console='0'}" ClipToBounds="True">
             <ListBox Background="Transparent" SelectedIndex="{Binding SelectedViewIndex, Mode=TwoWay}" SelectionMode="AlwaysSelected">
               <ListBox.Styles>
                 <Style Selector="Path.icon">
@@ -98,69 +113,125 @@
 
               <ListBoxItem>
                 <Grid Classes="view_mode" ColumnDefinitions="Auto,*,Auto,Auto,Auto">
-                  <Path Grid.Column="0" Classes="icon" Data="{StaticResource Icons.Histories}"/>
+                  <console:OnPlatform>
+                    <console:OnPlatform.Default>
+                      <Path Grid.Column="0" Classes="icon" Data="{StaticResource Icons.Histories}"/>
+                    </console:OnPlatform.Default>
+                    <console:OnPlatform.Console>
+                      <TextBlock Grid.Column="0" Text="🕘"/>
+                    </console:OnPlatform.Console>
+                  </console:OnPlatform>
                   <TextBlock Grid.Column="1" Classes="header" Text="{DynamicResource Text.Histories}"/>
 
                   <ToggleButton Grid.Column="2"
                                 Classes="line_path"
-                                Width="26" Height="26"
+                                Width="26" Height="{console:OnPlatform Default='26', Console='2'}"
                                 Background="Transparent"
                                 IsChecked="{Binding OnlyHighlightCurrentBranchInHistories, Mode=TwoWay}"
                                 ToolTip.Tip="{DynamicResource Text.Repository.OnlyHighlightCurrentBranchInGraph}">
-                    <Path Width="12" Height="12" Data="{StaticResource Icons.LightOn}"/>
+                    <console:OnPlatform>
+                      <console:OnPlatform.Default>
+                        <Path Width="12" Height="12" Data="{StaticResource Icons.LightOn}"/>
+                      </console:OnPlatform.Default>
+                      <console:OnPlatform.Console>
+                        <TextBlock Text="💡"/>
+                      </console:OnPlatform.Console>
+                    </console:OnPlatform>
                   </ToggleButton>
                   <ToggleButton Grid.Column="3"
                                 Classes="line_path"
-                                Width="26" Height="26"
+                                Width="26" Height="{console:OnPlatform Default='26', Console='2'}"
                                 Background="Transparent"
                                 IsChecked="{Binding Source={x:Static vm:Preferences.Instance}, Path=DisplayTimeAsPeriodInHistories, Mode=TwoWay}"
                                 ToolTip.Tip="{DynamicResource Text.Repository.UseRelativeTimeInGraph}">
-                    <Path Width="12" Height="12" Data="{StaticResource Icons.Stopwatch}"/>
+                    <console:OnPlatform>
+                      <console:OnPlatform.Default>
+                        <Path Width="12" Height="12" Data="{StaticResource Icons.Stopwatch}"/>
+                      </console:OnPlatform.Default>
+                      <console:OnPlatform.Console>
+                        <TextBlock Text="⏱"/>
+                      </console:OnPlatform.Console>
+                    </console:OnPlatform>
                   </ToggleButton>
                   <Button Grid.Column="4"
                           Classes="icon_button"
-                          Width="26" Height="26"
+                          Width="26" Height="{console:OnPlatform Default='26', Console='2'}"
                           Click="OnOpenAdvancedHistoriesOption"
                           ToolTip.Tip="{DynamicResource Text.Repository.MoreOptions}">
-                    <Path Width="12" Height="12" Data="{StaticResource Icons.More}"/>
+                    <console:OnPlatform>
+                      <console:OnPlatform.Default>
+                        <Path Width="12" Height="12" Data="{StaticResource Icons.More}"/>
+                      </console:OnPlatform.Default>
+                      <console:OnPlatform.Console>
+                        <TextBlock Text="⋯"/>
+                      </console:OnPlatform.Console>
+                    </console:OnPlatform>
                   </Button>
                 </Grid>
               </ListBoxItem>
 
               <ListBoxItem IsVisible="{Binding !IsBare}">
                 <Grid Classes="view_mode" ColumnDefinitions="Auto,*,Auto,Auto,Auto">
-                  <Path Grid.Column="0" Classes="icon" Data="{StaticResource Icons.Changes}"/>
+                  <console:OnPlatform>
+                    <console:OnPlatform.Default>
+                      <Path Grid.Column="0" Classes="icon" Data="{StaticResource Icons.Changes}"/>
+                    </console:OnPlatform.Default>
+                    <console:OnPlatform.Console>
+                      <TextBlock Grid.Column="0" Text="✱"/>
+                    </console:OnPlatform.Console>
+                  </console:OnPlatform>
                   <TextBlock Grid.Column="1" Classes="header" Text="{DynamicResource Text.WorkingCopy}"/>
                   <v:CounterPresenter Grid.Column="2"
-                                      Margin="6,0"
+                                      Margin="{console:OnPlatform Default='6,0', Console='1,0'}"
                                       VerticalAlignment="Center"
                                       Count="{Binding LocalChangesCount}"
                                       FontFamily="{DynamicResource Fonts.Monospace}"
                                       FontSize="10"
                                       Foreground="{DynamicResource Brush.BadgeFG}"
                                       Background="{DynamicResource Brush.Badge}"/>
-                  <Path Grid.Column="3"
+                  <console:OnPlatform>
+                    <console:OnPlatform.Default>
+                      <Path Grid.Column="3"
                         Width="12" Height="12"
-                        Margin="0,0,6,0"
+                        Margin="{console:OnPlatform Default='0,0,6,0', Console='0,0,1,0'}"
                         Data="{StaticResource Icons.Info}"
                         Fill="DarkOrange"
                         IsVisible="{Binding InProgressContext, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+                    </console:OnPlatform.Default>
+                    <console:OnPlatform.Console>
+                      <TextBlock Grid.Column="3" Text="ℹ"/>
+                    </console:OnPlatform.Console>
+                  </console:OnPlatform>
                   <Button Grid.Column="4"
                           Classes="icon_button"
-                          Width="26" Height="26"
+                          Width="26" Height="{console:OnPlatform Default='26', Console='2'}"
                           Command="{Binding DiscardAllChanges}"
                           ToolTip.Tip="{DynamicResource Text.Repository.DiscardAll}">
-                    <Path Width="12" Height="12" Data="{StaticResource Icons.Undo}"/>
+                    <console:OnPlatform>
+                      <console:OnPlatform.Default>
+                        <Path Width="12" Height="12" Data="{StaticResource Icons.Undo}"/>
+                      </console:OnPlatform.Default>
+                      <console:OnPlatform.Console>
+                        <TextBlock Text="↺"/>
+                      </console:OnPlatform.Console>
+                    </console:OnPlatform>
                   </Button>
                 </Grid>
               </ListBoxItem>
 
               <ListBoxItem IsVisible="{Binding !IsBare}">
                 <Grid Classes="view_mode" ColumnDefinitions="Auto,*,Auto,Auto">
-                  <Path Grid.Column="0" Classes="icon" Data="{StaticResource Icons.Stashes}"/>
+                  <console:OnPlatform>
+                    <console:OnPlatform.Default>
+                      <Path Grid.Column="0" Classes="icon" Data="{StaticResource Icons.Stashes}"/>
+                    </console:OnPlatform.Default>
+                    <console:OnPlatform.Console>
+                      <TextBlock Grid.Column="0" Text="📦"/>
+                    </console:OnPlatform.Console>
+                  </console:OnPlatform>
                   <TextBlock Grid.Column="1" Classes="header" Text="{DynamicResource Text.Stashes}"/>
                   <v:CounterPresenter Grid.Column="2"
-                                      Margin="6,0"
+                                      Margin="{console:OnPlatform Default='6,0', Console='1,0'}"
                                       VerticalAlignment="Center"
                                       Count="{Binding StashesCount}"
                                       FontFamily="{DynamicResource Fonts.Monospace}"
@@ -169,11 +240,18 @@
                                       Background="{DynamicResource Brush.Badge}"/>
                   <Button Grid.Column="3"
                           Classes="icon_button"
-                          Width="26" Height="26"
+                          Width="26" Height="{console:OnPlatform Default='26', Console='2'}"
                           Command="{Binding ClearStashes}"
                           IsEnabled="{Binding StashesCount, Converter={x:Static c:IntConverters.IsGreaterThanZero}}"
                           ToolTip.Tip="{DynamicResource Text.Repository.ClearStashes}">
-                    <Path Width="12" Height="12" Data="{StaticResource Icons.RemoveAll}"/>
+                    <console:OnPlatform>
+                      <console:OnPlatform.Default>
+                        <Path Width="12" Height="12" Data="{StaticResource Icons.RemoveAll}"/>
+                      </console:OnPlatform.Default>
+                      <console:OnPlatform.Console>
+                        <TextBlock Text="✖"/>
+                      </console:OnPlatform.Console>
+                    </console:OnPlatform>
                   </Button>
                 </Grid>
               </ListBoxItem>
@@ -183,65 +261,107 @@
 
         <!-- Filter Branches/Tags/Submodules -->
         <TextBox Grid.Row="1"
-                 Height="26"
-                 Margin="8,6,4,0"
+                 Height="{console:OnPlatform Default='26', Console='2'}"
+                 Margin="{console:OnPlatform Default='8,6,4,0', Console='1,1,1,0'}"
                  BorderThickness="1"
-                 CornerRadius="4"
+                 CornerRadius="{console:OnPlatform Default='4', Console='0'}"
                  BorderBrush="{DynamicResource Brush.Border2}"
                  Watermark="{DynamicResource Text.Repository.Filter}"
                  Text="{Binding Filter, Mode=TwoWay}"
                  VerticalContentAlignment="Center">
           <TextBox.InnerLeftContent>
-            <Path Width="14" Height="14"
+            <console:OnPlatform>
+              <console:OnPlatform.Default>
+                <Path Width="14" Height="14"
                   Margin="6,0,0,0"
                   Fill="{DynamicResource Brush.FG2}"
                   Data="{StaticResource Icons.Search}"/>
+              </console:OnPlatform.Default>
+              <console:OnPlatform.Console>
+                <TextBlock Text="🔍"/>
+              </console:OnPlatform.Console>
+            </console:OnPlatform>
           </TextBox.InnerLeftContent>
 
           <TextBox.InnerRightContent>
             <Button Classes="icon_button"
                     Width="16"
-                    Margin="0,0,6,0"
+                    Margin="{console:OnPlatform Default='0,0,6,0', Console='0,0,1,0'}"
                     Command="{Binding ClearFilter}"
                     IsVisible="{Binding Filter, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
                     HorizontalAlignment="Right">
-              <Path Width="14" Height="14"
+              <console:OnPlatform>
+                <console:OnPlatform.Default>
+                  <Path Width="14" Height="14"
                     Margin="0,1,0,0"
                     Fill="{DynamicResource Brush.FG1}"
                     Data="{StaticResource Icons.Clear}"/>
+                </console:OnPlatform.Default>
+                <console:OnPlatform.Console>
+                  <TextBlock Text="✖"/>
+                </console:OnPlatform.Console>
+              </console:OnPlatform>
             </Button>
           </TextBox.InnerRightContent>
         </TextBox>
 
-        <Grid Grid.Row="2" x:Name="LeftSidebarGroups" Margin="0,4,0,0" RowDefinitions="28,Auto,28,Auto,28,Auto,28,Auto,28,Auto" SizeChanged="OnLeftSidebarSizeChanged">
+        <Grid Grid.Row="2" x:Name="LeftSidebarGroups" Margin="{console:OnPlatform Default='0,4,0,0', Console='0,1,0,0'}" RowDefinitions="{console:OnPlatform Default='28,Auto,28,Auto,28,Auto,28,Auto,28,Auto', Console='2,Auto,2,Auto,2,Auto,2,Auto,2,Auto'}" SizeChanged="OnLeftSidebarSizeChanged">
           <!-- Local Branches -->
           <ToggleButton Grid.Row="0" Classes="group_expander" IsChecked="{Binding IsLocalBranchGroupExpanded, Mode=TwoWay}">
-            <Grid ColumnDefinitions="16,*,Auto,Auto">
-              <Path Grid.Column="0" Width="11" Height="11" HorizontalAlignment="Left" Data="{StaticResource Icons.Local}" Fill="{DynamicResource Brush.FG2}"/>
+            <Grid ColumnDefinitions="{console:OnPlatform Default='16,*,Auto,Auto', Console='1,*,Auto,Auto'}">
+              <console:OnPlatform>
+                <console:OnPlatform.Default>
+                  <Path Grid.Column="0" Width="11" Height="11" HorizontalAlignment="Left" Data="{StaticResource Icons.Local}" Fill="{DynamicResource Brush.FG2}"/>
+                </console:OnPlatform.Default>
+                <console:OnPlatform.Console>
+                  <TextBlock Grid.Column="0" Text="🌿"/>
+                </console:OnPlatform.Console>
+              </console:OnPlatform>
               <StackPanel Grid.Column="1" Orientation="Horizontal">
                 <TextBlock Classes="group_header_label" Text="{DynamicResource Text.Repository.LocalBranches}"/>
-                <TextBlock Classes="group_header_label" Text="{Binding LocalBranchesCount, StringFormat='({0})'}" Margin="4,0,0,0"/>
+                <TextBlock Classes="group_header_label" Text="{Binding LocalBranchesCount, StringFormat='({0})'}" Margin="{console:OnPlatform Default='4,0,0,0', Console='1,0,0,0'}"/>
               </StackPanel>
               <Button Grid.Column="2"
                       Classes="icon_button"
                       Width="14"
-                      Margin="8,0,0,0"
+                      Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}"
                       Click="OnOpenSortLocalBranchMenu"
                       ToolTip.Tip="{DynamicResource Text.Repository.BranchSort}">
                 <Grid>
-                  <Path Width="12" Height="12" Data="{StaticResource Icons.OrderByName}" IsVisible="{Binding IsSortingLocalBranchByName, Mode=OneWay}"/>
-                  <Path Width="12" Height="12" Data="{StaticResource Icons.OrderByTime}" IsVisible="{Binding !IsSortingLocalBranchByName, Mode=OneWay}"/>
+                  <console:OnPlatform>
+                    <console:OnPlatform.Default>
+                      <Path Width="12" Height="12" Data="{StaticResource Icons.OrderByName}" IsVisible="{Binding IsSortingLocalBranchByName, Mode=OneWay}"/>
+                    </console:OnPlatform.Default>
+                    <console:OnPlatform.Console>
+                      <TextBlock Text="🔤" IsVisible="{Binding IsSortingLocalBranchByName, Mode=OneWay}"/>
+                    </console:OnPlatform.Console>
+                  </console:OnPlatform>
+                  <console:OnPlatform>
+                    <console:OnPlatform.Default>
+                      <Path Width="12" Height="12" Data="{StaticResource Icons.OrderByTime}" IsVisible="{Binding !IsSortingLocalBranchByName, Mode=OneWay}"/>
+                    </console:OnPlatform.Default>
+                    <console:OnPlatform.Console>
+                      <TextBlock Text="⏱" IsVisible="{Binding !IsSortingLocalBranchByName, Mode=OneWay}"/>
+                    </console:OnPlatform.Console>
+                  </console:OnPlatform>
                 </Grid>
               </Button>
-              <Button Grid.Column="3" Classes="icon_button" Width="14" Margin="8,0" Command="{Binding CreateNewBranch}" ToolTip.Tip="{DynamicResource Text.Repository.NewBranch}">
-                <Path Width="12" Height="12" Data="{StaticResource Icons.Branch.Add}"/>
+              <Button Grid.Column="3" Classes="icon_button" Width="14" Margin="{console:OnPlatform Default='8,0', Console='1,0'}" Command="{Binding CreateNewBranch}" ToolTip.Tip="{DynamicResource Text.Repository.NewBranch}>
+                <console:OnPlatform>
+                  <console:OnPlatform.Default>
+                    <Path Width="12" Height="12" Data="{StaticResource Icons.Branch.Add}"/>
+                  </console:OnPlatform.Default>
+                  <console:OnPlatform.Console>
+                    <TextBlock Text="🌿"/>
+                  </console:OnPlatform.Console>
+                </console:OnPlatform>
               </Button>
             </Grid>
           </ToggleButton>
           <v:BranchTree Grid.Row="1"
                         x:Name="LocalBranchTree"
                         Height="0"
-                        Margin="8,0,4,0"
+                        Margin="{console:OnPlatform Default='8,0,4,0', Console='1,0,1,0'}"
                         Nodes="{Binding LocalBranchTrees}"
                         IsVisible="{Binding IsLocalBranchGroupExpanded}"
                         SelectionChanged="OnLocalBranchTreeSelectionChanged"
@@ -249,32 +369,60 @@
 
           <!-- Remotes -->
           <ToggleButton Grid.Row="2" Classes="group_expander" IsChecked="{Binding IsRemoteGroupExpanded, Mode=TwoWay}">
-            <Grid ColumnDefinitions="16,*,Auto,Auto">
-              <Path Grid.Column="0" Width="12" Height="12" HorizontalAlignment="Left" Data="{StaticResource Icons.Remotes}" Fill="{DynamicResource Brush.FG2}"/>
+            <Grid ColumnDefinitions="{console:OnPlatform Default='16,*,Auto,Auto', Console='1,*,Auto,Auto'}">
+              <console:OnPlatform>
+                <console:OnPlatform.Default>
+                  <Path Grid.Column="0" Width="12" Height="12" HorizontalAlignment="Left" Data="{StaticResource Icons.Remotes}" Fill="{DynamicResource Brush.FG2}"/>
+                </console:OnPlatform.Default>
+                <console:OnPlatform.Console>
+                  <TextBlock Grid.Column="0" Text="🌐"/>
+                </console:OnPlatform.Console>
+              </console:OnPlatform>
               <StackPanel Grid.Column="1" Orientation="Horizontal">
                 <TextBlock Classes="group_header_label" Text="{DynamicResource Text.Repository.Remotes}"/>
-                <TextBlock Classes="group_header_label" Text="{Binding Remotes, Converter={x:Static c:ListConverters.ToCount}}" Margin="4,0,0,0"/>
+                <TextBlock Classes="group_header_label" Text="{Binding Remotes, Converter={x:Static c:ListConverters.ToCount}}" Margin="{console:OnPlatform Default='4,0,0,0', Console='1,0,0,0'}"/>
               </StackPanel>
               <Button Grid.Column="2"
                       Classes="icon_button"
                       Width="14"
-                      Margin="8,0,0,0"
+                      Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}"
                       Click="OnOpenSortRemoteBranchMenu"
                       ToolTip.Tip="{DynamicResource Text.Repository.BranchSort}">
                 <Grid>
-                  <Path Width="12" Height="12" Data="{StaticResource Icons.OrderByName}" IsVisible="{Binding IsSortingRemoteBranchByName, Mode=OneWay}"/>
-                  <Path Width="12" Height="12" Data="{StaticResource Icons.OrderByTime}" IsVisible="{Binding !IsSortingRemoteBranchByName, Mode=OneWay}"/>
+                  <console:OnPlatform>
+                    <console:OnPlatform.Default>
+                      <Path Width="12" Height="12" Data="{StaticResource Icons.OrderByName}" IsVisible="{Binding IsSortingRemoteBranchByName, Mode=OneWay}"/>
+                    </console:OnPlatform.Default>
+                    <console:OnPlatform.Console>
+                      <TextBlock Text="🔤" IsVisible="{Binding IsSortingRemoteBranchByName, Mode=OneWay}"/>
+                    </console:OnPlatform.Console>
+                  </console:OnPlatform>
+                  <console:OnPlatform>
+                    <console:OnPlatform.Default>
+                      <Path Width="12" Height="12" Data="{StaticResource Icons.OrderByTime}" IsVisible="{Binding !IsSortingRemoteBranchByName, Mode=OneWay}"/>
+                    </console:OnPlatform.Default>
+                    <console:OnPlatform.Console>
+                      <TextBlock Text="⏱" IsVisible="{Binding !IsSortingRemoteBranchByName, Mode=OneWay}"/>
+                    </console:OnPlatform.Console>
+                  </console:OnPlatform>
                 </Grid>
               </Button>
-              <Button Grid.Column="3" Classes="icon_button" Width="14" Margin="8,0" Command="{Binding AddRemote}" ToolTip.Tip="{DynamicResource Text.Repository.Remotes.Add}">
-                <Path Width="12" Height="12" Data="{StaticResource Icons.Remote.Add}"/>
+              <Button Grid.Column="3" Classes="icon_button" Width="14" Margin="{console:OnPlatform Default='8,0', Console='1,0'}" Command="{Binding AddRemote}" ToolTip.Tip="{DynamicResource Text.Repository.Remotes.Add}>
+                <console:OnPlatform>
+                  <console:OnPlatform.Default>
+                    <Path Width="12" Height="12" Data="{StaticResource Icons.Remote.Add}"/>
+                  </console:OnPlatform.Default>
+                  <console:OnPlatform.Console>
+                    <TextBlock Text="🌐"/>
+                  </console:OnPlatform.Console>
+                </console:OnPlatform>
               </Button>
             </Grid>
           </ToggleButton>
           <v:BranchTree Grid.Row="3"
                         x:Name="RemoteBranchTree"
                         Height="0"
-                        Margin="8,0,4,0"
+                        Margin="{console:OnPlatform Default='8,0,4,0', Console='1,0,1,0'}"
                         Nodes="{Binding RemoteBranchTrees}"
                         IsVisible="{Binding IsRemoteGroupExpanded}"
                         SelectionChanged="OnRemoteBranchTreeSelectionChanged"
@@ -282,11 +430,18 @@
 
           <!-- Tags -->
           <ToggleButton Grid.Row="4" Classes="group_expander" IsChecked="{Binding IsTagGroupExpanded, Mode=TwoWay}">
-            <Grid ColumnDefinitions="16,*,Auto,Auto,Auto">
-              <Path Grid.Column="0" Width="11" Height="11" Margin="2,1,0,0" HorizontalAlignment="Left" Data="{StaticResource Icons.Tags}" Fill="{DynamicResource Brush.FG2}"/>
+            <Grid ColumnDefinitions="{console:OnPlatform Default='16,*,Auto,Auto,Auto', Console='1,*,Auto,Auto,Auto'}">
+              <console:OnPlatform>
+                <console:OnPlatform.Default>
+                  <Path Grid.Column="0" Width="11" Height="11" Margin="{console:OnPlatform Default='2,1,0,0', Console='1,1,0,0'}" HorizontalAlignment="Left" Data="{StaticResource Icons.Tags}" Fill="{DynamicResource Brush.FG2}"/>
+                </console:OnPlatform.Default>
+                <console:OnPlatform.Console>
+                  <TextBlock Grid.Column="0" Text="🏷"/>
+                </console:OnPlatform.Console>
+              </console:OnPlatform>
               <StackPanel Grid.Column="1" Orientation="Horizontal">
                 <TextBlock Classes="group_header_label" Text="{DynamicResource Text.Repository.Tags}"/>
-                <TextBlock Classes="group_header_label" Text="{Binding Tags, Converter={x:Static c:ListConverters.ToCount}}" Margin="4,0,0,0"/>
+                <TextBlock Classes="group_header_label" Text="{Binding Tags, Converter={x:Static c:ListConverters.ToCount}}" Margin="{console:OnPlatform Default='4,0,0,0', Console='1,0,0,0'}"/>
               </StackPanel>
               <ToggleButton Grid.Column="2"
                             Classes="show_as_tree"
@@ -296,28 +451,49 @@
               <Button Grid.Column="3"
                       Classes="icon_button"
                       Width="14"
-                      Margin="8,0,0,0"
+                      Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}"
                       Click="OnOpenSortTagMenu"
                       ToolTip.Tip="{DynamicResource Text.Repository.Tags.Sort}">
                 <Grid>
-                  <Path Width="12" Height="12" Data="{StaticResource Icons.OrderByName}" IsVisible="{Binding IsSortingTagsByName, Mode=OneWay}"/>
-                  <Path Width="12" Height="12" Data="{StaticResource Icons.OrderByTime}" IsVisible="{Binding !IsSortingTagsByName, Mode=OneWay}"/>
+                  <console:OnPlatform>
+                    <console:OnPlatform.Default>
+                      <Path Width="12" Height="12" Data="{StaticResource Icons.OrderByName}" IsVisible="{Binding IsSortingTagsByName, Mode=OneWay}"/>
+                    </console:OnPlatform.Default>
+                    <console:OnPlatform.Console>
+                      <TextBlock Text="🔤" IsVisible="{Binding IsSortingTagsByName, Mode=OneWay}"/>
+                    </console:OnPlatform.Console>
+                  </console:OnPlatform>
+                  <console:OnPlatform>
+                    <console:OnPlatform.Default>
+                      <Path Width="12" Height="12" Data="{StaticResource Icons.OrderByTime}" IsVisible="{Binding !IsSortingTagsByName, Mode=OneWay}"/>
+                    </console:OnPlatform.Default>
+                    <console:OnPlatform.Console>
+                      <TextBlock Text="⏱" IsVisible="{Binding !IsSortingTagsByName, Mode=OneWay}"/>
+                    </console:OnPlatform.Console>
+                  </console:OnPlatform>
                 </Grid>
               </Button>
               <Button Grid.Column="4"
                       Classes="icon_button"
                       Width="14"
-                      Margin="8,0"
+                      Margin="{console:OnPlatform Default='8,0', Console='1,0'}"
                       Command="{Binding CreateNewTag}"
                       ToolTip.Tip="{DynamicResource Text.Repository.Tags.Add}">
-                <Path Width="12" Height="12" Data="{StaticResource Icons.Tag.Add}"/>
+                <console:OnPlatform>
+                  <console:OnPlatform.Default>
+                    <Path Width="12" Height="12" Data="{StaticResource Icons.Tag.Add}"/>
+                  </console:OnPlatform.Default>
+                  <console:OnPlatform.Console>
+                    <TextBlock Text="🏷"/>
+                  </console:OnPlatform.Console>
+                </console:OnPlatform>
               </Button>
             </Grid>
           </ToggleButton>
           <v:TagsView Grid.Row="5"
                       x:Name="TagsList"
                       Height="0"
-                      Margin="8,0,4,0"
+                      Margin="{console:OnPlatform Default='8,0,4,0', Console='1,0,1,0'}"
                       Background="Transparent"
                       Content="{Binding VisibleTags}"
                       Focusable="False"
@@ -327,11 +503,18 @@
 
           <!-- Submodules -->
           <ToggleButton Grid.Row="6" Classes="group_expander" IsChecked="{Binding IsSubmoduleGroupExpanded, Mode=TwoWay}">
-            <Grid ColumnDefinitions="16,*,Auto,Auto,Auto">
-              <Path Grid.Column="0" Width="10" Height="10" Margin="2,0,0,0" HorizontalAlignment="Left" Data="{StaticResource Icons.Submodules}" Fill="{DynamicResource Brush.FG2}"/>
+            <Grid ColumnDefinitions="{console:OnPlatform Default='16,*,Auto,Auto,Auto', Console='1,*,Auto,Auto,Auto'}">
+              <console:OnPlatform>
+                <console:OnPlatform.Default>
+                  <Path Grid.Column="0" Width="10" Height="10" Margin="{console:OnPlatform Default='2,0,0,0', Console='1,0,0,0'}" HorizontalAlignment="Left" Data="{StaticResource Icons.Submodules}" Fill="{DynamicResource Brush.FG2}"/>
+                </console:OnPlatform.Default>
+                <console:OnPlatform.Console>
+                  <TextBlock Grid.Column="0" Text="🧩"/>
+                </console:OnPlatform.Console>
+              </console:OnPlatform>
               <StackPanel Grid.Column="1" Orientation="Horizontal">
                 <TextBlock Classes="group_header_label" Text="{DynamicResource Text.Repository.Submodules}"/>
-                <TextBlock Classes="group_header_label" Text="{Binding Submodules, Converter={x:Static c:ListConverters.ToCount}}" Margin="4,0,0,0"/>
+                <TextBlock Classes="group_header_label" Text="{Binding Submodules, Converter={x:Static c:ListConverters.ToCount}}" Margin="{console:OnPlatform Default='4,0,0,0', Console='1,0,0,0'}"/>
               </StackPanel>
               <ToggleButton Grid.Column="2"
                             Classes="show_as_tree"
@@ -342,26 +525,40 @@
               <Button Grid.Column="3"
                       Classes="icon_button"
                       Width="14"
-                      Margin="8,0"
+                      Margin="{console:OnPlatform Default='8,0', Console='1,0'}"
                       Command="{Binding UpdateSubmodules}"
                       IsVisible="{Binding Submodules, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}"
                       ToolTip.Tip="{DynamicResource Text.Repository.Submodules.Update}">
-                <Path Width="12" Height="12" Data="{StaticResource Icons.Loading}"/>
+                <console:OnPlatform>
+                  <console:OnPlatform.Default>
+                    <Path Width="12" Height="12" Data="{StaticResource Icons.Loading}"/>
+                  </console:OnPlatform.Default>
+                  <console:OnPlatform.Console>
+                    <TextBlock Text="⏳"/>
+                  </console:OnPlatform.Console>
+                </console:OnPlatform>
               </Button>
               <Button Grid.Column="4"
                       Classes="icon_button"
                       Width="14"
-                      Margin="0,0,8,0"
+                      Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"
                       Command="{Binding AddSubmodule}"
                       ToolTip.Tip="{DynamicResource Text.Repository.Submodules.Add}">
-                <Path Width="12" Height="12" Data="{StaticResource Icons.Submodule.Add}"/>
+                <console:OnPlatform>
+                  <console:OnPlatform.Default>
+                    <Path Width="12" Height="12" Data="{StaticResource Icons.Submodule.Add}"/>
+                  </console:OnPlatform.Default>
+                  <console:OnPlatform.Console>
+                    <TextBlock Text="🧩"/>
+                  </console:OnPlatform.Console>
+                </console:OnPlatform>
               </Button>
             </Grid>
           </ToggleButton>
           <v:SubmodulesView Grid.Row="7"
                             x:Name="SubmoduleList"
                             Height="0"
-                            Margin="8,0,4,0"
+                            Margin="{console:OnPlatform Default='8,0,4,0', Console='1,0,1,0'}"
                             Content="{Binding VisibleSubmodules}"
                             RowsChanged="OnSubmodulesRowsChanged"
                             Focusable="False"
@@ -369,35 +566,56 @@
 
           <!-- Worktrees -->
           <ToggleButton Grid.Row="8" Classes="group_expander" IsChecked="{Binding IsWorktreeGroupExpanded, Mode=TwoWay}">
-            <Grid ColumnDefinitions="16,*,Auto,Auto">
-              <Path Grid.Column="0" Width="11" Height="11" Margin="1,0,0,0" HorizontalAlignment="Left" Data="{StaticResource Icons.Worktrees}" Fill="{DynamicResource Brush.FG2}"/>
+            <Grid ColumnDefinitions="{console:OnPlatform Default='16,*,Auto,Auto', Console='1,*,Auto,Auto'}">
+              <console:OnPlatform>
+                <console:OnPlatform.Default>
+                  <Path Grid.Column="0" Width="11" Height="11" Margin="{console:OnPlatform Default='1,0,0,0', Console='1,0,0,0'}" HorizontalAlignment="Left" Data="{StaticResource Icons.Worktrees}" Fill="{DynamicResource Brush.FG2}"/>
+                </console:OnPlatform.Default>
+                <console:OnPlatform.Console>
+                  <TextBlock Grid.Column="0" Text="🌲"/>
+                </console:OnPlatform.Console>
+              </console:OnPlatform>
               <StackPanel Grid.Column="1" Orientation="Horizontal">
                 <TextBlock Classes="group_header_label" Text="{DynamicResource Text.Repository.Worktrees}"/>
-                <TextBlock Classes="group_header_label" Text="{Binding Worktrees, Converter={x:Static c:ListConverters.ToCount}}" Margin="4,0,0,0"/>
+                <TextBlock Classes="group_header_label" Text="{Binding Worktrees, Converter={x:Static c:ListConverters.ToCount}}" Margin="{console:OnPlatform Default='4,0,0,0', Console='1,0,0,0'}"/>
               </StackPanel>
               <Button Grid.Column="2"
                       Classes="icon_button"
                       Width="14"
-                      Margin="8,0"
+                      Margin="{console:OnPlatform Default='8,0', Console='1,0'}"
                       Click="OnPruneWorktrees"
                       IsVisible="{Binding Worktrees, Converter={x:Static c:ListConverters.IsNotNullOrEmpty}}"
                       ToolTip.Tip="{DynamicResource Text.Repository.Worktrees.Prune}">
-                <Path Width="12" Height="12" Data="{StaticResource Icons.Loading}"/>
+                <console:OnPlatform>
+                  <console:OnPlatform.Default>
+                    <Path Width="12" Height="12" Data="{StaticResource Icons.Loading}"/>
+                  </console:OnPlatform.Default>
+                  <console:OnPlatform.Console>
+                    <TextBlock Text="⏳"/>
+                  </console:OnPlatform.Console>
+                </console:OnPlatform>
               </Button>
               <Button Grid.Column="3"
                       Classes="icon_button"
                       Width="14"
-                      Margin="0,0,9,0"
+                      Margin="{console:OnPlatform Default='0,0,9,0', Console='0,0,1,0'}"
                       Command="{Binding AddWorktree}"
                       ToolTip.Tip="{DynamicResource Text.Repository.Worktrees.Add}">
-                <Path Width="11" Height="11" Data="{StaticResource Icons.Worktree.Add}"/>
+                <console:OnPlatform>
+                  <console:OnPlatform.Default>
+                    <Path Width="11" Height="11" Data="{StaticResource Icons.Worktree.Add}"/>
+                  </console:OnPlatform.Default>
+                  <console:OnPlatform.Console>
+                    <TextBlock Text="🌲"/>
+                  </console:OnPlatform.Console>
+                </console:OnPlatform>
               </Button>
             </Grid>
           </ToggleButton>
           <ListBox Grid.Row="9"
                    x:Name="WorktreeList"
                    Height="0"
-                   Margin="12,0,4,0"
+                   Margin="{console:OnPlatform Default='12,0,4,0', Console='1,0,1,0'}"
                    Classes="repo_left_content_list"
                    ItemsSource="{Binding Worktrees}"
                    SelectionMode="Single"
@@ -413,12 +631,26 @@
             <ListBox.ItemTemplate>
               <DataTemplate DataType="m:Worktree">
                 <Grid ColumnDefinitions="Auto,*,22" Background="Transparent">
-                  <Path Grid.Column="0" Width="10" Height="10" Margin="8,0,0,0" Data="{StaticResource Icons.Worktree}"/>
-                  <TextBlock Grid.Column="1" Classes="primary" Margin="8,0,0,0" TextTrimming="CharacterEllipsis">
+                  <console:OnPlatform>
+                    <console:OnPlatform.Default>
+                      <Path Grid.Column="0" Width="10" Height="10" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}" Data="{StaticResource Icons.Worktree}"/>
+                    </console:OnPlatform.Default>
+                    <console:OnPlatform.Console>
+                      <TextBlock Grid.Column="0" Text="🌲"/>
+                    </console:OnPlatform.Console>
+                  </console:OnPlatform>
+                  <TextBlock Grid.Column="1" Classes="primary" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}" TextTrimming="CharacterEllipsis">
                     <Run Text="{Binding Name}"/>
                     <Run Text="{Binding RelativePath}" Foreground="{DynamicResource Brush.FG2}"/>
                   </TextBlock>
-                  <Path Grid.Column="2" Width="10" Height="10" Margin="4,0,0,0" Data="{StaticResource Icons.Lock}" Fill="{DynamicResource Brush.FG2}" IsVisible="{Binding IsLocked}"/>
+                  <console:OnPlatform>
+                    <console:OnPlatform.Default>
+                      <Path Grid.Column="2" Width="10" Height="10" Margin="{console:OnPlatform Default='4,0,0,0', Console='1,0,0,0'}" Data="{StaticResource Icons.Lock}" Fill="{DynamicResource Brush.FG2}" IsVisible="{Binding IsLocked}"/>
+                    </console:OnPlatform.Default>
+                    <console:OnPlatform.Console>
+                      <TextBlock Grid.Column="2" Text="🔒" IsVisible="{Binding IsLocked}"/>
+                    </console:OnPlatform.Console>
+                  </console:OnPlatform>
                 </Grid>
               </DataTemplate>
             </ListBox.ItemTemplate>
@@ -427,37 +659,51 @@
       </Grid>
 
       <!-- Commit Search Panel -->
-      <Grid Grid.Row="1" RowDefinitions="Auto,26,*" Margin="8,0,4,8" IsVisible="{Binding IsSearching}" PropertyChanged="OnSearchCommitPanelPropertyChanged">
+      <Grid Grid.Row="1" RowDefinitions="{console:OnPlatform Default='Auto,26,*', Console='Auto,2,*'}" Margin="{console:OnPlatform Default='8,0,4,8', Console='1,0,1,1'}" IsVisible="{Binding IsSearching}" PropertyChanged="OnSearchCommitPanelPropertyChanged">
         <!-- Search Input Box -->
-        <Grid Grid.Row="0" Height="26" Margin="0,4,0,0">
+        <Grid Grid.Row="0" Height="{console:OnPlatform Default='26', Console='2'}" Margin="{console:OnPlatform Default='0,4,0,0', Console='0,1,0,0'}">
           <TextBox x:Name="TxtSearchCommitsBox"
-                   Height="24"
+                   Height="{console:OnPlatform Default='24', Console='2'}"
                    BorderThickness="1"
                    BorderBrush="{DynamicResource Brush.Border2}"
                    Background="{DynamicResource Brush.Contents}"
-                   CornerRadius="12"
+                   CornerRadius="{console:OnPlatform Default='12', Console='0'}"
                    Watermark="{DynamicResource Text.Repository.Search}"
                    Text="{Binding SearchCommitFilter, Mode=TwoWay}"
                    VerticalContentAlignment="Center"
                    KeyDown="OnSearchKeyDown">
             <TextBox.InnerLeftContent>
-              <Path Width="14" Height="14"
+              <console:OnPlatform>
+                <console:OnPlatform.Default>
+                  <Path Width="14" Height="14"
                     Margin="6,0,0,0"
                     Fill="{DynamicResource Brush.FG2}"
                     Data="{StaticResource Icons.Search}"/>
+                </console:OnPlatform.Default>
+                <console:OnPlatform.Console>
+                  <TextBlock Text="🔍"/>
+                </console:OnPlatform.Console>
+              </console:OnPlatform>
             </TextBox.InnerLeftContent>
 
             <TextBox.InnerRightContent>
               <Button Classes="icon_button"
                       Width="16"
-                      Margin="0,0,6,0"
+                      Margin="{console:OnPlatform Default='0,0,6,0', Console='0,0,1,0'}"
                       Command="{Binding ClearSearchCommitFilter}"
                       IsVisible="{Binding SearchCommitFilter, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
                       HorizontalAlignment="Right">
-                <Path Width="14" Height="14"
+                <console:OnPlatform>
+                  <console:OnPlatform.Default>
+                    <Path Width="14" Height="14"
                       Margin="0,1,0,0"
                       Fill="{DynamicResource Brush.FG1}"
                       Data="{StaticResource Icons.Clear}"/>
+                  </console:OnPlatform.Default>
+                  <console:OnPlatform.Console>
+                    <TextBlock Text="✖"/>
+                  </console:OnPlatform.Console>
+                </console:OnPlatform>
               </Button>
             </TextBox.InnerRightContent>
           </TextBox>
@@ -473,7 +719,7 @@
             </Popup.IsOpen>
 
             <Border Margin="8" VerticalAlignment="Top" Effect="drop-shadow(0 0 8 #80000000)">
-              <Border Background="{DynamicResource Brush.Popup}" CornerRadius="4" Padding="4" BorderThickness="0.65" BorderBrush="{DynamicResource Brush.Accent}">
+              <Border Background="{DynamicResource Brush.Popup}" CornerRadius="{console:OnPlatform Default='4', Console='0'}" Padding="{console:OnPlatform Default='4', Console='1'}" BorderThickness="0.65" BorderBrush="{DynamicResource Brush.Accent}">
                 <ListBox x:Name="SearchSuggestionBox"
                          Background="Transparent"
                          SelectionMode="Single"
@@ -505,12 +751,19 @@
 
                   <ListBox.ItemTemplate>
                     <DataTemplate DataType="x:String">
-                      <StackPanel Background="Transparent" Orientation="Vertical" Margin="8,4" DoubleTapped="OnSearchSuggestionDoubleTapped">
+                      <StackPanel Background="Transparent" Orientation="Vertical" Margin="{console:OnPlatform Default='8,4', Console='1,1'}" DoubleTapped="OnSearchSuggestionDoubleTapped">
                         <StackPanel Orientation="Horizontal">
-                          <Path Width="12" Height="12" Data="{StaticResource Icons.File}"/>
-                          <TextBlock Classes="primary" Margin="6,0,0,0" Text="{Binding Converter={x:Static c:PathConverters.PureFileName}}"/>
+                          <console:OnPlatform>
+                            <console:OnPlatform.Default>
+                              <Path Width="12" Height="12" Data="{StaticResource Icons.File}"/>
+                            </console:OnPlatform.Default>
+                            <console:OnPlatform.Console>
+                              <TextBlock Text="📄"/>
+                            </console:OnPlatform.Console>
+                          </console:OnPlatform>
+                          <TextBlock Classes="primary" Margin="{console:OnPlatform Default='6,0,0,0', Console='1,0,0,0'}" Text="{Binding Converter={x:Static c:PathConverters.PureFileName}}"/>
                         </StackPanel>
-                        <TextBlock Classes="primary" FontSize="12" Margin="18,2,0,0" Foreground="{DynamicResource Brush.FG2}" Text="{Binding Converter={x:Static c:PathConverters.PureDirectoryName}}"/>
+                        <TextBlock Classes="primary" FontSize="12" Margin="{console:OnPlatform Default='18,2,0,0', Console='1,1,0,0'}" Foreground="{DynamicResource Brush.FG2}" Text="{Binding Converter={x:Static c:PathConverters.PureDirectoryName}}"/>
                       </StackPanel>
                     </DataTemplate>
                   </ListBox.ItemTemplate>
@@ -521,8 +774,8 @@
         </Grid>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal">
-          <ComboBox MinHeight="24" Height="24"
-                    Padding="4,0"
+          <ComboBox MinHeight="24" Height="{console:OnPlatform Default='24', Console='2'}"
+                    Padding="{console:OnPlatform Default='4,0', Console='1,0'}"
                     Background="Transparent"
                     BorderThickness="0"
                     SelectedIndex="{Binding SearchCommitFilterType, Mode=TwoWay}">
@@ -536,8 +789,8 @@
             </ComboBox.Items>
           </ComboBox>
 
-          <CheckBox Height="24"
-                    Margin="4,0,0,0"
+          <CheckBox Height="{console:OnPlatform Default='24', Console='2'}"
+                    Margin="{console:OnPlatform Default='4,0,0,0', Console='1,0,0,0'}"
                     IsChecked="{Binding OnlySearchCommitsInCurrentBranch, Mode=TwoWay}"
                     IsVisible="{Binding SearchCommitFilterType, Converter={x:Static c:IntConverters.IsGreaterThanZero}}">
             <TextBlock Text="{DynamicResource Text.Repository.Search.InCurrentBranch}"/>
@@ -545,15 +798,15 @@
         </StackPanel>
 
         <ListBox Grid.Row="2"
-                 Margin="0,8,0,0"
-                 Padding="4"
+                 Margin="{console:OnPlatform Default='0,8,0,0', Console='0,1,0,0'}"
+                 Padding="{console:OnPlatform Default='4', Console='1'}"
                  ItemsSource="{Binding SearchedCommits}"
                  SelectionMode="Single"
                  SelectedItem="{Binding SelectedSearchedCommit, Mode=TwoWay}"
                  BorderThickness="1"
                  BorderBrush="{DynamicResource Brush.Border2}"
                  Background="{DynamicResource Brush.Contents}"
-                 CornerRadius="4"
+                 CornerRadius="{console:OnPlatform Default='4', Console='0'}"
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                  ScrollViewer.VerticalScrollBarVisibility="Auto"
                  Grid.IsSharedSizeScope="True">
@@ -581,10 +834,10 @@
                   <ColumnDefinition Width="Auto" SharedSizeGroup="SearchCommitTimeColumn"/>
                 </Grid.ColumnDefinitions>
                 <v:Avatar Grid.Column="0" Width="16" Height="16" HorizontalAlignment="Center" VerticalAlignment="Center" IsHitTestVisible="False" User="{Binding Author}"/>
-                <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Subject}" Margin="2,0,0,0" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Subject}" Margin="{console:OnPlatform Default='2,0,0,0', Console='1,0,0,0'}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
                 <TextBlock Grid.Column="2"
                            Classes="primary"
-                           Margin="4,0"
+                           Margin="{console:OnPlatform Default='4,0', Console='1,0'}"
                            Foreground="{DynamicResource Brush.FG2}"
                            Text="{Binding CommitterTimeShortStr}"
                            HorizontalAlignment="Right" VerticalAlignment="Center"
@@ -594,18 +847,32 @@
           </ListBox.ItemTemplate>
         </ListBox>
 
-        <Path Grid.Row="2"
+        <console:OnPlatform>
+          <console:OnPlatform.Default>
+            <Path Grid.Row="2"
               HorizontalAlignment="Center" VerticalAlignment="Center"
               Width="48" Height="48"
               Data="{StaticResource Icons.Empty}"
               Fill="{DynamicResource Brush.FG2}">
-          <Path.IsVisible>
-            <MultiBinding Converter="{x:Static BoolConverters.And}">
-              <Binding Path="SearchedCommits.Count" Converter="{x:Static c:IntConverters.IsZero}"/>
-              <Binding Path="IsSearchLoadingVisible" Converter="{x:Static BoolConverters.Not}"/>
-            </MultiBinding>
-          </Path.IsVisible>
-        </Path>
+              <Path.IsVisible>
+                <MultiBinding Converter="{x:Static BoolConverters.And}">
+                  <Binding Path="SearchedCommits.Count" Converter="{x:Static c:IntConverters.IsZero}"/>
+                  <Binding Path="IsSearchLoadingVisible" Converter="{x:Static BoolConverters.Not}"/>
+                </MultiBinding>
+              </Path.IsVisible>
+            </Path>
+          </console:OnPlatform.Default>
+          <console:OnPlatform.Console>
+            <TextBlock Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Text="∅">
+              <TextBlock.IsVisible>
+                <MultiBinding Converter="{x:Static BoolConverters.And}">
+                  <Binding Path="SearchedCommits.Count" Converter="{x:Static c:IntConverters.IsZero}"/>
+                  <Binding Path="IsSearchLoadingVisible" Converter="{x:Static BoolConverters.Not}"/>
+                </MultiBinding>
+              </TextBlock.IsVisible>
+            </TextBlock>
+          </console:OnPlatform.Console>
+        </console:OnPlatform>
 
         <v:LoadingIcon Grid.Row="2"
                        Width="48" Height="48"
@@ -624,18 +891,18 @@
 
     <!-- Right -->
     <Grid Grid.Column="2" RowDefinitions="Auto,Auto,Auto,*">
-      <Grid Grid.Row="0" Height="28" ColumnDefinitions="*,Auto" Background="{DynamicResource Brush.Conflict}" IsVisible="{Binding InProgressContext, Converter={x:Static ObjectConverters.IsNotNull}}">
-        <ContentControl Grid.Column="0" Margin="8,0" Content="{Binding InProgressContext}">
+      <Grid Grid.Row="0" Height="{console:OnPlatform Default='28', Console='2'}" ColumnDefinitions="*,Auto" Background="{DynamicResource Brush.Conflict}" IsVisible="{Binding InProgressContext, Converter={x:Static ObjectConverters.IsNotNull}}">
+        <ContentControl Grid.Column="0" Margin="{console:OnPlatform Default='8,0', Console='1,0'}" Content="{Binding InProgressContext}">
           <ContentControl.DataTemplates>
             <DataTemplate DataType="m:Commit">
               <StackPanel MinWidth="400" Orientation="Vertical">
                 <Grid ColumnDefinitions="Auto,*,Auto">
                   <v:Avatar Grid.Column="0" Width="16" Height="16" VerticalAlignment="Center" IsHitTestVisible="False" User="{Binding Author}"/>
-                  <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Author.Name}" Margin="8,0,0,0"/>
-                  <TextBlock Grid.Column="2" Classes="primary" Text="{Binding CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="8,0,0,0"/>
+                  <TextBlock Grid.Column="1" Classes="primary" Text="{Binding Author.Name}" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}"/>
+                  <TextBlock Grid.Column="2" Classes="primary" Text="{Binding CommitterTimeStr}" Foreground="{DynamicResource Brush.FG2}" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}"/>
                 </Grid>
 
-                <TextBlock Classes="primary" Margin="0,8,0,0" Text="{Binding Subject}" TextWrapping="Wrap"/>
+                <TextBlock Classes="primary" Margin="{console:OnPlatform Default='0,8,0,0', Console='0,1,0,0'}" Text="{Binding Subject}" TextWrapping="Wrap"/>
               </StackPanel>
             </DataTemplate>
 
@@ -647,7 +914,7 @@
                   <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="DarkOrange" Text="{Binding Head.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" ToolTip.Tip="{Binding Head}"/>
                 </StackPanel>
 
-                <Button Grid.Column="1" Classes="flat" FontWeight="Regular" BorderThickness="0" Content="{DynamicResource Text.Repository.Skip}" Padding="8,2" Click="OnSkipInProgress"/>
+                <Button Grid.Column="1" Classes="flat" FontWeight="Regular" BorderThickness="0" Content="{DynamicResource Text.Repository.Skip}" Padding="{console:OnPlatform Default='8,2', Console='1,1'}" Click="OnSkipInProgress"/>
               </Grid>
             </DataTemplate>
 
@@ -665,7 +932,7 @@
                 </StackPanel>
 
                 <Button Grid.Column="1" Classes="flat" FontWeight="Regular" BorderThickness="0"
-                        Content="{DynamicResource Text.Repository.Skip}" Padding="8,2" Click="OnSkipInProgress"
+                        Content="{DynamicResource Text.Repository.Skip}" Padding="{console:OnPlatform Default='8,2', Console='1,1'}" Click="OnSkipInProgress"
                         IsVisible="{Binding StoppedAt, Converter={x:Static ObjectConverters.IsNotNull}}" />
               </Grid>
             </DataTemplate>
@@ -678,7 +945,7 @@
                   <TextBlock FontWeight="Bold" Margin="4,0,0,0" Foreground="DarkOrange" Text="{Binding Head.SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" ToolTip.Tip="{Binding Head}"/>
                 </StackPanel>
 
-                <Button Grid.Column="1" Classes="flat" FontWeight="Regular" BorderThickness="0" Content="{DynamicResource Text.Repository.Skip}" Padding="8,2" Click="OnSkipInProgress"/>
+                <Button Grid.Column="1" Classes="flat" FontWeight="Regular" BorderThickness="0" Content="{DynamicResource Text.Repository.Skip}" Padding="{console:OnPlatform Default='8,2', Console='1,1'}" Click="OnSkipInProgress"/>
               </Grid>
             </DataTemplate>
 
@@ -699,72 +966,72 @@
                 FontWeight="Regular"
                 BorderThickness="0"
                 Content="{DynamicResource Text.Repository.Abort}"
-                Padding="8,2" Margin="0,0,8,0"
+                Padding="{console:OnPlatform Default='8,2', Console='1,1'}" Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"
                 Click="OnAbortInProgress"/>
       </Grid>
 
       <Grid Grid.Row="1"
-            Height="28"
+            Height="{console:OnPlatform Default='28', Console='2'}"
             ColumnDefinitions="*,Auto,Auto,Auto,Auto,Auto"
             Background="{DynamicResource Brush.Conflict}"
             IsVisible="{Binding BisectState, Converter={x:Static ObjectConverters.NotEqual}, ConverterParameter={x:Static m:BisectState.None}}">
         <TextBlock Grid.Column="0"
                    FontWeight="Bold"
-                   Margin="8,0"
+                   Margin="{console:OnPlatform Default='8,0', Console='1,0'}"
                    Foreground="{DynamicResource Brush.ConflictForeground}"
                    Text="{DynamicResource Text.Bisect.WaitingForRange}"
                    IsVisible="{Binding BisectState, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:BisectState.WaitingForRange}}"/>
 
         <TextBlock Grid.Column="0"
                    FontWeight="Bold"
-                   Margin="8,0"
+                   Margin="{console:OnPlatform Default='8,0', Console='1,0'}"
                    Foreground="{DynamicResource Brush.ConflictForeground}"
                    Text="{DynamicResource Text.Bisect.Detecting}"
                    IsVisible="{Binding BisectState, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:BisectState.Detecting}}"/>
 
         <v:LoadingIcon Grid.Column="1"
                        Width="14" Height="14"
-                       Margin="4,0"
+                       Margin="{console:OnPlatform Default='4,0', Console='1,0'}"
                        IsVisible="{Binding IsBisectCommandRunning}"/>
 
         <Button Grid.Column="2"
                 Classes="flat"
-                Margin="4,0"
+                Margin="{console:OnPlatform Default='4,0', Console='1,0'}"
                 FontWeight="Regular"
                 BorderThickness="0"
                 Content="{DynamicResource Text.Bisect.Good}"
                 IsEnabled="{Binding !IsBisectCommandRunning}"
-                Padding="8,2"
+                Padding="{console:OnPlatform Default='8,2', Console='1,1'}"
                 Click="OnBisectCommand"
                 Tag="good"/>
         <Button Grid.Column="3"
                 Classes="flat"
-                Margin="4,0"
+                Margin="{console:OnPlatform Default='4,0', Console='1,0'}"
                 FontWeight="Regular"
                 BorderThickness="0"
                 Content="{DynamicResource Text.Bisect.Bad}"
                 IsEnabled="{Binding !IsBisectCommandRunning}"
-                Padding="8,2"
+                Padding="{console:OnPlatform Default='8,2', Console='1,1'}"
                 Click="OnBisectCommand"
                 Tag="bad"/>
         <Button Grid.Column="4"
                 Classes="flat"
-                Margin="4,0"
+                Margin="{console:OnPlatform Default='4,0', Console='1,0'}"
                 FontWeight="Regular"
                 BorderThickness="0"
                 Content="{DynamicResource Text.Bisect.Skip}"
                 IsEnabled="{Binding !IsBisectCommandRunning}"
-                Padding="8,2"
+                Padding="{console:OnPlatform Default='8,2', Console='1,1'}"
                 Click="OnBisectCommand"
                 Tag="skip"/>
         <Button Grid.Column="5"
                 Classes="flat"
-                Margin="4,0"
+                Margin="{console:OnPlatform Default='4,0', Console='1,0'}"
                 FontWeight="Regular"
                 BorderThickness="0"
                 Content="{DynamicResource Text.Bisect.Abort}"
                 IsEnabled="{Binding !IsBisectCommandRunning}"
-                Padding="8,2"
+                Padding="{console:OnPlatform Default='8,2', Console='1,1'}"
                 Click="OnBisectCommand"
                 Tag="reset"/>
       </Grid>
@@ -779,19 +1046,19 @@
 
         <Grid ColumnDefinitions="Auto,*,Auto">
           <Path Grid.Column="0"
-                Margin="8,0,0,0"
+                Margin="{console:OnPlatform Default='8,0', Console='1'}"
                 Width="12" Height="12"
                 Data="{StaticResource Icons.Filter}"
                 Fill="{DynamicResource Brush.FG2}"
                 IsVisible="{Binding HistoriesFilterMode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:FilterMode.Included}}"/>
           <Path Grid.Column="0"
-                Margin="8,0,0,0"
+                Margin="{console:OnPlatform Default='8,0', Console='1'}"
                 Width="12" Height="12"
                 Data="{StaticResource Icons.EyeClose}"
                 Fill="{DynamicResource Brush.FG2}"
                 IsVisible="{Binding HistoriesFilterMode, Converter={x:Static ObjectConverters.Equal}, ConverterParameter={x:Static m:FilterMode.Excluded}}"/>
 
-          <ItemsControl Grid.Column="1" Margin="8,4" ItemsSource="{Binding Settings.HistoriesFilters}">
+          <ItemsControl Grid.Column="1" Margin="{console:OnPlatform Default='8,4', Console='1,1'}" ItemsSource="{Binding Settings.HistoriesFilters}">
             <ItemsControl.ItemsPanel>
               <ItemsPanelTemplate>
                 <WrapPanel Orientation="Horizontal" ItemHeight="22"/>
@@ -821,7 +1088,7 @@
           </ItemsControl>
 
           <Button Grid.Column="2" Classes="icon_button" Command="{Binding ClearHistoriesFilter}" ToolTip.Tip="{DynamicResource Text.Repository.ClearAllCommitsFilter}">
-            <Path Width="14" Height="14" Margin="16,0,8,0" Data="{StaticResource Icons.RemoveAll}"/>
+            <Path Width="14" Height="14" Margin="{console:OnPlatform Default='16,0', Console='1'}" Data="{StaticResource Icons.RemoveAll}"/>
           </Button>
         </Grid>
       </Border>
@@ -848,11 +1115,11 @@
     </Grid>
 
     <!-- Right (Auto-Fetch) -->
-    <Border Grid.Column="2" Margin="12" HorizontalAlignment="Center" VerticalAlignment="Center" Effect="drop-shadow(0 0 12 #A0000000)" IsVisible="{Binding IsAutoFetching}">
-      <Border Background="{DynamicResource Brush.Popup}" CornerRadius="6">
-        <StackPanel Orientation="Vertical" Margin="16,8">
+    <Border Grid.Column="2" Margin="{console:OnPlatform Default='12', Console='1'}" HorizontalAlignment="Center" VerticalAlignment="Center" Effect="drop-shadow(0 0 12 #A0000000)" IsVisible="{Binding IsAutoFetching}">
+      <Border Background="{DynamicResource Brush.Popup}" CornerRadius="{console:OnPlatform Default='6', Console='0'}">
+        <StackPanel Orientation="Vertical" Margin="{console:OnPlatform Default='16,8', Console='1,1'}">
           <TextBlock Text="{DynamicResource Text.Repository.AutoFetching}"/>
-          <ProgressBar Margin="0,8,0,0"
+          <ProgressBar Margin="{console:OnPlatform Default='0,8,0,0', Console='0,1,0,0'}"
                        HorizontalAlignment="Stretch"
                        IsIndeterminate="{Binding IsAutoFetching}"
                        Background="{DynamicResource Brush.FG2}" Foreground="{DynamicResource Brush.Accent}"

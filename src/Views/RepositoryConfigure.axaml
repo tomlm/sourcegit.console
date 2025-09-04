@@ -2,9 +2,12 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:s="using:SourceGit"
                     xmlns:m="using:SourceGit.Models"
+                    xmlns:c="using:SourceGit.Converters"
                     xmlns:vm="using:SourceGit.ViewModels"
                     xmlns:v="using:SourceGit.Views"
+                    xmlns:console="https://github.com/jinek/consolonia"
                     mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
                     x:Class="SourceGit.Views.RepositoryConfigure"
                     x:DataType="vm:RepositoryConfigure"
@@ -16,16 +19,23 @@
                     WindowStartupLocation="CenterOwner">
   <Grid RowDefinitions="Auto,Auto">
     <!-- TitleBar -->
-    <Grid Grid.Row="0" Height="28" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
+    <Grid Grid.Row="0" Height="{console:OnPlatform Default='28', Console='2'}" IsVisible="{Binding !#ThisControl.UseSystemWindowFrame}">
       <Border Background="{DynamicResource Brush.TitleBar}"
               BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"
               PointerPressed="BeginMoveWindow"/>
 
-      <Path Width="14" Height="14"
-            Margin="10,0,0,0"
+      <console:OnPlatform>
+        <console:OnPlatform.Default>
+          <Path Width="14" Height="14"
+            Margin="{console:OnPlatform Default='10,0,0,0', Console='1,0,0,0'}"
             HorizontalAlignment="Left"
             Data="{StaticResource Icons.Settings}"
             IsVisible="{OnPlatform True, macOS=False}"/>
+        </console:OnPlatform.Default>
+        <console:OnPlatform.Console>
+          <TextBlock Text="⚙" Margin="1,0,0,0" HorizontalAlignment="Left"/>
+        </console:OnPlatform.Console>
+      </console:OnPlatform>
 
       <TextBlock Classes="bold"
                  Text="{DynamicResource Text.Configure}"
@@ -44,41 +54,48 @@
           <TextBlock Classes="tab_header" Text="{DynamicResource Text.Configure.Git}"/>
         </TabItem.Header>
 
-        <Grid Margin="16,4,16,8" RowDefinitions="32,32,32,32,32,32,32,32,32,32" ColumnDefinitions="Auto,*">
+        <Grid Margin="{console:OnPlatform Default='16,4,16,8', Console='1,1,1,1'}" RowDefinitions="{console:OnPlatform Default='32,32,32,32,32,32,32,32,32,32', Console='3,3,3,3,3,3,3,3,3,3'}" ColumnDefinitions="Auto,*">
           <TextBlock Grid.Row="0" Grid.Column="0"
                      HorizontalAlignment="Right" VerticalAlignment="Center"
-                     Margin="0,0,8,0"
+                     Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"
                      Text="{DynamicResource Text.Configure.User}"/>
           <TextBox Grid.Row="0" Grid.Column="1"
-                   Height="28"
-                   CornerRadius="3"
+                   Height="{console:OnPlatform Default='28', Console='2'}"
+                   CornerRadius="{console:OnPlatform Default='3', Console='0'}"
                    Watermark="{DynamicResource Text.Configure.User.Placeholder}"
                    Text="{Binding UserName, Mode=TwoWay}"
                    v:AutoFocusBehaviour.IsEnabled="True"/>
 
           <TextBlock Grid.Row="1" Grid.Column="0"
                      HorizontalAlignment="Right" VerticalAlignment="Center"
-                     Margin="0,0,8,0"
+                     Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"
                      Text="{DynamicResource Text.Configure.Email}"/>
           <TextBox Grid.Row="1" Grid.Column="1"
-                   Height="28"
-                   CornerRadius="3"
+                   Height="{console:OnPlatform Default='28', Console='2'}"
+                   CornerRadius="{console:OnPlatform Default='3', Console='0'}"
                    Watermark="{DynamicResource Text.Configure.Email.Placeholder}"
                    Text="{Binding UserEmail, Mode=TwoWay}"/>
 
           <TextBlock Grid.Row="2" Grid.Column="0"
                      HorizontalAlignment="Right" VerticalAlignment="Center"
-                     Margin="0,0,8,0"
+                     Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"
                      Text="{DynamicResource Text.Configure.Git.DefaultRemote}"/>
           <ComboBox Grid.Row="2" Grid.Column="1"
-                    Height="28" Padding="8,0"
+                    Height="{console:OnPlatform Default='28', Console='2'}" Padding="{console:OnPlatform Default='8,0', Console='1,0'}"
                     VerticalAlignment="Center" HorizontalAlignment="Stretch"
                     ItemsSource="{Binding Remotes}"
                     SelectedItem="{Binding DefaultRemote, Mode=TwoWay}">
             <ComboBox.ItemTemplate>
               <DataTemplate>
                 <StackPanel Orientation="Horizontal" Height="20" VerticalAlignment="Center">
-                  <Path Margin="0,2,8,0" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Remote}"/>
+                  <console:OnPlatform>
+                    <console:OnPlatform.Default>
+                      <Path Margin="{console:OnPlatform Default='0,2,8,0', Console='0,1,1,0'}" Width="14" Height="14" Fill="{DynamicResource Brush.FG1}" Data="{StaticResource Icons.Remote}"/>
+                    </console:OnPlatform.Default>
+                    <console:OnPlatform.Console>
+                      <TextBlock Text="🌐"/>
+                    </console:OnPlatform.Console>
+                  </console:OnPlatform>
                   <TextBlock Text="{Binding}"/>
                 </StackPanel>
               </DataTemplate>
@@ -87,10 +104,10 @@
 
           <TextBlock Grid.Row="3" Grid.Column="0"
                      HorizontalAlignment="Right" VerticalAlignment="Center"
-                     Margin="0,0,8,0"
+                     Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"
                      Text="{DynamicResource Text.Configure.Git.PreferredMergeMode}"/>
           <ComboBox Grid.Row="3" Grid.Column="1"
-                    Height="28" Padding="8,0"
+                    Height="{console:OnPlatform Default='28', Console='2'}" Padding="{console:OnPlatform Default='8,0', Console='1,0'}"
                     VerticalAlignment="Center" HorizontalAlignment="Stretch"
                     ItemsSource="{Binding Source={x:Static m:MergeMode.Supported}}"
                     SelectedIndex="{Binding PreferredMergeMode, Mode=TwoWay}"
@@ -103,18 +120,16 @@
                     <ColumnDefinition Width="Auto" SharedSizeGroup="MergeModeDescriptionColumn"/>
                     <ColumnDefinition Width="Auto" SharedSizeGroup="MergeModeOptionColumn"/>
                   </Grid.ColumnDefinitions>
-
                   <TextBlock Grid.Column="0" Text="{Binding Name}"/>
-                  <TextBlock Grid.Column="1" Text="{Binding Desc}" Margin="8,0" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
+                  <TextBlock Grid.Column="1" Text="{Binding Desc}" Margin="{console:OnPlatform Default='8,0', Console='1,0'}" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
                   <TextBlock Grid.Column="2" Text="{Binding Arg}" HorizontalAlignment="Right" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
                 </Grid>
               </DataTemplate>
             </ComboBox.ItemTemplate>
-
             <ComboBox.SelectionBoxItemTemplate>
               <DataTemplate DataType="m:MergeMode">
                 <Grid ColumnDefinitions="Auto,*">
-                  <TextBlock Grid.Column="0" Text="{Binding Name}" Margin="0,0,8,0"/>
+                  <TextBlock Grid.Column="0" Text="{Binding Name}" Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"/>
                   <TextBlock Grid.Column="1" Text="{Binding Desc}" HorizontalAlignment="Right" FontSize="11" Foreground="{DynamicResource Brush.FG2}"/>
                 </Grid>
               </DataTemplate>
@@ -123,38 +138,43 @@
 
           <TextBlock Grid.Row="4" Grid.Column="0"
                      HorizontalAlignment="Right" VerticalAlignment="Center"
-                     Margin="0,0,8,0"
+                     Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"
                      Text="{DynamicResource Text.Configure.Proxy}"/>
           <TextBox Grid.Row="4" Grid.Column="1"
-                   Height="28"
-                   CornerRadius="3"
+                   Height="{console:OnPlatform Default='28', Console='2'}"
+                   CornerRadius="{console:OnPlatform Default='3', Console='0'}"
                    Watermark="{DynamicResource Text.Configure.Proxy.Placeholder}"
                    Text="{Binding HttpProxy, Mode=TwoWay}">
             <TextBox.InnerRightContent>
               <Button Classes="icon_button" IsVisible="{Binding HttpProxy, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" Command="{Binding ClearHttpProxy}">
-                <Path Width="16" Height="16" Margin="0,0,0,0" Data="{StaticResource Icons.Clear}" Fill="{DynamicResource Brush.FG1}"/>
+                <console:OnPlatform>
+                  <console:OnPlatform.Default>
+                    <Path Width="16" Height="16" Data="{StaticResource Icons.Clear}" Fill="{DynamicResource Brush.FG1}"/>
+                  </console:OnPlatform.Default>
+                  <console:OnPlatform.Console>
+                    <TextBlock Text="✖"/>
+                  </console:OnPlatform.Console>
+                </console:OnPlatform>
               </Button>
             </TextBox.InnerRightContent>
           </TextBox>
 
           <TextBlock Grid.Row="5" Grid.Column="0"
                      HorizontalAlignment="Right" VerticalAlignment="Center"
-                     Margin="0,0,8,0"
+                     Margin="{console:OnPlatform Default='0,0,8,0', Console='0,0,1,0'}"
                      Text="{DynamicResource Text.Preferences.GPG.UserKey}"/>
           <TextBox Grid.Row="5" Grid.Column="1"
-                   Height="28"
-                   CornerRadius="3"
+                   Height="{console:OnPlatform Default='28', Console='2'}"
+                   CornerRadius="{console:OnPlatform Default='3', Console='0'}"
                    Watermark="{DynamicResource Text.Preferences.GPG.UserKey.Placeholder}"
                    Text="{Binding GPGUserSigningKey, Mode=TwoWay}"/>
 
           <CheckBox Grid.Row="6" Grid.Column="1"
                     Content="{DynamicResource Text.Preferences.GPG.CommitEnabled}"
                     IsChecked="{Binding GPGCommitSigningEnabled, Mode=TwoWay}"/>
-
           <CheckBox Grid.Row="7" Grid.Column="1"
                     Content="{DynamicResource Text.Preferences.GPG.TagEnabled}"
                     IsChecked="{Binding GPGTagSigningEnabled, Mode=TwoWay}"/>
-
           <CheckBox Grid.Row="8" Grid.Column="1"
                     Content="{DynamicResource Text.Preferences.Git.EnablePruneOnFetch}"
                     IsChecked="{Binding EnablePruneOnFetch, Mode=TwoWay}"/>
@@ -163,19 +183,17 @@
             <CheckBox x:Name="AutoFetchCheckBox"
                       Content="{DynamicResource Text.Configure.Git.AutoFetch}"
                       IsChecked="{Binding EnableAutoFetch, Mode=TwoWay}"/>
-
             <NumericUpDown Minimum="1" Maximum="60" Increment="1"
-                           Height="26" Width="110"
-                           Margin="8,0,0,0" Padding="4"
+                           Height="{console:OnPlatform Default='26', Console='2'}" Width="110"
+                           Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}" Padding="{console:OnPlatform Default='4', Console='1'}"
                            BorderThickness="1" BorderBrush="{DynamicResource Brush.Border1}"
-                           CornerRadius="3"
+                           CornerRadius="{console:OnPlatform Default='3', Console='0'}"
                            ParsingNumberStyle="Integer"
                            FormatString="0"
                            Value="{Binding AutoFetchInterval, Mode=TwoWay, FallbackValue=10}"
                            IsEnabled="{Binding #AutoFetchCheckBox.IsChecked}"/>
-
             <TextBlock VerticalAlignment="Center"
-                       Margin="5,0,0,0"
+                       Margin="{console:OnPlatform Default='5,0,0,0', Console='1,0,0,0'}"
                        Text="{DynamicResource Text.Configure.Git.AutoFetchIntervalSuffix}" />
           </StackPanel>
         </Grid>
