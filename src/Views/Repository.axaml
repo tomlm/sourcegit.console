@@ -37,7 +37,7 @@
               <Path Width="12" Height="12" Stretch="Fill" HorizontalAlignment="Center" Data="{StaticResource Icons.Home}"/>
             </console:OnPlatform.Default>
             <console:OnPlatform.Console>
-              <TextBlock Text="🏠"/>
+              <TextBlock Text="{StaticResource TextIcons.Home}"/>
             </console:OnPlatform.Console>
           </console:OnPlatform>
         </RadioButton>
@@ -58,7 +58,7 @@
               <Path Width="12" Height="12" Stretch="Fill" HorizontalAlignment="Center" Data="{StaticResource Icons.Search}"/>
             </console:OnPlatform.Default>
             <console:OnPlatform.Console>
-              <TextBlock Text="🔍"/>
+              <TextBlock Text="{StaticResource TextIcons.Search}"/>
             </console:OnPlatform.Console>
           </console:OnPlatform>
         </RadioButton>
@@ -199,7 +199,7 @@
                         IsVisible="{Binding InProgressContext, Converter={x:Static ObjectConverters.IsNotNull}}"/>
                     </console:OnPlatform.Default>
                     <console:OnPlatform.Console>
-                      <TextBlock Grid.Column="3" Text="ℹ"/>
+                      <TextBlock Grid.Column="3" Text="{StaticResource TextIcons.Info}"/>
                     </console:OnPlatform.Console>
                   </console:OnPlatform>
                   <Button Grid.Column="4"
@@ -212,7 +212,7 @@
                         <Path Width="12" Height="12" Data="{StaticResource Icons.Undo}"/>
                       </console:OnPlatform.Default>
                       <console:OnPlatform.Console>
-                        <TextBlock Text="↺"/>
+                        <TextBlock Text="{StaticResource TextIcons.Undo}"/>
                       </console:OnPlatform.Console>
                     </console:OnPlatform>
                   </Button>
@@ -226,7 +226,7 @@
                       <Path Grid.Column="0" Classes="icon" Data="{StaticResource Icons.Stashes}"/>
                     </console:OnPlatform.Default>
                     <console:OnPlatform.Console>
-                      <TextBlock Grid.Column="0" Text="📦"/>
+                      <TextBlock Grid.Column="0" Text="{StaticResource TextIcons.Stashes}"/>
                     </console:OnPlatform.Console>
                   </console:OnPlatform>
                   <TextBlock Grid.Column="1" Classes="header" Text="{DynamicResource Text.Stashes}"/>
@@ -249,7 +249,7 @@
                         <Path Width="12" Height="12" Data="{StaticResource Icons.RemoveAll}"/>
                       </console:OnPlatform.Default>
                       <console:OnPlatform.Console>
-                        <TextBlock Text="✖"/>
+                        <TextBlock Text="{StaticResource TextIcons.RemoveAll}"/>
                       </console:OnPlatform.Console>
                     </console:OnPlatform>
                   </Button>
@@ -278,7 +278,7 @@
                   Data="{StaticResource Icons.Search}"/>
               </console:OnPlatform.Default>
               <console:OnPlatform.Console>
-                <TextBlock Text="🔍"/>
+                <TextBlock Text="{StaticResource TextIcons.Search}"/>
               </console:OnPlatform.Console>
             </console:OnPlatform>
           </TextBox.InnerLeftContent>
@@ -298,7 +298,7 @@
                     Data="{StaticResource Icons.Clear}"/>
                 </console:OnPlatform.Default>
                 <console:OnPlatform.Console>
-                  <TextBlock Text="✖"/>
+                  <TextBlock Text="{StaticResource TextIcons.Clear}"/>
                 </console:OnPlatform.Console>
               </console:OnPlatform>
             </Button>
@@ -333,7 +333,7 @@
                       <Path Width="12" Height="12" Data="{StaticResource Icons.OrderByName}" IsVisible="{Binding IsSortingLocalBranchByName, Mode=OneWay}"/>
                     </console:OnPlatform.Default>
                     <console:OnPlatform.Console>
-                      <TextBlock Text="🔤" IsVisible="{Binding IsSortingLocalBranchByName, Mode=OneWay}"/>
+                      <TextBlock Text="{StaticResource TextIcons.OrderByName}" IsVisible="{Binding IsSortingLocalBranchByName, Mode=OneWay}"/>
                     </console:OnPlatform.Console>
                   </console:OnPlatform>
                   <console:OnPlatform>
@@ -341,18 +341,18 @@
                       <Path Width="12" Height="12" Data="{StaticResource Icons.OrderByTime}" IsVisible="{Binding !IsSortingLocalBranchByName, Mode=OneWay}"/>
                     </console:OnPlatform.Default>
                     <console:OnPlatform.Console>
-                      <TextBlock Text="⏱" IsVisible="{Binding !IsSortingLocalBranchByName, Mode=OneWay}"/>
+                      <TextBlock Text="{StaticResource TextIcons.OrderByTime}" IsVisible="{Binding !IsSortingLocalBranchByName, Mode=OneWay}"/>
                     </console:OnPlatform.Console>
                   </console:OnPlatform>
                 </Grid>
               </Button>
-              <Button Grid.Column="3" Classes="icon_button" Width="14" Margin="{console:OnPlatform Default='8,0', Console='1,0'}" Command="{Binding CreateNewBranch}" ToolTip.Tip="{DynamicResource Text.Repository.NewBranch}>
+              <Button Grid.Column="3" Classes="icon_button" Width="14" Margin="{console:OnPlatform Default='8,0', Console='1,0'}" Command="{Binding CreateNewBranch}" ToolTip.Tip="{DynamicResource Text.Repository.NewBranch}">
                 <console:OnPlatform>
                   <console:OnPlatform.Default>
                     <Path Width="12" Height="12" Data="{StaticResource Icons.Branch.Add}"/>
                   </console:OnPlatform.Default>
                   <console:OnPlatform.Console>
-                    <TextBlock Text="🌿"/>
+                    <TextBlock Text="{StaticResource TextIcons.Branch.Add}"/>
                   </console:OnPlatform.Console>
                 </console:OnPlatform>
               </Button>
@@ -375,7 +375,7 @@
                   <Path Grid.Column="0" Width="12" Height="12" HorizontalAlignment="Left" Data="{StaticResource Icons.Remotes}" Fill="{DynamicResource Brush.FG2}"/>
                 </console:OnPlatform.Default>
                 <console:OnPlatform.Console>
-                  <TextBlock Grid.Column="0" Text="🌐"/>
+                  <TextBlock Grid.Column="0" Text="{StaticResource TextIcons.Remotes}"/>
                 </console:OnPlatform.Console>
               </console:OnPlatform>
               <StackPanel Grid.Column="1" Orientation="Horizontal">
@@ -394,7 +394,7 @@
                       <Path Width="12" Height="12" Data="{StaticResource Icons.OrderByName}" IsVisible="{Binding IsSortingRemoteBranchByName, Mode=OneWay}"/>
                     </console:OnPlatform.Default>
                     <console:OnPlatform.Console>
-                      <TextBlock Text="🔤" IsVisible="{Binding IsSortingRemoteBranchByName, Mode=OneWay}"/>
+                      <TextBlock Text="{StaticResource TextIcons.OrderByName}" IsVisible="{Binding IsSortingRemoteBranchByName, Mode=OneWay}"/>
                     </console:OnPlatform.Console>
                   </console:OnPlatform>
                   <console:OnPlatform>
@@ -402,18 +402,18 @@
                       <Path Width="12" Height="12" Data="{StaticResource Icons.OrderByTime}" IsVisible="{Binding !IsSortingRemoteBranchByName, Mode=OneWay}"/>
                     </console:OnPlatform.Default>
                     <console:OnPlatform.Console>
-                      <TextBlock Text="⏱" IsVisible="{Binding !IsSortingRemoteBranchByName, Mode=OneWay}"/>
+                      <TextBlock Text="{StaticResource TextIcons.OrderByTime}" IsVisible="{Binding !IsSortingRemoteBranchByName, Mode=OneWay}"/>
                     </console:OnPlatform.Console>
                   </console:OnPlatform>
                 </Grid>
               </Button>
-              <Button Grid.Column="3" Classes="icon_button" Width="14" Margin="{console:OnPlatform Default='8,0', Console='1,0'}" Command="{Binding AddRemote}" ToolTip.Tip="{DynamicResource Text.Repository.Remotes.Add}>
+              <Button Grid.Column="3" Classes="icon_button" Width="14" Margin="{console:OnPlatform Default='8,0', Console='1,0'}" Command="{Binding AddRemote}" ToolTip.Tip="{DynamicResource Text.Repository.Remotes.Add}">
                 <console:OnPlatform>
                   <console:OnPlatform.Default>
                     <Path Width="12" Height="12" Data="{StaticResource Icons.Remote.Add}"/>
                   </console:OnPlatform.Default>
                   <console:OnPlatform.Console>
-                    <TextBlock Text="🌐"/>
+                    <TextBlock Text="{StaticResource TextIcons.Remote.Add}"/>
                   </console:OnPlatform.Console>
                 </console:OnPlatform>
               </Button>
@@ -436,7 +436,7 @@
                   <Path Grid.Column="0" Width="11" Height="11" Margin="{console:OnPlatform Default='2,1,0,0', Console='1,1,0,0'}" HorizontalAlignment="Left" Data="{StaticResource Icons.Tags}" Fill="{DynamicResource Brush.FG2}"/>
                 </console:OnPlatform.Default>
                 <console:OnPlatform.Console>
-                  <TextBlock Grid.Column="0" Text="🏷"/>
+                  <TextBlock Grid.Column="0" Text="{StaticResource TextIcons.Tags}"/>
                 </console:OnPlatform.Console>
               </console:OnPlatform>
               <StackPanel Grid.Column="1" Orientation="Horizontal">
@@ -460,7 +460,7 @@
                       <Path Width="12" Height="12" Data="{StaticResource Icons.OrderByName}" IsVisible="{Binding IsSortingTagsByName, Mode=OneWay}"/>
                     </console:OnPlatform.Default>
                     <console:OnPlatform.Console>
-                      <TextBlock Text="🔤" IsVisible="{Binding IsSortingTagsByName, Mode=OneWay}"/>
+                      <TextBlock Text="{StaticResource TextIcons.OrderByName}" IsVisible="{Binding IsSortingTagsByName, Mode=OneWay}"/>
                     </console:OnPlatform.Console>
                   </console:OnPlatform>
                   <console:OnPlatform>
@@ -468,7 +468,7 @@
                       <Path Width="12" Height="12" Data="{StaticResource Icons.OrderByTime}" IsVisible="{Binding !IsSortingTagsByName, Mode=OneWay}"/>
                     </console:OnPlatform.Default>
                     <console:OnPlatform.Console>
-                      <TextBlock Text="⏱" IsVisible="{Binding !IsSortingTagsByName, Mode=OneWay}"/>
+                      <TextBlock Text="{StaticResource TextIcons.OrderByTime}" IsVisible="{Binding !IsSortingTagsByName, Mode=OneWay}"/>
                     </console:OnPlatform.Console>
                   </console:OnPlatform>
                 </Grid>
@@ -484,7 +484,7 @@
                     <Path Width="12" Height="12" Data="{StaticResource Icons.Tag.Add}"/>
                   </console:OnPlatform.Default>
                   <console:OnPlatform.Console>
-                    <TextBlock Text="🏷"/>
+                    <TextBlock Text="{StaticResource TextIcons.Tag.Add}"/>
                   </console:OnPlatform.Console>
                 </console:OnPlatform>
               </Button>
@@ -509,7 +509,7 @@
                   <Path Grid.Column="0" Width="10" Height="10" Margin="{console:OnPlatform Default='2,0,0,0', Console='1,0,0,0'}" HorizontalAlignment="Left" Data="{StaticResource Icons.Submodules}" Fill="{DynamicResource Brush.FG2}"/>
                 </console:OnPlatform.Default>
                 <console:OnPlatform.Console>
-                  <TextBlock Grid.Column="0" Text="🧩"/>
+                  <TextBlock Grid.Column="0" Text="{StaticResource TextIcons.Submodules}"/>
                 </console:OnPlatform.Console>
               </console:OnPlatform>
               <StackPanel Grid.Column="1" Orientation="Horizontal">
@@ -534,7 +534,7 @@
                     <Path Width="12" Height="12" Data="{StaticResource Icons.Loading}"/>
                   </console:OnPlatform.Default>
                   <console:OnPlatform.Console>
-                    <TextBlock Text="⏳"/>
+                    <TextBlock Text="{StaticResource TextIcons.Loading}"/>
                   </console:OnPlatform.Console>
                 </console:OnPlatform>
               </Button>
@@ -549,7 +549,7 @@
                     <Path Width="12" Height="12" Data="{StaticResource Icons.Submodule.Add}"/>
                   </console:OnPlatform.Default>
                   <console:OnPlatform.Console>
-                    <TextBlock Text="🧩"/>
+                    <TextBlock Text="{StaticResource TextIcons.Submodule.Add}"/>
                   </console:OnPlatform.Console>
                 </console:OnPlatform>
               </Button>
@@ -572,7 +572,7 @@
                   <Path Grid.Column="0" Width="11" Height="11" Margin="{console:OnPlatform Default='1,0,0,0', Console='1,0,0,0'}" HorizontalAlignment="Left" Data="{StaticResource Icons.Worktrees}" Fill="{DynamicResource Brush.FG2}"/>
                 </console:OnPlatform.Default>
                 <console:OnPlatform.Console>
-                  <TextBlock Grid.Column="0" Text="🌲"/>
+                  <TextBlock Grid.Column="0" Text="{StaticResource TextIcons.Worktrees}"/>
                 </console:OnPlatform.Console>
               </console:OnPlatform>
               <StackPanel Grid.Column="1" Orientation="Horizontal">
@@ -591,7 +591,7 @@
                     <Path Width="12" Height="12" Data="{StaticResource Icons.Loading}"/>
                   </console:OnPlatform.Default>
                   <console:OnPlatform.Console>
-                    <TextBlock Text="⏳"/>
+                    <TextBlock Text="{StaticResource TextIcons.Loading}"/>
                   </console:OnPlatform.Console>
                 </console:OnPlatform>
               </Button>
@@ -606,7 +606,7 @@
                     <Path Width="11" Height="11" Data="{StaticResource Icons.Worktree.Add}"/>
                   </console:OnPlatform.Default>
                   <console:OnPlatform.Console>
-                    <TextBlock Text="🌲"/>
+                    <TextBlock Text="{StaticResource TextIcons.Worktree.Add}"/>
                   </console:OnPlatform.Console>
                 </console:OnPlatform>
               </Button>
@@ -636,7 +636,7 @@
                       <Path Grid.Column="0" Width="10" Height="10" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}" Data="{StaticResource Icons.Worktree}"/>
                     </console:OnPlatform.Default>
                     <console:OnPlatform.Console>
-                      <TextBlock Grid.Column="0" Text="🌲"/>
+                      <TextBlock Grid.Column="0" Text="{StaticResource TextIcons.Worktree}"/>
                     </console:OnPlatform.Console>
                   </console:OnPlatform>
                   <TextBlock Grid.Column="1" Classes="primary" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}" TextTrimming="CharacterEllipsis">
@@ -648,7 +648,7 @@
                       <Path Grid.Column="2" Width="10" Height="10" Margin="{console:OnPlatform Default='4,0,0,0', Console='1,0,0,0'}" Data="{StaticResource Icons.Lock}" Fill="{DynamicResource Brush.FG2}" IsVisible="{Binding IsLocked}"/>
                     </console:OnPlatform.Default>
                     <console:OnPlatform.Console>
-                      <TextBlock Grid.Column="2" Text="🔒" IsVisible="{Binding IsLocked}"/>
+                      <TextBlock Grid.Column="2" Text="{StaticResource TextIcons.Lock}" IsVisible="{Binding IsLocked}"/>
                     </console:OnPlatform.Console>
                   </console:OnPlatform>
                 </Grid>
@@ -681,7 +681,7 @@
                     Data="{StaticResource Icons.Search}"/>
                 </console:OnPlatform.Default>
                 <console:OnPlatform.Console>
-                  <TextBlock Text="🔍"/>
+                  <TextBlock Text="{StaticResource TextIcons.Search}"/>
                 </console:OnPlatform.Console>
               </console:OnPlatform>
             </TextBox.InnerLeftContent>
@@ -758,7 +758,7 @@
                               <Path Width="12" Height="12" Data="{StaticResource Icons.File}"/>
                             </console:OnPlatform.Default>
                             <console:OnPlatform.Console>
-                              <TextBlock Text="📄"/>
+                              <TextBlock Text="{StaticResource TextIcons.File}"/>
                             </console:OnPlatform.Console>
                           </console:OnPlatform>
                           <TextBlock Classes="primary" Margin="{console:OnPlatform Default='6,0,0,0', Console='1,0,0,0'}" Text="{Binding Converter={x:Static c:PathConverters.PureFileName}}"/>
