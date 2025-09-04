@@ -22,16 +22,18 @@
               BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.Border0}"
               PointerPressed="BeginMoveWindow"/>
 
-      <console:OnPlatform.Default>
-        <Path Width="14" Height="14"
-              Margin="{console:OnPlatform Default='10,0,0,0', Console='1,0,0,0'}"
-              HorizontalAlignment="Left"
-              Data="{StaticResource Icons.File.Ignore}"
-              IsVisible="{OnPlatform True, macOS=False}"/>
-      </console:OnPlatform.Default>
-      <console:OnPlatform.Console>
-        <TextBlock Text="{StaticResource TextIcons.FileIgnore}" HorizontalAlignment="Left"/>
-      </console:OnPlatform.Console>
+      <console:OnPlatform>
+        <console:OnPlatform.Default>
+          <Path Width="14" Height="14"
+                Margin="{console:OnPlatform Default='10,0,0,0', Console='1,0,0,0'}"
+                HorizontalAlignment="Left"
+                Data="{StaticResource Icons.File.Ignore}"
+                IsVisible="{OnPlatform True, macOS=False}"/>
+        </console:OnPlatform.Default>
+        <console:OnPlatform.Console>
+          <TextBlock Text="{StaticResource TextIcons.FileIgnore}" HorizontalAlignment="Left"/>
+        </console:OnPlatform.Console>
+      </console:OnPlatform>
 
       <TextBlock Classes="bold"
                  Text="{DynamicResource Text.AssumeUnchanged}"

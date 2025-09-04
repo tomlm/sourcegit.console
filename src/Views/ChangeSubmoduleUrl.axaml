@@ -26,8 +26,9 @@
           <console:OnPlatform.Console>
             <TextBlock Text="{StaticResource TextIcons.Submodule}"/>
           </console:OnPlatform.Console>
-          <TextBlock Margin="{console:OnPlatform Default='6,0,0,0', Console='1,0,0,0'}" Text="{Binding Submodule.Path}"/>
         </console:OnPlatform>
+        <TextBlock Margin="{console:OnPlatform Default='6,0,0,0', Console='1,0,0,0'}" Text="{Binding Submodule.Path}"/>
+
       </StackPanel>
 
       <TextBlock Grid.Row="1" Grid.Column="0"

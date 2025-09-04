@@ -44,7 +44,7 @@
                   <Path Grid.Column="0" Width="14" Height="14" Data="{StaticResource Icons.Commit}"/>
                 </console:OnPlatform.Default>
                 <console:OnPlatform.Console>
-                  <TextBlock Grid.Column="0" Text="●"/>
+                  <TextBlock Grid.Column="0" Text="{StaticResource TextIcons.Commit}"/>
                 </console:OnPlatform.Console>
               </console:OnPlatform>
               <TextBlock Grid.Column="1" Classes="primary" VerticalAlignment="Center" Text="{Binding SHA, Converter={x:Static c:StringConverters.ToShortSHA}}" Foreground="DarkOrange" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}"/>
@@ -59,7 +59,7 @@
                   <Path Width="14" Height="14" Data="{StaticResource Icons.Tag}"/>
                 </console:OnPlatform.Default>
                 <console:OnPlatform.Console>
-                  <TextBlock Text="🏷️"/>
+                  <TextBlock Text="{StaticResource TextIcons.Tag}"/>
                 </console:OnPlatform.Console>
               </console:OnPlatform>
               <TextBlock VerticalAlignment="Center" Text="{Binding Name}" Margin="{console:OnPlatform Default='8,0,0,0', Console='1,0,0,0'}"/>
@@ -81,12 +81,14 @@
                v:AutoFocusBehaviour.IsEnabled="True">
         <TextBox.InnerRightContent>
           <Button Classes="icon_button" Width="{console:OnPlatform Default='30', Console='3'}" Height="{console:OnPlatform Default='30', Console='3'}" Click="SelectOutputFile">
-            <console:OnPlatform.Default>
-              <Path Data="{StaticResource Icons.Folder.Open}" Fill="{DynamicResource Brush.FG1}"/>
-            </console:OnPlatform.Default>
-            <console:OnPlatform.Console>
-              <TextBlock Text="📂"/>
-            </console:OnPlatform.Console>
+            <console:OnPlatform>
+              <console:OnPlatform.Default>
+                <Path Data="{StaticResource Icons.Folder.Open}" Fill="{DynamicResource Brush.FG1}"/>
+              </console:OnPlatform.Default>
+              <console:OnPlatform.Console>
+                <TextBlock Text="{StaticResource TextIcons.Folder.Open}"/>
+              </console:OnPlatform.Console>
+            </console:OnPlatform>
           </Button>
         </TextBox.InnerRightContent>
       </TextBox>

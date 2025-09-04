@@ -61,12 +61,14 @@
                Text="{Binding ParentFolder, Mode=TwoWay}">
         <TextBox.InnerRightContent>
           <Button Classes="icon_button" Width="28" Height="{console:OnPlatform Default='28', Console='2'}" Margin="{console:OnPlatform Default='4,0,0,0', Console='1,0,0,0'}" Click="SelectParentFolder">
-            <console:OnPlatform.Default>
-              <Path Data="{StaticResource Icons.Folder.Open}" Fill="{DynamicResource Brush.FG1}"/>
-            </console:OnPlatform.Default>
-            <console:OnPlatform.Console>
-              <TextBlock Text="{StaticResource TextIcons.FolderOpen}"/>
-            </console:OnPlatform.Console>
+            <console:OnPlatform>
+              <console:OnPlatform.Default>
+                <Path Data="{StaticResource Icons.Folder.Open}" Fill="{DynamicResource Brush.FG1}"/>
+              </console:OnPlatform.Default>
+              <console:OnPlatform.Console>
+                <TextBlock Text="{StaticResource TextIcons.FolderOpen}"/>
+              </console:OnPlatform.Console>
+            </console:OnPlatform>
           </Button>
         </TextBox.InnerRightContent>
       </TextBox>
